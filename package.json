@@ -1,0 +1,27 @@
+{
+  "name": "2d-reaction-diffusion-experiments",
+  "version": "1.0.0",
+  "description": "Grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they _diffuse_ through a medium. At every location on the grid these chemicals (usually referred to as `A` and `B`) have a chance of causing a _reaction_ that converts chemicals of one type to another based on their relative concentrations at that location.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonwebb/2d-reaction-diffusion-experiments.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments/issues"
+  },
+  "homepage": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments#readme",
+  "devDependencies": {
+    "path": "^0.12.7",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
