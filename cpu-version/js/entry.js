@@ -1,5 +1,4 @@
 let canvas, ctx;
-let pixels;
 
 let setup = () => {
   canvas = document.getElementById('sketch');
@@ -9,9 +8,17 @@ let setup = () => {
 }
 
 let update = (timestamp) => {
-  pixels = ctx.getImageData(0,0,500,500);
+  var imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  var data = imageData.data;
 
-  ctx.putImageData(pixels, 0, 0);
+  for(let i = 0; i < data.length; i += 4) {
+    var r = data[i];
+    var g = data[i+1];
+    var b = data[i+2];
+    var a = data[i+3];
+  }
+
+  ctx.putImageData(imageData, 0, 0);
 
   requestAnimationFrame(update);
 }
