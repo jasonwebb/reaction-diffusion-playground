@@ -20,6 +20,7 @@
   "homepage": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments#readme",
   "devDependencies": {
     "path": "^0.12.7",
+    "three": "^0.115.0",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3"

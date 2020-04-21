@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   mode: 'development',
   entry: {
-    cpu: path.resolve('cpu-version/js/entry.js')
+    cpu: path.resolve('cpu-version/entry.js'),
+    gpu: path.resolve('gpu-version/entry.js')
   },
   module: {
     rules: [

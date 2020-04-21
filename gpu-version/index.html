@@ -5,10 +5,12 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>2D reaction-diffusion experiments</title>
+  <title>GPU version - reaction-diffusion</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" type="text/css" href="../sketch-styles.css">
 
   <!-- Facebook OG -->
   <meta property="og:type" content="website">
@@ -28,10 +30,17 @@
   <meta name="twitter:image" content="">
 </head>
 
-<body>
-  <ul>
-    <li><a href="cpu-version/">CPU-only version</a>
-    <li><a href="gpu-version/">GPU version</a></li>
-  </ul>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh">
+  <div id="container"></div>
+
+  <script id="vertexShader" type="x-shader/x-vertex">
+    void main() {}
+  </script>
+
+  <script id="fragmentShader" type="x-shader/x-fragment">
+    void main() {}
+  </script>
+
+  <script src="../dist/gpu.bundle.js"></script>
 </body>
 </html>
