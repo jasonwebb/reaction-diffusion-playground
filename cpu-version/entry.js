@@ -61,8 +61,8 @@ let setup = () => {
 
 let update = (timestamp) => {
   // Calculate next A and B values
-  for(let x = 1; x < canvas.width - 1; x++) {
-    for(let y = 1; y < canvas.height - 1; y++) {
+  for(let x = 0; x < canvas.width; x++) {
+    for(let y = 0; y < canvas.height; y++) {
       let A = current.A[x][y],
           B = current.B[x][y],
           diffusionA = Da * laplacian('A', x, y),
@@ -102,15 +102,20 @@ let draw = () => {
 }
 
 let laplacian = (chemical, x, y) => {
-  let north = current[chemical][x][y > 0 ? y - 1 : canvas.height - 1];
-  let south = current[chemical][x][y < canvas.height ? y + 1 : 0];
-  let east = current[chemical][x < canvas.width - 1 ? x + 1 : 0][y];
-  let west = current[chemical][x > 0 ? x - 1 : canvas.width - 1][y];
+  let prevCol = x > 0 ? x - 1 : canvas.width - 1,
+      prevRow = y > 0 ? y - 1 : canvas.height - 1,
+      nextCol = x < canvas.width - 1 ? x + 1 : 0,
+      nextRow = y < canvas.height - 1 ? y + 1 : 0;
 
-  let northwest = current[chemical][x > 0 ? x - 1 : canvas.width - 1][y > 0 ? y - 1 : canvas.height - 1];
-  let northeast = current[chemical][x < canvas.width - 1 ? x + 1 : 0][y > 0 ? y - 1 : canvas.height - 1];
-  let southeast = current[chemical][x < canvas.width - 1 ? x + 1 : 0][y < canvas.height ? y + 1 : 0];
-  let southwest = current[chemical][x > 0 ? x - 1 : canvas.width - 1][y < canvas.height ? y + 1 : 0];
+  let north = current[chemical][x][prevRow],
+      south = current[chemical][x][nextRow],
+      east = current[chemical][nextCol][y],
+      west = current[chemical][prevCol][y];
+
+  let northwest = current[chemical][prevCol][prevRow],
+      northeast = current[chemical][nextCol][prevRow],
+      southeast = current[chemical][nextCol][nextRow],
+      southwest = current[chemical][prevCol][nextRow];
 
   return north * weights.north +
          south * weights.south +
