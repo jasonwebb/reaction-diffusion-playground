@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>GPU version - reaction-diffusion</title>
+  <title>Reaction-diffusion - GPU-version</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -34,11 +34,20 @@
   <div id="container"></div>
 
   <script id="vertexShader" type="x-shader/x-vertex">
-    void main() {}
+    void main() {
+      gl_Position = projectionMatrix *
+                    modelViewMatrix *
+                    vec4(position,1.0);
+    }
   </script>
 
   <script id="fragmentShader" type="x-shader/x-fragment">
-    void main() {}
+    void main() {
+      gl_FragColor = vec4(1.0,  // R
+                          0.0,  // G
+                          1.0,  // B
+                          1.0); // A
+    }
   </script>
 
   <script src="../dist/gpu.bundle.js"></script>
