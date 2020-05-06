@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments#readme",
   "devDependencies": {
+    "glsl-shader-loader": "^0.1.6",
     "path": "^0.12.7",
     "three": "^0.115.0",
     "webpack": "^4.42.1",

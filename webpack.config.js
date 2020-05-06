@@ -11,6 +11,15 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'svg-inline-loader'
+      },
+      {
+        test: /\.(frag|vert|glsl)$/,
+        use: [
+          {
+            loader: 'glsl-shader-loader',
+            options: {}
+          }
+        ]
       }
     ]
   },
