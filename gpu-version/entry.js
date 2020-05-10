@@ -15,12 +15,12 @@ let containerSize = {
   height: 900
 };
 
-let container;                                                  // the DOM element that ThreeJS loads into
-let camera, scene, renderer, displayMesh;                       // ThreeJS basics needed to show stuff on the screen
-let simulationUniforms, displayUniforms, passthroughUniforms;   // uniforms are constants that get passed into shaders
-let simulationMaterial, displayMaterial, passthroughMaterial;   // materials associate uniforms to vert/frag shaders
-let renderTargets, currentRenderTargetIndex = 0;                // render targets are invisible meshes that allow shaders to generate textures for computation, not display
-const pingPongSteps = 128;                                      // number of times per frame that the simulation is run before being displayed
+let container;                                                 // the DOM element that ThreeJS loads into
+let camera, scene, renderer, displayMesh;                      // ThreeJS basics needed to show stuff on the screen
+let simulationUniforms, displayUniforms, passthroughUniforms;  // uniforms are constants that get passed into shaders
+let simulationMaterial, displayMaterial, passthroughMaterial;  // materials associate uniforms to vert/frag shaders
+let renderTargets, currentRenderTargetIndex = 0;               // render targets are invisible meshes that allow shaders to generate textures for computation, not display
+const pingPongSteps = 128;                                     // number of times per frame that the simulation is run before being displayed
 let isPaused = false;
 
 // FPS counter via Stats.js
@@ -53,6 +53,7 @@ function render(timestamp) {
       renderer.render(scene, camera);                                                                       // run the simulation shader on that texture
       simulationUniforms.previousIterationTexture.value = renderTargets[nextRenderTargetIndex].texture;     // save the result of this simulation step for use in the next step
       displayUniforms.textureToDisplay.value = renderTargets[nextRenderTargetIndex].texture;                // pass this result to the display material too
+      displayUniforms.previousIterationTexture.value = renderTargets[currentRenderTargetIndex].texture;     // pass the previous iteration result too for history-based rendering effects
 
       currentRenderTargetIndex = nextRenderTargetIndex;
     }
@@ -117,6 +118,9 @@ function setupUniforms() {
   function setupDisplayUniforms() {
     displayUniforms = {
       textureToDisplay: {
+        value: null
+      },
+      previousIterationTexture: {
         value: null
       }
     };
@@ -187,13 +191,13 @@ function setupRenderTargets() {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat,
-      type: THREE.FloatType
+      type: THREE.FloatType,
+      wrapS: THREE.RepeatWrapping,
+      wrapT: THREE.RepeatWrapping
     });
 
     // Enable texture wrapping
     // - Referencing a texture coordinate that is out-of-bounds will automatically make it wrap!
-    nextRenderTarget.texture.wrapS = THREE.RepeatWrapping;
-    nextRenderTarget.texture.wrapT = THREE.RepeatWrapping;
     nextRenderTarget.texture.name = `render texture ${i}`;
 
     renderTargets.push(nextRenderTarget);
@@ -253,11 +257,12 @@ function setupInitialTexture() {
     renderer.render(scene, camera);
   }
 
-  // Return the display mesh material to the reaction-diffusion
+  // Switch back to the display material and pass along the initial rendered texture
   displayUniforms.textureToDisplay.value = renderTargets[0].texture;
+  displayUniforms.previousIterationTexture.value = renderTargets[0].texture;
   displayMesh.material = displayMaterial;
 
-  // Set the render target back to the default display buffer
+  // Set the render target back to the default display buffer and render the first frame
   renderer.setRenderTarget(null);
   renderer.render(scene, camera);
 }
