@@ -15,13 +15,15 @@ let containerSize = {
   height: 900
 };
 
-let container;
-let camera, scene, renderer, displayMesh;
-let simulationUniforms, displayUniforms, passthroughUniforms;
-let simulationMaterial, displayMaterial, passthroughMaterial;
-let renderTargets, currentRenderTargetIndex = 0;
-const pingPongSteps = 16;
+let container;                                                  // the DOM element that ThreeJS loads into
+let camera, scene, renderer, displayMesh;                       // ThreeJS basics needed to show stuff on the screen
+let simulationUniforms, displayUniforms, passthroughUniforms;   // uniforms are constants that get passed into shaders
+let simulationMaterial, displayMaterial, passthroughMaterial;   // materials associate uniforms to vert/frag shaders
+let renderTargets, currentRenderTargetIndex = 0;                // render targets are invisible meshes that allow shaders to generate textures for computation, not display
+const pingPongSteps = 128;                                      // number of times per frame that the simulation is run before being displayed
+let isPaused = false;
 
+// FPS counter via Stats.js
 let stats = new Stats();
 document.body.appendChild(stats.dom);
 
@@ -36,34 +38,36 @@ render();
 //  RENDER
 //==============================================================
 function render(timestamp) {
-  stats.begin();
+  if(!isPaused) {
+    stats.begin();
 
-  // Activate the simulation shaders
-  displayMesh.material = simulationMaterial;
+    // Activate the simulation shaders
+    displayMesh.material = simulationMaterial;
 
-  // Run the simulation multiple times by feeding the result of one iteration (a render target's texture) into the next render target
-  for(let i=0; i<pingPongSteps; i++) {
-    var nextRenderTargetIndex = currentRenderTargetIndex === 0 ? 1 : 0;
+    // Run the simulation multiple times by feeding the result of one iteration (a render target's texture) into the next render target
+    for(let i=0; i<pingPongSteps; i++) {
+      var nextRenderTargetIndex = currentRenderTargetIndex === 0 ? 1 : 0;
 
-    simulationUniforms.previousIterationTexture.value = renderTargets[currentRenderTargetIndex].texture;  // grab the result of the last iteration
-    renderer.setRenderTarget(renderTargets[nextRenderTargetIndex]);                                       // prepare to render into the next render target
-    renderer.render(scene, camera);                                                                       // run the simulation shader on that texture
-    simulationUniforms.previousIterationTexture.value = renderTargets[nextRenderTargetIndex].texture;     // save the result of this simulation step for use in the next step
-    displayUniforms.textureToDisplay.value = renderTargets[nextRenderTargetIndex].texture;                // pass this result to the display material too
+      simulationUniforms.previousIterationTexture.value = renderTargets[currentRenderTargetIndex].texture;  // grab the result of the last iteration
+      renderer.setRenderTarget(renderTargets[nextRenderTargetIndex]);                                       // prepare to render into the next render target
+      renderer.render(scene, camera);                                                                       // run the simulation shader on that texture
+      simulationUniforms.previousIterationTexture.value = renderTargets[nextRenderTargetIndex].texture;     // save the result of this simulation step for use in the next step
+      displayUniforms.textureToDisplay.value = renderTargets[nextRenderTargetIndex].texture;                // pass this result to the display material too
 
-    currentRenderTargetIndex = nextRenderTargetIndex;
+      currentRenderTargetIndex = nextRenderTargetIndex;
+    }
+
+    // Activate the display shaders
+    displayMesh.material = displayMaterial;
+
+    // Render the latest iteration to the screen
+    renderer.setRenderTarget(null);
+    renderer.render(scene, camera);
+
+    stats.end();
+
+    requestAnimationFrame(render);   // kick off the next iteration
   }
-
-  // Activate the display shaders
-  displayMesh.material = displayMaterial;
-
-  // Render the latest iteration to the screen
-  renderer.setRenderTarget(null);
-  renderer.render(scene, camera);
-
-  stats.end();
-
-  requestAnimationFrame(render);   // kick off the next iteration
 }
 
 //==============================================================
@@ -293,8 +297,15 @@ function setupInitialTexture() {
     return pixels;
   }
 
-  window.addEventListener('keydown', function(e) {
-    if(e.key == ' ') {
+//==============================================================
+//  KEYBOARD CONTROLS
+//==============================================================
+window.addEventListener('keyup', function(e) {
+  if(e.key == ' ') {
+    isPaused = !isPaused;
+
+    if(!isPaused) {
       render();
     }
-  });
+  }
+});
