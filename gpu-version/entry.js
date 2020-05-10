@@ -1,5 +1,6 @@
 import * as THREE from '../node_modules/three/build/three.module.js';
 import Stats from '../node_modules/stats.js/src/Stats.js'
+import WebMIDI from '../node_modules/webmidi';
 import simulationFragShader from './glsl/simulationFrag.glsl';
 import simulationVertShader from './glsl/simulationVert.glsl';
 import displayFragShader from './glsl/displayFrag.glsl';
@@ -13,6 +14,25 @@ let containerSize = {
 
   width: 900,
   height: 900
+};
+
+const parameterLimits = {
+  dA: {
+    min: 0.2,
+    max: 0.4
+  },
+  dB: {
+    min: 0.2,
+    max: 0.4
+  },
+  f: {
+    min: 0.06,
+    max: 0.07
+  },
+  k: {
+    min: 0.06,
+    max: 0.07
+  }
 };
 
 let container;                                                 // the DOM element that ThreeJS loads into
@@ -339,3 +359,47 @@ window.addEventListener('keyup', function(e) {
     }
   }
 });
+
+//==============================================================
+//  MIDI CONTROL
+//==============================================================
+WebMIDI.enable((error) => {
+  let input = WebMIDI.getInputByName('Akai LPD8 Wireless');
+
+  input.addListener('controlchange', 'all', (e) => {
+    switch(e.controller.number) {
+      case 1:
+        simulationUniforms.f.value = e.value.map(0, 127, parameterLimits.f.min, parameterLimits.f.max);
+        break;
+
+      case 2:
+        simulationUniforms.k.value = e.value.map(0, 127, parameterLimits.k.min, parameterLimits.k.max);
+        break;
+
+      case 3:
+        simulationUniforms.dA.value = e.value.map(0, 127, parameterLimits.dA.min, parameterLimits.dA.max);
+        break;
+
+      case 4:
+        simulationUniforms.dB.value = e.value.map(0, 127, parameterLimits.dB.min, parameterLimits.dB.max);
+        break;
+
+      case 5:
+        break;
+
+      case 6:
+        break;
+
+      case 7:
+        break;
+
+      case 8:
+        break;
+    }
+  });
+});
+
+// https://gist.github.com/xposedbones/75ebaef3c10060a3ee3b246166caab56
+Number.prototype.map = function (in_min, in_max, out_min, out_max) {
+  return (this - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
