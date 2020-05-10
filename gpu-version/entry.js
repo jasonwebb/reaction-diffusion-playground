@@ -94,10 +94,12 @@ function setupUniforms() {
       // Reaction-diffusion equation parameters
       f: {   // feed rate
         type: "f",
-        value: 0.054
+        // value: 0.054
+        value: 0.037
       },
       k: {   // kill rate
         type: "f",
+        // value: 0.062
         value: 0.062
       },
       dA: {  // diffusion rate for chemical A
@@ -122,6 +124,29 @@ function setupUniforms() {
       },
       previousIterationTexture: {
         value: null
+      },
+
+      // Gradient color stops - RGB channels represent real color values, but A channel is for B threshold
+      // via https://github.com/pmneila/jsexp
+      colorStop1: {
+        type: "v4",
+        value: new THREE.Vector4(0.0, 0.0, 0.0, 0.0)
+      },
+      colorStop2: {
+        type: "v4",
+        value: new THREE.Vector4(0.0, 1.0, 0.0, 0.2)
+      },
+      colorStop3: {
+        type: "v4",
+        value: new THREE.Vector4(1.0, 1.0, 0.0, 0.21)
+      },
+      colorStop4: {
+        type: "v4",
+        value: new THREE.Vector4(1.0, 0.0, 0.0, 0.4)
+      },
+      colorStop5: {
+        type: "v4",
+        value: new THREE.Vector4(1.0, 1.0, 1.0, 0.6)
       }
     };
   }
