@@ -12,7 +12,6 @@ uniform float dA;
 uniform float dB;
 uniform float timestep;
 
-varying vec2 v_uv;
 varying vec2 v_uvs[9];
 
 vec3 weights[3];
@@ -38,24 +37,24 @@ void setWeights(int type) {
   }
 }
 
-vec4 getLaplacian(vec4 centerPixel) {
+vec2 getLaplacian(vec4 centerTexel) {
   // Begin by setting up the Laplacian stencil weights based on desired model
   setWeights(0);
 
   // Start with center value
-  vec4 laplacian = centerPixel * weights[1][1];  // center
+  vec2 laplacian = centerTexel.xy * weights[1][1];  // center
 
   // Add in orthogonal values
-  laplacian += texture2D(previousIterationTexture, v_uvs[1]) * weights[0][1];  // top
-  laplacian += texture2D(previousIterationTexture, v_uvs[2]) * weights[1][2];  // right
-  laplacian += texture2D(previousIterationTexture, v_uvs[3]) * weights[2][1];  // bottom
-  laplacian += texture2D(previousIterationTexture, v_uvs[4]) * weights[1][0];  // left
+  laplacian += texture2D(previousIterationTexture, v_uvs[1]).xy * weights[0][1];  // top
+  laplacian += texture2D(previousIterationTexture, v_uvs[2]).xy * weights[1][2];  // right
+  laplacian += texture2D(previousIterationTexture, v_uvs[3]).xy * weights[2][1];  // bottom
+  laplacian += texture2D(previousIterationTexture, v_uvs[4]).xy * weights[1][0];  // left
 
   // Add in diagonal values
-  laplacian += texture2D(previousIterationTexture, v_uvs[5]) * weights[0][2];  // top-right
-  laplacian += texture2D(previousIterationTexture, v_uvs[6]) * weights[2][2];  // bottom-right
-  laplacian += texture2D(previousIterationTexture, v_uvs[7]) * weights[2][0];  // bottom-left
-  laplacian += texture2D(previousIterationTexture, v_uvs[8]) * weights[0][0];  // top-left
+  laplacian += texture2D(previousIterationTexture, v_uvs[5]).xy * weights[0][2];  // top-right
+  laplacian += texture2D(previousIterationTexture, v_uvs[6]).xy * weights[2][2];  // bottom-right
+  laplacian += texture2D(previousIterationTexture, v_uvs[7]).xy * weights[2][0];  // bottom-left
+  laplacian += texture2D(previousIterationTexture, v_uvs[8]).xy * weights[0][0];  // top-left
 
   return laplacian;
 }
@@ -65,14 +64,14 @@ void main() {
   float A = centerTexel[0];
   float B = centerTexel[1];
 
-  // Pre-calculate more complex and repeated terms
-  vec4 laplacian = getLaplacian(centerTexel);
+  // Pre-calculate complex and repeated terms
+  vec2 laplacian = getLaplacian(centerTexel);
   float reactionTerm = A * B * B;
 
-  // Calculate the next A and B values
-  A += dA * laplacian[0] - reactionTerm + f * (1.0 - A);
-  B += dB * laplacian[1] + reactionTerm + (k + f) * B;
-
-  gl_FragColor = saturate(vec4(A, B, centerTexel.b, 1.0));
-  // gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
+  gl_FragColor = clamp(vec4(
+    A + (dA * laplacian[0] - reactionTerm + f * (1.0 - A)),
+    B + (dB * laplacian[1] + reactionTerm - (k + f) * B),
+    centerTexel.b,
+    1.0
+  ), 0.0, 1.0) ;
 }
