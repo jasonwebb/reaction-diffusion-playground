@@ -6,9 +6,6 @@ varying vec2 texelStep;
 void main() {
   texelStep = 1.0 / resolution.xy;
 
-  // Pass the uv coordinates provided by ThreeJS over to the frag shader.
-  // - These values will get interpolated automagically into unique values for each fragment (pixel)
-
   // Center texel
   v_uvs[0] = uv;
 
@@ -19,10 +16,10 @@ void main() {
   v_uvs[4] = uv + vec2(-texelStep.x, 0.0);  // left
 
   // Diagonal texels
-  v_uvs[5] = uv + vec2(texelStep.x, -texelStep.y);  // top-right
-  v_uvs[6] = uv + vec2(texelStep.x, texelStep.y);   // bottom-right
-  v_uvs[7] = uv + vec2(-texelStep.x, texelStep.y);  // bottom-left
-  v_uvs[8] = uv + vec2(-texelStep.x, -texelStep.y); // top-left
+  v_uvs[5] = uv + vec2(texelStep.x, -texelStep.y);   // top-right
+  v_uvs[6] = uv + vec2(texelStep.x, texelStep.y);    // bottom-right
+  v_uvs[7] = uv + vec2(-texelStep.x, texelStep.y);   // bottom-left
+  v_uvs[8] = uv + vec2(-texelStep.x, -texelStep.y);  // top-left
 
   gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 }
