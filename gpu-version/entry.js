@@ -366,8 +366,20 @@ window.addEventListener('keyup', function(e) {
 WebMIDI.enable((error) => {
   let input = WebMIDI.getInputByName('Akai LPD8 Wireless');
 
+  input.addListener('noteon', 'all', (e) => {
+    switch(e.note.number) {
+      // Top row = 40-43
+      case 40:
+        setupInitialTexture();
+        break;
+
+      // Bottom row = 36-39
+    }
+  });
+
   input.addListener('controlchange', 'all', (e) => {
     switch(e.controller.number) {
+      // Top row = 1-4 -------------------------------------------------------------------------------------------
       case 1:
         simulationUniforms.f.value = e.value.map(0, 127, parameterLimits.f.min, parameterLimits.f.max);
         break;
@@ -384,17 +396,7 @@ WebMIDI.enable((error) => {
         simulationUniforms.dB.value = e.value.map(0, 127, parameterLimits.dB.min, parameterLimits.dB.max);
         break;
 
-      case 5:
-        break;
-
-      case 6:
-        break;
-
-      case 7:
-        break;
-
-      case 8:
-        break;
+      // Bottom row = 5-8 ----------------------------------------------------------------------------------------
     }
   });
 });
