@@ -12,26 +12,38 @@ let containerSize = {
   // width: window.innerWidth,
   // height: window.innerHeight
 
-  width: 900,
-  height: 900
+  width: 1024,
+  height: 1024
 };
 
 const parameterLimits = {
-  dA: {
-    min: 0.2,
-    max: 0.4
-  },
-  dB: {
-    min: 0.2,
-    max: 0.4
-  },
   f: {
-    min: 0.06,
-    max: 0.07
+    min: 0.01,
+    max: 0.1,
+
+    range: 0.1,
+    initial: 0.054
   },
   k: {
-    min: 0.06,
-    max: 0.07
+    min: 0.05,
+    max: 0.1,
+
+    range: 0.1,
+    initial: 0.062
+  },
+  dA: {
+    min: 0.2,
+    max: 0.25,
+
+    range: 0.1,
+    initial: 0.2097
+  },
+  dB: {
+    min: 0.5,
+    max: 0.8,
+
+    range: 0.1,
+    initial: 0.105
   }
 };
 
@@ -47,6 +59,8 @@ let isPaused = false;
 let stats = new Stats();
 document.body.appendChild(stats.dom);
 
+let clock = new THREE.Clock();
+
 setupEnvironment();
 setupUniforms();
 setupMaterials();
@@ -57,7 +71,7 @@ render();
 //==============================================================
 //  RENDER
 //==============================================================
-function render(timestamp) {
+function render() {
   if(!isPaused) {
     stats.begin();
 
@@ -79,6 +93,7 @@ function render(timestamp) {
     }
 
     // Activate the display shaders
+    displayUniforms.time.value = clock.getElapsedTime();
     displayMesh.material = displayMaterial;
 
     // Render the latest iteration to the screen
@@ -114,21 +129,19 @@ function setupUniforms() {
       // Reaction-diffusion equation parameters
       f: {   // feed rate
         type: "f",
-        // value: 0.054
-        value: 0.037
+        value: parameterLimits.f.initial
       },
       k: {   // kill rate
         type: "f",
-        // value: 0.062
-        value: 0.062
+        value: parameterLimits.k.initial
       },
       dA: {  // diffusion rate for chemical A
         type: "f",
-        value: 0.2097
+        value: parameterLimits.dA.initial
       },
       dB: {  // diffusion rate for chemical B
         type: "f",
-        value: 0.105
+        value: parameterLimits.dB.initial
       },
       timestep: {
         type: "f",
@@ -145,6 +158,10 @@ function setupUniforms() {
       previousIterationTexture: {
         value: null
       },
+      time: {
+        type: "f",
+        value: 0
+      },
 
       // Gradient color stops - RGB channels represent real color values, but A channel is for B threshold
       // via https://github.com/pmneila/jsexp
@@ -154,15 +171,15 @@ function setupUniforms() {
       },
       colorStop2: {
         type: "v4",
-        value: new THREE.Vector4(0.0, 1.0, 0.0, 0.2)
+        value: new THREE.Vector4(0.0, 0.5, .01, 0.2)
       },
       colorStop3: {
         type: "v4",
-        value: new THREE.Vector4(1.0, 1.0, 0.0, 0.21)
+        value: new THREE.Vector4(0.0, 1.0, 1.0, 0.21)
       },
       colorStop4: {
         type: "v4",
-        value: new THREE.Vector4(1.0, 0.0, 0.0, 0.4)
+        value: new THREE.Vector4(0.3, 0.0, 0.6, 0.4)
       },
       colorStop5: {
         type: "v4",
@@ -286,7 +303,7 @@ function setupEnvironment() {
 //==============================================================
 function setupInitialTexture() {
   // Build a texture and fill it with a pattern of pixels
-  let pixels = getCirclePixels(window.innerWidth, window.innerHeight/2, 100);
+  let pixels = getCirclePixels(containerSize.width/2, containerSize.height/2, 100);
   let texture = new THREE.DataTexture(pixels, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
   texture.needsUpdate = true;
 
@@ -352,6 +369,7 @@ function setupInitialTexture() {
 //==============================================================
 window.addEventListener('keyup', function(e) {
   if(e.key == ' ') {
+    e.preventDefault();
     isPaused = !isPaused;
 
     if(!isPaused) {
@@ -364,41 +382,43 @@ window.addEventListener('keyup', function(e) {
 //  MIDI CONTROL
 //==============================================================
 WebMIDI.enable((error) => {
-  let input = WebMIDI.getInputByName('Akai LPD8 Wireless');
+  let lpd8 = WebMIDI.getInputByName('Akai LPD8 Wireless');
 
-  input.addListener('noteon', 'all', (e) => {
-    switch(e.note.number) {
-      // Top row = 40-43
-      case 40:
-        setupInitialTexture();
-        break;
+  if(lpd8) {
+    lpd8.addListener('noteon', 'all', (e) => {
+      switch(e.note.number) {
+        // Top row = 40-43
+        case 40:
+          setupInitialTexture();
+          break;
 
-      // Bottom row = 36-39
-    }
-  });
+        // Bottom row = 36-39
+      }
+    });
 
-  input.addListener('controlchange', 'all', (e) => {
-    switch(e.controller.number) {
-      // Top row = 1-4 -------------------------------------------------------------------------------------------
-      case 1:
-        simulationUniforms.f.value = e.value.map(0, 127, parameterLimits.f.min, parameterLimits.f.max);
-        break;
+    lpd8.addListener('controlchange', 'all', (e) => {
+      switch(e.controller.number) {
+        // Top row = 1-4 -------------------------------------------------------------------------------------------
+        case 1:
+          simulationUniforms.f.value = e.value.map(0, 127, parameterLimits.f.initial - parameterLimits.f.range/2, parameterLimits.f.initial + parameterLimits.f.range/2);
+          break;
 
-      case 2:
-        simulationUniforms.k.value = e.value.map(0, 127, parameterLimits.k.min, parameterLimits.k.max);
-        break;
+        case 2:
+          simulationUniforms.k.value = e.value.map(0, 127, parameterLimits.k.initial - parameterLimits.k.range/2, parameterLimits.k.initial + parameterLimits.k.range/2);
+          break;
 
-      case 3:
-        simulationUniforms.dA.value = e.value.map(0, 127, parameterLimits.dA.min, parameterLimits.dA.max);
-        break;
+        case 3:
+          simulationUniforms.dA.value = e.value.map(0, 127, parameterLimits.dA.initial - parameterLimits.dA.range/2, parameterLimits.dA.initial + parameterLimits.dA.range/2);
+          break;
 
-      case 4:
-        simulationUniforms.dB.value = e.value.map(0, 127, parameterLimits.dB.min, parameterLimits.dB.max);
-        break;
+        case 4:
+          simulationUniforms.dB.value = e.value.map(0, 127, parameterLimits.dB.initial - parameterLimits.dB.range/2, parameterLimits.dB.initial + parameterLimits.dB.range/2);
+          break;
 
-      // Bottom row = 5-8 ----------------------------------------------------------------------------------------
-    }
-  });
+        // Bottom row = 5-8 ----------------------------------------------------------------------------------------
+      }
+    });
+  }
 });
 
 // https://gist.github.com/xposedbones/75ebaef3c10060a3ee3b246166caab56
