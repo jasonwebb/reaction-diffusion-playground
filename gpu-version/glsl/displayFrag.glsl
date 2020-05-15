@@ -44,11 +44,11 @@ void main() {
 
   // Rainbow effect by Jonathon Cole ==============================================================
   // - https://github.com/colejd/Reaction-Diffusion-ThreeJS based on http://krazydad.com/tutorials/makecolors.php
-  float c = A - B;
-  outputColor = vec4(c, c, c, 1.0);
-  vec4 rainbow = rainbow(v_uv.xy + time*.5);
-  float gBranch = when_gt(B, 0.01);
-  outputColor = mix(outputColor, outputColor - rainbow, gBranch);
+  // float c = A - B;
+  // outputColor = vec4(c, c, c, 1.0);
+  // vec4 rainbow = rainbow(v_uv.xy + time*.5);
+  // float gBranch = when_gt(B, 0.01);
+  // outputColor = mix(outputColor, outputColor - rainbow, gBranch);
 
   // Gradient color stops by @pmneila =============================================================
   // - https://github.com/pmneila/jsexp
@@ -94,6 +94,22 @@ void main() {
   //   10000.0 * abs(pixel.y - previousPixel.y),
   //   1.0
   // );
+
+  // Red Blob variant #1 - turquoise background, yellow-orange fire-like leading edges
+  // outputColor = vec4(
+  //   10000.0 * abs(pixel.y - previousPixel.y),
+  //   1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 0.5 * previousPixel.y,
+  //   0.9 * pixel.x - 2.0 * pixel.y,
+  //   1.0
+  // );
+
+  // Red Blob variant #2 - radioactive green on hot pink background
+  outputColor = vec4(
+    1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 50000.0 * previousPixel.y,
+    10000.0 * abs(pixel.y - previousPixel.y),
+    0.6 * pixel.x - .1 * pixel.y,
+    1.0
+  );
 
   // Black and white ==============================================================================
   // float grayValue = pixel.r - pixel.g;  // black for B, white for A
