@@ -48,6 +48,7 @@ const parameterLimits = {
 };
 
 let container;                                                 // the DOM element that ThreeJS loads into
+let bufferCanvas, bufferCanvasCtx;                             // invisible canvas used to draw initial image data
 let camera, scene, renderer, displayMesh;                      // ThreeJS basics needed to show stuff on the screen
 let simulationUniforms, displayUniforms, passthroughUniforms;  // uniforms are constants that get passed into shaders
 let simulationMaterial, displayMaterial, passthroughMaterial;  // materials associate uniforms to vert/frag shaders
@@ -290,21 +291,36 @@ function setupEnvironment() {
   container = document.getElementById('container');
   container.appendChild(renderer.domElement);
 
+  // Grab the invisible canvas context that we can draw initial image data into
+  bufferCanvas = document.querySelector('#buffer-canvas');
+  bufferCanvasCtx = bufferCanvas.getContext('2d');
+
   // Update the renderer dimensions whenever the browser is resized
   window.addEventListener('resize', resetTextureSizes, false);
+  resetTextureSizes();
 }
 
   function resetTextureSizes() {
+    // Resize the ThreeJS (WebGL) canvas
     renderer.setSize(containerSize.width, containerSize.height);
+
+    // TODO: resize render targets
+
+    // Resize the buffer canvas
+    bufferCanvas.width = containerSize.width;
+    bufferCanvas.height = containerSize.height;
   }
 
 //==============================================================
 //  INITIAL TEXTURE
 //==============================================================
 function setupInitialTexture() {
-  // Build a texture and fill it with a pattern of pixels
-  let pixels = getCirclePixels(containerSize.width/2, containerSize.height/2, 100);
-  let texture = new THREE.DataTexture(pixels, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
+  // Draw stuff to an invisible canvas, then generate initial data based on it's pixels
+  // let pixels = getRectanglePixels(containerSize.width/2, containerSize.height/2, 100, 100);
+  let initialData = getCirclePixels(containerSize.width/2, containerSize.height/2, 100);
+
+  // Put the buffer canvas pixel data into a texture format that ThreeJS understands
+  let texture = new THREE.DataTexture(initialData, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
   texture.needsUpdate = true;
 
   // Pass the DataTexture to the passthrough material
@@ -329,39 +345,45 @@ function setupInitialTexture() {
   renderer.render(scene, camera);
 }
 
-  // Add a circle of chemical B on top of a default pixel buffer
   function getCirclePixels(centerX, centerY, radius) {
-    let pixels = getDefaultPixels();
+    // Clear the invisible canvas
+    bufferCanvasCtx.fillStyle = '#fff';
+    bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
 
-    for(let x = -radius; x < radius; x++) {
-      for(let y = -radius; y < radius; y++) {
-        if(x*x + y*y < radius*radius) {
-          const index = ((centerX + x) + (centerY + y) * containerSize.width) * 4;
-          pixels[index + 1] = 0.4;  // B
-        }
-      }
-    }
+    // Draw the requested geometry to the invisible canvas
+    bufferCanvasCtx.fillStyle = '#000';
+    bufferCanvasCtx.beginPath();
+    bufferCanvasCtx.arc(centerX, centerY, radius, 0, Math.PI*2);
+    bufferCanvasCtx.fill();
 
-    return pixels;
+    return convertPixelsToTextureData();
   }
 
-  // Create a "blank slate" pixel buffer
-  function getDefaultPixels() {
-    let pixels = new Float32Array(containerSize.width * containerSize.height * 4);
-    let i = 0;
+  function getRectanglePixels(centerX, centerY, width, height) {
+    // Clear the invisible canvas
+    bufferCanvasCtx.fillStyle = '#fff';
+    bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
 
-    for(let col = 0; col < containerSize.width; col++) {
-      for(let row = 0; row < containerSize.height; row++) {
-        pixels[i]     = 0.9;  // A
-        pixels[i + 1] = 0.0;  // B
-        pixels[i + 2] = 0.0;
-        pixels[i + 3] = 0.0;  // alpha (unused)
+    // Draw the requested geometry to the invisible canvas
+    bufferCanvasCtx.fillStyle = '#000';
+    bufferCanvasCtx.fillRect(centerX - width/2, centerY - height/2, width, height);
 
-        i += 4;
-      }
+    return convertPixelsToTextureData();
+  }
+
+  // Create initial data based on the current content of the invisible canvas
+  function convertPixelsToTextureData() {
+    let pixels = bufferCanvasCtx.getImageData(0, 0, containerSize.width, containerSize.height).data;
+    let data = new Float32Array(pixels.length);
+
+    for(let i=0; i<data.length; i+=4) {
+      data[i] = 1.0;
+      data[i+1] = pixels[i+1] == 0 ? 0.5 : 0.0;
+      data[i+2] = 0.0;
+      data[i+3] = 0.0;
     }
 
-    return pixels;
+    return data;
   }
 
 //==============================================================
