@@ -52,39 +52,39 @@ void main() {
 
   // Gradient color stops by @pmneila =============================================================
   // - https://github.com/pmneila/jsexp
-  // vec3 color;
+  vec3 color;
 
-  // if(B <= colorStop1.a) {
-  //   color = colorStop1.rgb;
-  // } else if(B > colorStop1.a && B <= colorStop2.a) {
-  //   color = mix(
-  //     colorStop1.rgb,
-  //     colorStop2.rgb,
-  //     (B - colorStop1.a) / (colorStop2.a - colorStop1.a)
-  //   );
-  // } else if(B > colorStop2.a && B <= colorStop3.a) {
-  //   color = mix(
-  //     colorStop2.rgb,
-  //     colorStop3.rgb,
-  //     (B - colorStop2.a) / (colorStop3.a - colorStop2.a)
-  //   );
-  // } else if(B > colorStop3.a && B <= colorStop4.a) {
-  //   color = mix(
-  //     colorStop3.rgb,
-  //     colorStop4.rgb,
-  //     (B - colorStop3.a) / (colorStop4.a - colorStop3.a)
-  //   );
-  // } else if(B > colorStop4.a && B <= colorStop5.a) {
-  //   color = mix(
-  //     colorStop4.rgb,
-  //     colorStop5.rgb,
-  //     (B - colorStop4.a) / (colorStop5.a - colorStop4.a)
-  //   );
-  // } else if(B > colorStop5.a) {
-  //   color = colorStop5.rgb;
-  // }
+  if(B <= colorStop1.a) {
+    color = colorStop1.rgb;
+  } else if(B > colorStop1.a && B <= colorStop2.a) {
+    color = mix(
+      colorStop1.rgb,
+      colorStop2.rgb,
+      (B - colorStop1.a) / (colorStop2.a - colorStop1.a)
+    );
+  } else if(B > colorStop2.a && B <= colorStop3.a) {
+    color = mix(
+      colorStop2.rgb,
+      colorStop3.rgb,
+      (B - colorStop2.a) / (colorStop3.a - colorStop2.a)
+    );
+  } else if(B > colorStop3.a && B <= colorStop4.a) {
+    color = mix(
+      colorStop3.rgb,
+      colorStop4.rgb,
+      (B - colorStop3.a) / (colorStop4.a - colorStop3.a)
+    );
+  } else if(B > colorStop4.a && B <= colorStop5.a) {
+    color = mix(
+      colorStop4.rgb,
+      colorStop5.rgb,
+      (B - colorStop4.a) / (colorStop5.a - colorStop4.a)
+    );
+  } else if(B > colorStop5.a) {
+    color = colorStop5.rgb;
+  }
 
-  // outputColor = vec4(color.rgb, 1.0);
+  outputColor = vec4(color.rgb, 1.0);
 
   // Purple and yellow by Amit Patel (Red Blob Games) =============================================
   // - https://www.redblobgames.com/x/1905-reaction-diffusion/
@@ -104,12 +104,12 @@ void main() {
   // );
 
   // Red Blob variant #2 - radioactive green on hot pink background
-  outputColor = vec4(
-    1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 50000.0 * previousPixel.y,
-    10000.0 * abs(pixel.y - previousPixel.y),
-    0.6 * pixel.x - .1 * pixel.y,
-    1.0
-  );
+  // outputColor = vec4(
+  //   1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 50000.0 * previousPixel.y,
+  //   10000.0 * abs(pixel.y - previousPixel.y),
+  //   0.6 * pixel.x - .1 * pixel.y,
+  //   1.0
+  // );
 
   // Black and white ==============================================================================
   // float grayValue = pixel.r - pixel.g;  // black for B, white for A
