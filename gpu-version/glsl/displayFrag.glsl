@@ -117,7 +117,7 @@ void main() {
   // outputColor = vec4(grayValue, grayValue, grayValue, 1.0);
 
   // No processing - red for chemical A, green for chemical B =====================================
-  // outputColor = pixel;
+  outputColor = pixel;
 
   gl_FragColor = outputColor;
 }

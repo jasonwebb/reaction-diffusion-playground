@@ -12,6 +12,7 @@ const InitialTextureTypes = {
   CIRCLE: 0,
   SQUARE: 1,
   TEXT: 2,
+  IMAGE: 3,
 };
 
 const containerSize = {
@@ -54,7 +55,7 @@ const parameterLimits = {
 };
 
 let container;                                                 // the DOM element that ThreeJS loads into
-let bufferCanvas, bufferCanvasCtx;                             // invisible canvas used to draw initial image data
+let bufferCanvas, bufferCanvasCtx, bufferImage;                // invisible canvas and <img> element used to draw initial texture data
 let camera, scene, renderer, displayMesh;                      // ThreeJS basics needed to show stuff on the screen
 let simulationUniforms, displayUniforms, passthroughUniforms;  // uniforms are constants that get passed into shaders
 let simulationMaterial, displayMaterial, passthroughMaterial;  // materials associate uniforms to vert/frag shaders
@@ -301,6 +302,8 @@ function setupEnvironment() {
   bufferCanvas = document.querySelector('#buffer-canvas');
   bufferCanvasCtx = bufferCanvas.getContext('2d');
 
+  bufferImage = document.querySelector('#buffer-image');
+
   // Update the renderer dimensions whenever the browser is resized
   window.addEventListener('resize', resetTextureSizes, false);
   resetTextureSizes();
@@ -320,49 +323,64 @@ function setupEnvironment() {
 //==============================================================
 //  INITIAL TEXTURE
 //==============================================================
-function setupInitialTexture(type = InitialTextureTypes.CIRCLE) {
-  // Build a texture and fill it with a pattern of pixels
+function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
+  // Build initial simulation texture data and pass it on to the render targets
   let initialData;
 
   switch(type) {
     case InitialTextureTypes.CIRCLE:
       initialData = getCirclePixels(containerSize.width/2, containerSize.height/2, 100);
+      renderInitialDataToRenderTargets(initialData);
       break;
 
     case InitialTextureTypes.SQUARE:
       initialData = getRectanglePixels(containerSize.width/2, containerSize.height/2, 200, 200);
+      renderInitialDataToRenderTargets(initialData);
       break;
 
     case InitialTextureTypes.TEXT:
       initialData = getTextPixels('REACTION', containerSize.width/2, containerSize.height/2);
+      renderInitialDataToRenderTargets(initialData);
+      break;
+
+    case InitialTextureTypes.IMAGE:
+      getImagePixels('./seed-images/test.png', containerSize.width/2, containerSize.height/2)
+        .then((initialData) => {
+          renderInitialDataToRenderTargets(initialData);
+        })
+        .catch(error => console.error(error));
+
       break;
   }
+}
 
-  let texture = new THREE.DataTexture(initialData, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
-  texture.flipY = true;
-  texture.needsUpdate = true;
+  function renderInitialDataToRenderTargets(initialData) {
+    // Put the initial data into a texture format that ThreeJS can pass into the render targets
+    let texture = new THREE.DataTexture(initialData, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
+    texture.flipY = true;  // DataTexture coordinates are vertically inverted compared to canvas coordinates
+    texture.needsUpdate = true;
 
-  // Pass the DataTexture to the passthrough material
-  passthroughUniforms.textureToDisplay.value = texture;
+    // Pass the DataTexture to the passthrough material
+    passthroughUniforms.textureToDisplay.value = texture;
 
-  // Activate the passthrough material
-  displayMesh.material = passthroughMaterial;
+    // Activate the passthrough material
+    displayMesh.material = passthroughMaterial;
 
-  // Render the DataTexture into both of the render targets
-  for(let i=0; i<2; i++) {
-    renderer.setRenderTarget(renderTargets[i]);
+    // Render the DataTexture into both of the render targets
+    for(let i=0; i<2; i++) {
+      renderer.setRenderTarget(renderTargets[i]);
+      renderer.render(scene, camera);
+    }
+
+    // Switch back to the display material and pass along the initial rendered texture
+    displayUniforms.textureToDisplay.value = renderTargets[0].texture;
+    displayUniforms.previousIterationTexture.value = renderTargets[0].texture;
+    displayMesh.material = displayMaterial;
+
+    // Set the render target back to the default display buffer and render the first frame
+    renderer.setRenderTarget(null);
     renderer.render(scene, camera);
   }
-
-  // Switch back to the display material and pass along the initial rendered texture
-  displayUniforms.textureToDisplay.value = renderTargets[0].texture;
-  displayUniforms.previousIterationTexture.value = renderTargets[0].texture;
-  displayMesh.material = displayMaterial;
-
-  // Set the render target back to the default display buffer and render the first frame
-  renderer.setRenderTarget(null);
-  renderer.render(scene, camera);
-}
 
   function getCirclePixels(centerX, centerY, radius) {
     // Clear the invisible canvas
@@ -370,9 +388,9 @@ function setupInitialTexture(type = InitialTextureTypes.CIRCLE) {
     bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
 
     // Draw the requested geometry to the invisible canvas
-    bufferCanvasCtx.fillStyle = '#000';
     bufferCanvasCtx.beginPath();
     bufferCanvasCtx.arc(centerX, centerY, radius, 0, Math.PI*2);
+    bufferCanvasCtx.fillStyle = '#000';
     bufferCanvasCtx.fill();
 
     return convertPixelsToTextureData();
@@ -401,6 +419,18 @@ function setupInitialTexture(type = InitialTextureTypes.CIRCLE) {
     bufferCanvasCtx.fillText(text, centerX, centerY);
 
     return convertPixelsToTextureData();
+  }
+
+  function getImagePixels(path, centerX, centerY) {
+    // Create an asynchronous Promise that can be used to wait for the image to load
+    return new Promise((resolve, reject) => {
+      bufferImage.src = path;
+
+      bufferImage.addEventListener('load', () => {
+        bufferCanvasCtx.drawImage(bufferImage, centerX - bufferImage.width/2, centerY - bufferImage.height/2);
+        resolve(convertPixelsToTextureData());
+      });
+    });
   }
 
   // Create initial data based on the current content of the invisible canvas
