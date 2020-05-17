@@ -324,27 +324,40 @@ function setupEnvironment() {
 //  INITIAL TEXTURE
 //==============================================================
 function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
+  // Clear the invisible canvas
+  bufferCanvasCtx.fillStyle = '#fff';
+  bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
+
   // Build initial simulation texture data and pass it on to the render targets
-  let initialData;
+  const centerX = containerSize.width/2,
+        centerY = containerSize.height/2;
 
   switch(type) {
     case InitialTextureTypes.CIRCLE:
-      initialData = getCirclePixels(containerSize.width/2, containerSize.height/2, 100);
-      renderInitialDataToRenderTargets(initialData);
+      bufferCanvasCtx.beginPath();
+      bufferCanvasCtx.arc(centerX, centerY, 100, 0, Math.PI*2);
+      bufferCanvasCtx.fillStyle = '#000';
+      bufferCanvasCtx.fill();
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
     case InitialTextureTypes.SQUARE:
-      initialData = getRectanglePixels(containerSize.width/2, containerSize.height/2, 200, 200);
-      renderInitialDataToRenderTargets(initialData);
+      bufferCanvasCtx.fillStyle = '#000';
+      bufferCanvasCtx.fillRect(centerX - 50, centerY - 50, 100, 100);
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
     case InitialTextureTypes.TEXT:
-      initialData = getTextPixels('REACTION', containerSize.width/2, containerSize.height/2);
-      renderInitialDataToRenderTargets(initialData);
+      bufferCanvasCtx.fillStyle = '#000';
+      bufferCanvasCtx.font = '900 120px Arial';
+      bufferCanvasCtx.textAlign = 'center';
+      bufferCanvasCtx.fillText('REACTION', centerX - 18, centerY - 50);
+      bufferCanvasCtx.fillText('DIFFUSION', centerX, centerY + 50);
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
     case InitialTextureTypes.IMAGE:
-      getImagePixels('./seed-images/test.png', containerSize.width/2, containerSize.height/2)
+      getImagePixels('./seed-images/test.png', centerX, centerY)
         .then((initialData) => {
           renderInitialDataToRenderTargets(initialData);
         })
@@ -380,45 +393,6 @@ function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
     // Set the render target back to the default display buffer and render the first frame
     renderer.setRenderTarget(null);
     renderer.render(scene, camera);
-  }
-
-  function getCirclePixels(centerX, centerY, radius) {
-    // Clear the invisible canvas
-    bufferCanvasCtx.fillStyle = '#fff';
-    bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
-
-    // Draw the requested geometry to the invisible canvas
-    bufferCanvasCtx.beginPath();
-    bufferCanvasCtx.arc(centerX, centerY, radius, 0, Math.PI*2);
-    bufferCanvasCtx.fillStyle = '#000';
-    bufferCanvasCtx.fill();
-
-    return convertPixelsToTextureData();
-  }
-
-  function getRectanglePixels(centerX, centerY, width, height) {
-    // Clear the invisible canvas
-    bufferCanvasCtx.fillStyle = '#fff';
-    bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
-
-    // Draw the requested geometry to the invisible canvas
-    bufferCanvasCtx.fillStyle = '#000';
-    bufferCanvasCtx.fillRect(centerX - width/2, centerY - height/2, width, height);
-
-    return convertPixelsToTextureData();
-  }
-
-  function getTextPixels(text, centerX, centerY) {
-    // Clear the invisible canvas
-    bufferCanvasCtx.fillStyle = '#fff';
-    bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
-
-    bufferCanvasCtx.fillStyle = '#000';
-    bufferCanvasCtx.font = '900 120px Arial';
-    bufferCanvasCtx.textAlign = 'center';
-    bufferCanvasCtx.fillText(text, centerX, centerY);
-
-    return convertPixelsToTextureData();
   }
 
   function getImagePixels(path, centerX, centerY) {
