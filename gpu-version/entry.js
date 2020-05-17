@@ -313,7 +313,8 @@ function setupEnvironment() {
     // Resize the ThreeJS (WebGL) canvas
     renderer.setSize(containerSize.width, containerSize.height);
 
-    // TODO: resize render targets
+    // Resize render targets
+    setupRenderTargets();
 
     // Resize the buffer canvas
     bufferCanvas.width = containerSize.width;
