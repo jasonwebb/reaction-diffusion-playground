@@ -69,9 +69,9 @@ void main() {
   float reactionTerm = A * B * B;
 
   gl_FragColor = clamp(vec4(
-    A + (dA * laplacian[0] - reactionTerm + f * (1.0 - A)),
-    B + (dB * laplacian[1] + reactionTerm - (k + f) * B),
+    A + ((dA * laplacian[0] - reactionTerm + f * (1.0 - A)) * timestep),
+    B + ((dB * laplacian[1] + reactionTerm - (k + f) * B) * timestep),
     centerTexel.b,
     1.0
-  ), 0.0, 1.0) ;
+  ), 0.0, 1.0);
 }
