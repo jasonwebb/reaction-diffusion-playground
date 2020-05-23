@@ -76,8 +76,12 @@ setupRenderTargets();
 setupInitialTexture();
 render();
 
+
 //==============================================================
 //  RENDER
+//  - Main program loop called by requestAnimationFrame()
+//  - Runs the simulation multiple times per frame, then
+//    renders the result to the screen once a frame.
 //==============================================================
 function render() {
   if(!isPaused) {
@@ -114,8 +118,11 @@ function render() {
   }
 }
 
+
 //==============================================================
 //  UNIFORMS
+//  - Uniforms are custom variables that get passed to the
+//    shaders. They get set on the CPU, then used on the GPU.
 //==============================================================
 function setupUniforms() {
   setupSimulationUniforms();
@@ -204,8 +211,12 @@ function setupUniforms() {
     };
   }
 
+
 //==============================================================
 //  MATERIALS
+//  - Materials are data structures that associate uniforms,
+//    vert shaders, and frag shaders along with some render-
+//    related configuration options.
 //==============================================================
 function setupMaterials() {
   /**
@@ -249,8 +260,14 @@ function setupMaterials() {
   passthroughMaterial.blending = THREE.NoBlending;
 }
 
+
 //==============================================================
 //  RENDER TARGETS
+//  - Render targets are invisible buffers that we can send
+//    data to in the form of textures.
+//  - In render(), the simulation shaders store computation
+//    results as textures and pass these results between two
+//    render targets to run multiple iterations per frame.
 //==============================================================
 function setupRenderTargets() {
   renderTargets = [];
@@ -266,16 +283,21 @@ function setupRenderTargets() {
       wrapT: THREE.RepeatWrapping
     });
 
-    // Enable texture wrapping
-    // - Referencing a texture coordinate that is out-of-bounds will automatically make it wrap!
-    nextRenderTarget.texture.name = `render texture ${i}`;
-
     renderTargets.push(nextRenderTarget);
   }
 }
 
+
 //==============================================================
 //  ENVIRONMENT (scene, camera, display mesh, etc)
+//  - ThreeJS needs a few fundamental elements in order to
+//    display something on the screen: a camera, a renderer,
+//    and a scene containing one or more meshes.
+//  - In this sketch, we're creating a flat plane and orienting
+//    it perpendicular to the camera, taking up the entire
+//    viewing area (the screen). The reaction-diffusion output
+//    is rendered to this mesh as a texture, making it look
+//    perfectly 2D.
 //==============================================================
 function setupEnvironment() {
   // Set up the camera and scene
@@ -302,6 +324,7 @@ function setupEnvironment() {
   bufferCanvas = document.querySelector('#buffer-canvas');
   bufferCanvasCtx = bufferCanvas.getContext('2d');
 
+  // Grab the invisible <img> tag that we can use to draw images from the file system, then copy into the buffer canvas
   bufferImage = document.querySelector('#buffer-image');
 
   // Update the renderer dimensions whenever the browser is resized
@@ -321,8 +344,11 @@ function setupEnvironment() {
     bufferCanvas.height = containerSize.height;
   }
 
+
 //==============================================================
 //  INITIAL TEXTURE
+//  - To start (or reset) the simulation, we need to "seed"
+//    the very first frame with some pattern of data.
 //==============================================================
 function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
   // Clear the invisible canvas
@@ -363,7 +389,6 @@ function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
           renderInitialDataToRenderTargets(initialData);
         })
         .catch(error => console.error(error));
-
       break;
   }
 }
@@ -423,6 +448,7 @@ function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
     return data;
   }
 
+
 //==============================================================
 //  KEYBOARD CONTROLS
 //==============================================================
@@ -436,6 +462,7 @@ window.addEventListener('keyup', function(e) {
     }
   }
 });
+
 
 //==============================================================
 //  MIDI CONTROL
@@ -459,6 +486,10 @@ WebMIDI.enable((error) => {
           setupInitialTexture(InitialTextureTypes.TEXT);
           break;
 
+        case 43:
+          setupInitialTexture(InitialTextureTypes.IMAGE);
+          break;
+
         // Bottom row = 36-39 ----------------
         case 36:
           isPaused = !isPaused;
@@ -466,6 +497,7 @@ WebMIDI.enable((error) => {
           if(!isPaused) {
             render();
           }
+
           break;
       }
     });
@@ -474,19 +506,39 @@ WebMIDI.enable((error) => {
       switch(e.controller.number) {
         // Top row = 1-4 -------------------------------------------------------------------------------------------
         case 1:
-          simulationUniforms.f.value = e.value.map(0, 127, parameterLimits.f.initial - parameterLimits.f.range/2, parameterLimits.f.initial + parameterLimits.f.range/2);
+          simulationUniforms.f.value = e.value.map(
+            0,
+            127,
+            parameterLimits.f.initial - parameterLimits.f.range/2,
+            parameterLimits.f.initial + parameterLimits.f.range/2
+          );
           break;
 
         case 2:
-          simulationUniforms.k.value = e.value.map(0, 127, parameterLimits.k.initial - parameterLimits.k.range/2, parameterLimits.k.initial + parameterLimits.k.range/2);
+          simulationUniforms.k.value = e.value.map(
+            0,
+            127,
+            parameterLimits.k.initial - parameterLimits.k.range/2,
+            parameterLimits.k.initial + parameterLimits.k.range/2
+          );
           break;
 
         case 3:
-          simulationUniforms.dA.value = e.value.map(0, 127, parameterLimits.dA.initial - parameterLimits.dA.range/2, parameterLimits.dA.initial + parameterLimits.dA.range/2);
+          simulationUniforms.dA.value = e.value.map(
+            0,
+            127,
+            parameterLimits.dA.initial - parameterLimits.dA.range/2,
+            parameterLimits.dA.initial + parameterLimits.dA.range/2
+          );
           break;
 
         case 4:
-          simulationUniforms.dB.value = e.value.map(0, 127, parameterLimits.dB.initial - parameterLimits.dB.range/2, parameterLimits.dB.initial + parameterLimits.dB.range/2);
+          simulationUniforms.dB.value = e.value.map(
+            0,
+            127,
+            parameterLimits.dB.initial - parameterLimits.dB.range/2,
+            parameterLimits.dB.initial + parameterLimits.dB.range/2
+          );
           break;
 
         // Bottom row = 5-8 ----------------------------------------------------------------------------------------
