@@ -23,6 +23,7 @@
     "path": "^0.12.7",
     "stats.js": "^0.17.0",
     "three": "^0.115.0",
+    "tweakpane": "^1.3.3",
     "webmidi": "^2.5.1",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11",
