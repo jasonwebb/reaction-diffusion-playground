@@ -4,7 +4,7 @@ import Tweakpane from 'tweakpane';
 import parameterValues from './parameterValues';
 import parameterMetadata from './parameterMetadata';
 
-import { simulationUniforms } from './uniforms';
+import { simulationUniforms, displayUniforms } from './uniforms';
 
 export function setupUI() {
   global.pane = new Tweakpane({ title: 'Parameters' });
