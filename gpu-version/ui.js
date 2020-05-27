@@ -6,6 +6,8 @@ import parameterMetadata from './parameterMetadata';
 
 import { simulationUniforms, displayUniforms } from './uniforms';
 
+import { drawFirstFrame } from './firstFrame';
+
 export function setupUI() {
   global.pane = new Tweakpane({ title: 'Parameters' });
 
@@ -91,7 +93,7 @@ function setupSeedFolder() {
   seedFolder.addButton({
     title: 'Restart'
   }).on('click', () => {
-    setupInitialTexture();
+    drawFirstFrame();
   });
 }
 

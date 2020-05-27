@@ -19,7 +19,7 @@ export const InitialTextureTypes = {
   IMAGE: 3,
 };
 
-export function setupInitialTexture(type = InitialTextureTypes.IMAGE) {
+export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
   // Grab the invisible canvas context that we can draw initial image data into
   global.bufferCanvas = document.querySelector('#buffer-canvas');
   bufferCanvasCtx = bufferCanvas.getContext('2d');

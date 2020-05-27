@@ -3,7 +3,7 @@ import Stats from 'stats.js';
 
 import { containerSize } from './globals';
 
-import { setupInitialTexture } from './initialTexture';
+import { drawFirstFrame } from './firstFrame';
 import { setupRenderTargets } from './renderTargets';
 import { setupUI } from './ui';
 import { setupMIDI } from './midi';
@@ -64,7 +64,7 @@ function setupEnvironment() {
   resetTextureSizes();
 
   // Set up and render the first frame
-  setupInitialTexture();
+  drawFirstFrame();
 }
 
   function resetTextureSizes() {

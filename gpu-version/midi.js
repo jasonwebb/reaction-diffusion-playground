@@ -4,6 +4,7 @@
 
 import WebMIDI from 'webmidi';
 import parameterMetadata from './parameterMetadata';
+import { InitialTextureTypes, drawFirstFrame } from './firstFrame';
 
 export function setupMIDI() {
   WebMIDI.enable((error) => {
@@ -19,19 +20,19 @@ export function setupMIDI() {
         switch(e.note.number) {
           // Top row = 40-43 -------------------
           case 40:
-            setupInitialTexture(InitialTextureTypes.CIRCLE);
+            drawFirstFrame(InitialTextureTypes.CIRCLE);
             break;
 
           case 41:
-            setupInitialTexture(InitialTextureTypes.SQUARE);
+            drawFirstFrame(InitialTextureTypes.SQUARE);
             break;
 
           case 42:
-            setupInitialTexture(InitialTextureTypes.TEXT);
+            drawFirstFrame(InitialTextureTypes.TEXT);
             break;
 
           case 43:
-            setupInitialTexture(InitialTextureTypes.IMAGE);
+            drawFirstFrame(InitialTextureTypes.IMAGE);
             break;
 
           // Bottom row = 36-39 ----------------
