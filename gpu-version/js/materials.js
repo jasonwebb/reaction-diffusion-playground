@@ -7,12 +7,12 @@
 
 import * as THREE from 'three';
 
-import simulationFragShader from './glsl/simulationFrag.glsl';
-import simulationVertShader from './glsl/simulationVert.glsl';
-import displayFragShader from './glsl/displayFrag.glsl';
-import displayVertShader from './glsl/displayVert.glsl';
-import passthroughVertShader from './glsl/passthroughVert.glsl';
-import passthroughFragShader from './glsl/passthroughFrag.glsl';
+import simulationFragShader from '../glsl/simulationFrag.glsl';
+import simulationVertShader from '../glsl/simulationVert.glsl';
+import displayFragShader from '../glsl/displayFrag.glsl';
+import displayVertShader from '../glsl/displayVert.glsl';
+import passthroughVertShader from '../glsl/passthroughVert.glsl';
+import passthroughFragShader from '../glsl/passthroughFrag.glsl';
 
 import { simulationUniforms, displayUniforms, passthroughUniforms } from './uniforms';
 
