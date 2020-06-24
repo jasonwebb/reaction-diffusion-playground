@@ -6,7 +6,6 @@
 
 import * as THREE from 'three';
 import parameterValues from './parameterValues';
-import parameterMetadata from './parameterMetadata';
 import { containerSize } from './globals';
 
 export let simulationUniforms = {
@@ -51,6 +50,10 @@ export let displayUniforms = {
   },
   time: {
     type: "f",
+    value: 0
+  },
+  renderingStyle: {
+    type: "i",
     value: 0
   },
 
