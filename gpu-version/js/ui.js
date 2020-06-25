@@ -8,6 +8,8 @@ import { simulationUniforms, displayUniforms } from './uniforms';
 
 import { drawFirstFrame } from './firstFrame';
 
+let currentSeedType = 0;
+
 export function setupUI() {
   global.pane = new Tweakpane({ title: 'Parameters' });
 
@@ -84,16 +86,20 @@ function setupSeedFolder() {
   seedFolder.addInput(parameterValues.seed, 'type', {
     label: 'Type',
     options: {
-      Circle: 'Circle',
-      Square: 'Square',
-      Image: 'Image',
+      Circle: 0,
+      Square: 1,
+      Image: 2,
     }
+  }).on('change', (value) => {
+    currentSeedType = parseInt(value);
+    pane.dispose();
+    setupUI();
   });
 
   seedFolder.addButton({
     title: 'Restart with this pattern'
   }).on('click', () => {
-    drawFirstFrame();
+    drawFirstFrame(currentSeedType);
   });
 }
 
