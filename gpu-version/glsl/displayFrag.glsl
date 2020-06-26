@@ -51,25 +51,25 @@ void main() {
 
     if(B <= colorStop1.a) {
       color = colorStop1.rgb;
-    } else if(B > colorStop1.a && B <= colorStop2.a) {
+    } else if(B <= colorStop2.a) {
       color = mix(
         colorStop1.rgb,
         colorStop2.rgb,
         (B - colorStop1.a) / (colorStop2.a - colorStop1.a)
       );
-    } else if(B > colorStop2.a && B <= colorStop3.a) {
+    } else if(B <= colorStop3.a) {
       color = mix(
         colorStop2.rgb,
         colorStop3.rgb,
         (B - colorStop2.a) / (colorStop3.a - colorStop2.a)
       );
-    } else if(B > colorStop3.a && B <= colorStop4.a) {
+    } else if(B <= colorStop4.a) {
       color = mix(
         colorStop3.rgb,
         colorStop4.rgb,
         (B - colorStop3.a) / (colorStop4.a - colorStop3.a)
       );
-    } else if(B > colorStop4.a && B <= colorStop5.a) {
+    } else if(B <= colorStop5.a) {
       color = mix(
         colorStop4.rgb,
         colorStop5.rgb,
