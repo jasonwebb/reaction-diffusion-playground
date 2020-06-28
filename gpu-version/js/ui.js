@@ -6,16 +6,21 @@ import parameterMetadata from './parameterMetadata';
 
 import { simulationUniforms, displayUniforms } from './uniforms';
 
-import { drawFirstFrame } from './firstFrame';
+import { InitialTextureTypes, drawFirstFrame } from './firstFrame';
+import { containerSize } from './globals';
+import { resetTextureSizes } from '../entry';
+import { setupRenderTargets } from './renderTargets';
 
-let currentSeedType = 0;
+let pane;
+let currentSeedType = InitialTextureTypes.CIRCLE;
 
 export function setupUI() {
-  global.pane = new Tweakpane({ title: 'Parameters' });
+  pane = new Tweakpane({ title: 'Parameters' });
 
   setupReactionDiffusionParameters();
   setupSeedFolder();
   setupRenderingFolder();
+  setupCanvasSize();
   setupActions();
 }
 
@@ -86,9 +91,10 @@ function setupSeedFolder() {
   seedFolder.addInput(parameterValues.seed, 'type', {
     label: 'Type',
     options: {
-      Circle: 0,
-      Square: 1,
-      Image: 2,
+      Circle: InitialTextureTypes.CIRCLE,
+      Square: InitialTextureTypes.SQUARE,
+      Text: InitialTextureTypes.TEXT,
+      Image: InitialTextureTypes.IMAGE,
     }
   }).on('change', (value) => {
     currentSeedType = parseInt(value);
@@ -219,7 +225,7 @@ function setupRenderingFolder() {
           displayUniforms.colorStop3.value = parameterValues.lastColorStop3;
         } else {
           parameterValues.lastColorStop3 = displayUniforms.colorStop3.value;
-          displayUniforms.colorStop3 = undefined;
+          displayUniforms.colorStop3 = new THREE.Vector4(-1, -1, -1, -1);
         }
       });
 
@@ -268,27 +274,98 @@ function setupRenderingFolder() {
 
 
 //==============================================================
+//  CANVAS SIZE
+//==============================================================
+function setupCanvasSize() {
+  const canvasSizeFolder = pane.addFolder({ title: 'Canvas size' });
+
+  if(!containerSize.isMaximized) {
+    // Width slider ---------------------------------------------------
+    canvasSizeFolder.addInput(containerSize, 'width', {
+      label: 'Width',
+      min: 1,
+      max: window.innerWidth,
+      step: 1
+    })
+      .on('change', (value) => {
+        containerSize.width = parseInt(value);
+        canvas.style.width = containerSize.width + 'px';
+
+        renderer.setSize(containerSize.width, containerSize.height, false);
+        camera.aspect = containerSize.width / containerSize.height;
+        camera.updateProjectionMatrix();
+        setupRenderTargets();
+        resetTextureSizes();
+        drawFirstFrame(currentSeedType);
+      });
+
+    // Height slider ----------------------------------------------------
+    canvasSizeFolder.addInput(containerSize, 'height', {
+      label: 'Height',
+      min: 1,
+      max: window.innerHeight,
+      step: 1
+    })
+      .on('change', (value) => {
+        containerSize.height = parseInt(value);
+        canvas.style.height = containerSize.height + 'px';
+
+        renderer.setSize(containerSize.width, containerSize.height, false);
+        camera.aspect = containerSize.width / containerSize.height;
+        camera.updateProjectionMatrix();
+        setupRenderTargets();
+        resetTextureSizes();
+        drawFirstFrame(currentSeedType);
+      });
+  }
+
+  canvasSizeFolder.addInput(containerSize, 'isMaximized', { label: 'Maximize' })
+    .on('change', (checked) => {
+      if(checked) {
+        containerSize._lastWidth = containerSize.width;
+        containerSize._lastHeight = containerSize.height;
+
+        containerSize.width = window.innerWidth;
+        containerSize.height = window.innerHeight;
+      } else {
+        containerSize.width = containerSize._lastWidth;
+        containerSize.height = containerSize._lastHeight;
+      }
+
+      canvas.style.width = containerSize.width + 'px';
+      canvas.style.height = containerSize.height + 'px';
+
+      renderer.setSize(containerSize.width, containerSize.height, false);
+      camera.aspect = containerSize.width / containerSize.height;
+      camera.updateProjectionMatrix();
+      setupRenderTargets();
+      resetTextureSizes();
+      drawFirstFrame(currentSeedType);
+
+      pane.dispose();
+      setupUI();
+    });
+}
+
+
+//==============================================================
 //  ACTIONS
 //==============================================================
 function setupActions() {
   const actionsFolder = pane.addFolder({ title: 'Actions' });
 
-  actionsFolder.addSeparator();
-
   actionsFolder.addButton({
-    title: 'Pause/play'
+    title: '⏸️ Pause/play'
   }).on('click', () => {
     isPaused = !isPaused;
   });
 
   actionsFolder.addButton({
-    title: 'Save as image'
+    title: '💾 Save as image'
   }).on('click', () => {
     let link = document.createElement('a');
     link.download = 'reaction-diffusion.png';
     link.href = renderer.domElement.toDataURL();
     link.click();
   });
-
-  actionsFolder.addSeparator();
 }

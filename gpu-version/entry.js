@@ -8,7 +8,6 @@ import { setupRenderTargets } from './js/renderTargets';
 import { setupUI } from './js/ui';
 import { setupMIDI } from './js/midi';
 import { setupKeyboard } from './js/keyboard';
-import { setupCanvasResize } from './js/canvasResize';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
@@ -27,7 +26,6 @@ setupEnvironment();
 setupUI();
 setupKeyboard();
 setupMIDI();
-setupCanvasResize();
 update();
 
 //==============================================================
@@ -72,11 +70,14 @@ function setupEnvironment() {
 }
 
   export function resetTextureSizes() {
-    // Resize the ThreeJS (WebGL) canvas
-    renderer.setSize(containerSize.width, containerSize.height);
+    containerSize.width = canvas.clientWidth;
+    containerSize.height = canvas.clientHeight;
 
     // Resize render targets
     setupRenderTargets();
+
+    // Reset the resolution in the simulation code to match new container size
+    simulationUniforms.resolution.value = new THREE.Vector2(containerSize.width, containerSize.height);
 
     // Resize the buffer canvas
     global.bufferCanvas = document.querySelector('#buffer-canvas');
