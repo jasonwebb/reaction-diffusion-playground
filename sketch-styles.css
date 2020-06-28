@@ -5,6 +5,10 @@
   border: 0;
 }
 
+body {
+  background: radial-gradient(circle, rgb(10,10,10) 20%, rgb(20,20,20) 100%);
+}
+
 canvas {
   display: block;
 }
