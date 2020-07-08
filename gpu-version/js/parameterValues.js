@@ -26,17 +26,17 @@ export default {
   renderingStyle: '',
 
   gradientColors: {
-    color1RGB: {r:255, g:0, b:0},
-    color2RGB: {r:255, g:255, b:0},
-    color3RGB: {r:255, g:0, b:255},
-    color4RGB: {r:100, g:50, b:0},
-    color5RGB: {r:255, g:50, b:100},
+    color1RGB: {r:0, g:0, b:0},
+    color2RGB: {r:0, g:255, b:0},
+    color3RGB: {r:255, g:255, b:0},
+    color4RGB: {r:255, g:0, b:0},
+    color5RGB: {r:255, g:255, b:255},
 
-    color1Stop: .1,
-    color2Stop: .15,
-    color3Stop: .25,
+    color1Stop: 0,
+    color2Stop: .2,
+    color3Stop: .21,
     color4Stop: .4,
-    color5Stop: .5,
+    color5Stop: .6,
 
     color1Enabled: true,
     color2Enabled: true,
