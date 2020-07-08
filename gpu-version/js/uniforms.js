@@ -17,6 +17,10 @@ export let simulationUniforms = {
     type: "v2",
     value: new THREE.Vector2(containerSize.width, containerSize.height)
   },
+  mousePosition: {
+    type: "v2",
+    value: new THREE.Vector2(-1,-1)
+  },
 
   // Reaction-diffusion equation parameters
   f: {   // feed rate

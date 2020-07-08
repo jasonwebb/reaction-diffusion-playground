@@ -11,6 +11,8 @@ uniform float k;
 uniform float dA;
 uniform float dB;
 uniform float timestep;
+uniform vec2 mousePosition;
+uniform vec2 resolution;
 
 varying vec2 v_uvs[9];
 
@@ -63,6 +65,16 @@ void main() {
   vec4 centerTexel = texture2D(previousIterationTexture, v_uvs[0]);
   float A = centerTexel[0];
   float B = centerTexel[1];
+
+  // Draw more of the B chemical around the mouse on mouse down
+  if(mousePosition.x > 0.0 && mousePosition.y > 0.0) {
+    float distToMouse = distance(mousePosition * resolution, v_uvs[0] * resolution);
+
+    if(distToMouse < 10.0) {
+      gl_FragColor = vec4(0.0, 0.9, 0.0, 1.0);
+      return;
+    }
+  }
 
   // Pre-calculate complex and repeated terms
   vec2 laplacian = getLaplacian(centerTexel);

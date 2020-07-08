@@ -8,6 +8,7 @@ import { setupRenderTargets } from './js/renderTargets';
 import { setupUI } from './js/ui';
 import { setupMIDI } from './js/midi';
 import { setupKeyboard } from './js/keyboard';
+import { setupMouse } from './js/mouse';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
@@ -25,6 +26,7 @@ let clock = new THREE.Clock();
 setupEnvironment();
 setupUI();
 setupKeyboard();
+setupMouse();
 setupMIDI();
 update();
 
