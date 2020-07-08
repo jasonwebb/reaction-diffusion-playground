@@ -22,6 +22,6 @@ export default {
   timestep: {
     min: 0.01,
     max: 2.0,
-    initial: 1.0
+    initial: 2.0
   }
 };
