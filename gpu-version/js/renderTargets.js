@@ -19,9 +19,7 @@ export function setupRenderTargets() {
       minFilter: THREE.LinearFilter,
       magFilter: THREE.LinearFilter,
       format: THREE.RGBAFormat,
-      type: THREE.FloatType,
-      wrapS: THREE.RepeatWrapping,
-      wrapT: THREE.RepeatWrapping
+      type: THREE.FloatType
     });
 
     renderTargets.push(nextRenderTarget);
