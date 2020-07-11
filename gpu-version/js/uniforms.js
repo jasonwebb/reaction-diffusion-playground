@@ -41,7 +41,7 @@ export let simulationUniforms = {
   },
   timestep: {
     type: "f",
-    value: 1.0
+    value: parameterValues.timestep
   }
 };
 
