@@ -13,10 +13,12 @@ import { displayMaterial, passthroughMaterial } from './materials';
 let bufferImage, bufferCanvasCtx;
 
 export const InitialTextureTypes = {
-  CIRCLE: 0,
-  SQUARE: 1,
-  TEXT: 2,
-  IMAGE: 3,
+  SINGLE_POINT: 0,
+  RANDOM_POINTS: 1,
+  CIRCLE: 2,
+  SQUARE: 3,
+  TEXT: 4,
+  IMAGE: 5,
 };
 
 export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
@@ -36,6 +38,27 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
         centerY = containerSize.height/2;
 
   switch(type) {
+    case InitialTextureTypes.SINGLE_POINT:
+      bufferCanvasCtx.fillStyle = '#000';
+      bufferCanvasCtx.fillRect(centerX, centerY, 1, 1);
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
+      break;
+
+    case InitialTextureTypes.RANDOM_POINTS:
+      bufferCanvasCtx.fillStyle = '#000';
+
+      for(let i=0; i<randomInt(1,10); i++) {
+        bufferCanvasCtx.fillRect(
+          randomInt(0, parseInt(canvas.style.width)),
+          randomInt(0, parseInt(canvas.style.height)),
+          1,
+          1
+        );
+      }
+
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
+      break;
+
     case InitialTextureTypes.CIRCLE:
       bufferCanvasCtx.beginPath();
       bufferCanvasCtx.arc(centerX, centerY, 100, 0, Math.PI*2);
@@ -122,4 +145,10 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
     }
 
     return data;
+  }
+
+  function randomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }

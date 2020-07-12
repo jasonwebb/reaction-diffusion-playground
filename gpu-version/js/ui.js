@@ -101,6 +101,8 @@ function setupSeedFolder() {
   seedFolder.addInput(parameterValues.seed, 'type', {
     label: 'Type',
     options: {
+      SinglePoint: InitialTextureTypes.SINGLE_POINT,
+      RandomPoints: InitialTextureTypes.RANDOM_POINTS,
       Circle: InitialTextureTypes.CIRCLE,
       Square: InitialTextureTypes.SQUARE,
       Text: InitialTextureTypes.TEXT,
