@@ -118,14 +118,24 @@ void main() {
     float gBranch = when_gt(B, 0.01);
     outputColor = mix(outputColor, outputColor - rainbow, gBranch);
 
-  // Black and white ==============================================================================
+  // Black and white (soft) =======================================================================
   } else if(renderingStyle == 5) {
     float grayValue = pixel.r - pixel.g;  // black for B, white for A
     // float grayValue = 1.0 - pixel.r - pixel.g;  // white for B, black for A
     outputColor = vec4(grayValue, grayValue, grayValue, 1.0);
 
-  // No processing - red for chemical A, green for chemical B =====================================
+  // Black and white (sharp) ======================================================================
   } else if(renderingStyle == 6) {
+    float grayValue = pixel.r - pixel.g;
+
+    if(grayValue > .3) {
+      outputColor = vec4(1.0, 1.0, 1.0, 1.0);
+    } else {
+      outputColor = vec4(0.0, 0.0, 0.0, 1.0);
+    }
+
+  // No processing - red for chemical A, green for chemical B =====================================
+  } else if(renderingStyle == 7) {
     outputColor = pixel;
   }
 

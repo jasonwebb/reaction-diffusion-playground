@@ -151,8 +151,9 @@ function setupRenderingFolder() {
       'Red Blob Games (alt 1)': 2,
       'Red Blob Games (alt 2)': 3,
       'Rainbow': 4,
-      'Black and white': 5,
-      'Raw': 6
+      'Black and white (soft)': 5,
+      'Black and white (hard)': 6,
+      'Raw': 7
     }
   })
     .on('change', (value) => {
