@@ -11,6 +11,7 @@ uniform float dA;
 uniform float dB;
 uniform float timestep;
 uniform vec2 mousePosition;
+uniform float brushRadius;
 uniform vec2 resolution;
 
 varying vec2 v_uvs[9];
@@ -69,7 +70,7 @@ void main() {
   if(mousePosition.x > 0.0 && mousePosition.y > 0.0) {
     float distToMouse = distance(mousePosition * resolution, v_uvs[0] * resolution);
 
-    if(distToMouse < 10.0) {
+    if(distToMouse < brushRadius) {
       gl_FragColor = vec4(0.0, 0.9, 0.0, 1.0);
       return;
     }
