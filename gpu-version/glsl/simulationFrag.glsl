@@ -40,7 +40,7 @@ void setWeights(int type) {
 
 vec2 getLaplacian(vec4 centerTexel) {
   // Begin by setting up the Laplacian stencil weights based on desired model
-  setWeights(0);
+  setWeights(2);
 
   // Start with center value
   vec2 laplacian = centerTexel.xy * weights[1][1];  // center
