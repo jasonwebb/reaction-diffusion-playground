@@ -40,7 +40,7 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
   switch(type) {
     case InitialTextureTypes.SINGLE_POINT:
       bufferCanvasCtx.fillStyle = '#000';
-      bufferCanvasCtx.fillRect(centerX, centerY, 1, 1);
+      bufferCanvasCtx.fillRect(Math.round(centerX), Math.round(centerY), 1, 1);
       renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
@@ -49,10 +49,9 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
       for(let i=0; i<randomInt(1,10); i++) {
         bufferCanvasCtx.fillRect(
-          randomInt(0, parseInt(canvas.style.width)),
-          randomInt(0, parseInt(canvas.style.height)),
-          1,
-          1
+          randomInt(0, containerSize.width),
+          randomInt(0, containerSize.height),
+          1,1
         );
       }
 
