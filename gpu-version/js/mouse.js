@@ -25,4 +25,9 @@ export function setupMouse() {
       simulationUniforms.mousePosition.value.y = -1;
     }
   });
+
+  // Adjust brush radius using the mouse wheel
+  window.addEventListener('wheel', function(e) {
+    simulationUniforms.brushRadius.value += e.deltaY/100;
+  });
 }
