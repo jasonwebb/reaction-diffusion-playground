@@ -40,59 +40,54 @@ export function setupMap() {
   mapImageContainer.appendChild(horizontalLine);
   mapImageContainer.appendChild(verticalLine);
 
+  // Update crosshair labels on mouse move
   mapImage.addEventListener('mousemove', (e) => {
     horizontalLine.style.top = e.offsetY + 'px';
     verticalLine.style.left = e.offsetX + 'px';
 
-    const y = e.offsetX / mapImage.scrollWidth,
-          x = Math.abs(mapImage.scrollHeight - e.offsetY) / mapImage.scrollHeight;
+    const feedKillValues = getFeedKillValuesFromMouse(e.offsetX, e.offsetY);
 
-    const f = y.map(0, 1, parameterMetadata.f.min, parameterMetadata.f.max),
-          k = x.map(0, 1, parameterMetadata.k.min, parameterMetadata.k.max);
-
-    horizontalLabelValue.innerHTML = f.toString().substring(0,5);
-    verticalLabelValue.innerHTML = k.toString().substring(0,5);
+    horizontalLabelValue.innerHTML = feedKillValues.f.toString().substring(0,5);
+    verticalLabelValue.innerHTML = feedKillValues.k.toString().substring(0,5);
   });
 
+  // Show the crosshairs on hover of the map image
   mapImage.addEventListener('mouseover', (e) => {
     horizontalLine.classList.remove('is-hidden');
     verticalLine.classList.remove('is-hidden');
   });
 
+  // Hide the crosshairs when map image loses hover
   mapImage.addEventListener('mouseout', (e) => {
     horizontalLine.classList.add('is-hidden');
     verticalLine.classList.add('is-hidden');
   });
 
+  // Pass new f/k values (from mouse coords) to UI and simulation frag shader uniforms when the map is clicked
   mapImage.addEventListener('click', (e) => {
-    const x = e.offsetX / mapImage.scrollWidth,
-          y = Math.abs(mapImage.scrollHeight - e.offsetY) / mapImage.scrollHeight;
+    const newFeedKillValues = getFeedKillValuesFromMouse(e.offsetX, e.offsetY);
 
-    const newF = y.map(0, 1, parameterMetadata.f.min, parameterMetadata.f.max),
-          newK = x.map(0, 1, parameterMetadata.k.min, parameterMetadata.k.max);
-
-    parameterValues.f = newF;
-    parameterValues.k = newK;
+    parameterValues.f = newFeedKillValues.f;
+    parameterValues.k = newFeedKillValues.k;
     rebuildUI();
 
-    simulationUniforms.f.value = newF;
-    simulationUniforms.k.value = newK;
-
-    // Best guesses of limits of map based on links
-    // f: { min: .002, max: .11 }
-    // k: { min: .019, max: .073 }
+    simulationUniforms.f.value = newFeedKillValues.f;
+    simulationUniforms.k.value = newFeedKillValues.k;
 
     collapseMap();
   });
 
+  // Hide map dialog when backdrop is clicked
   mapDialog.addEventListener('click', (e) => {
     collapseMap();
   });
 
+  // Hide map dialog when X button is clicked
   closeButton.addEventListener('click', (e) => {
     collapseMap();
   });
 
+  // Hide the map on load
   collapseMap();
 }
 
@@ -104,6 +99,16 @@ export function expandMap() {
 export function collapseMap() {
   document.body.classList.remove('modal-open');
   mapDialog.classList.add('is-hidden');
+}
+
+function getFeedKillValuesFromMouse(mouseX, mouseY) {
+  const x = mouseX / mapImage.scrollWidth,
+        y = Math.abs(mapImage.scrollHeight - mouseY) / mapImage.scrollHeight;
+
+  return {
+    f: y.map(0, 1, parameterMetadata.f.min, parameterMetadata.f.max),
+    k: x.map(0, 1, parameterMetadata.k.min, parameterMetadata.k.max)
+  }
 }
 
 // https://gist.github.com/xposedbones/75ebaef3c10060a3ee3b246166caab56
