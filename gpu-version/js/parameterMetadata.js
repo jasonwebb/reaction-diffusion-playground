@@ -12,12 +12,12 @@ export default {
   dA: {
     min: 0.2,
     max: 0.25,
-    initial: .2
+    initial: .2097
   },
   dB: {
     min: 0.01,
     max: 0.8,
-    initial: .1
+    initial: .105
   },
   timestep: {
     min: 0.0,
