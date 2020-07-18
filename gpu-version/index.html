@@ -29,6 +29,9 @@
   <meta name="twitter:description" content="">
   <meta name="twitter:image" content="">
 
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/map-dialog.css">
+
   <style>
   .tp-dfwv {
     width: 350px !important;
@@ -42,6 +45,20 @@
 
 <body style="display: flex; justify-content: center; align-items: center; height: 100vh">
   <div id="container"></div>
+
+  <div id="map-dialog">
+    <div class="inner-panel">
+      <div class="title">Click anywhere on the map to set feed and kill rate values</div>
+      <button class="close-button" title="Close">
+        <span class="fa fa-times" aria-hidden="true"></span>
+        <span class="sr-only">Close</span>
+      </button>
+
+      <div class="image-container">
+        <img src="./other-images/karl-sims-parameter-map.png" alt="">
+      </div>
+    </div>
+  </div>
 
   <canvas id="buffer-canvas" style="display: none;"></canvas>
   <img id="buffer-image" style="display: none;">

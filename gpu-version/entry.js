@@ -9,12 +9,13 @@ import { setupUI } from './js/ui';
 import { setupMIDI } from './js/midi';
 import { setupKeyboard } from './js/keyboard';
 import { setupMouse } from './js/mouse';
+import { setupMap } from './js/map';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
 
 let currentRenderTargetIndex = 0;  // render targets are invisible meshes that allow shaders to generate textures for computation, not display
-const pingPongSteps = 60;         // number of times per frame that the simulation is run before being displayed
+const pingPongSteps = 60;          // number of times per frame that the simulation is run before being displayed
 global.isPaused = false;
 
 // FPS counter via Stats.js
@@ -25,6 +26,7 @@ let clock = new THREE.Clock();
 
 setupEnvironment();
 setupUI();
+setupMap();
 setupKeyboard();
 setupMouse();
 setupMIDI();

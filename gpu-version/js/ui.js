@@ -10,6 +10,8 @@ import { InitialTextureTypes, drawFirstFrame } from './firstFrame';
 import { containerSize } from './globals';
 import { resetTextureSizes } from '../entry';
 import { setupRenderTargets } from './renderTargets';
+import { expandMap } from './map';
+import { exportImage } from './export';
 
 let pane;
 let currentSeedType = InitialTextureTypes.CIRCLE;
@@ -23,6 +25,11 @@ export function setupUI() {
   setupCanvasSize();
   setupActions();
 }
+
+  export function rebuildUI() {
+    pane.dispose();
+    setupUI();
+  }
 
 
 //==============================================================
@@ -89,6 +96,13 @@ function setupReactionDiffusionParameters() {
     .on('change', (value) => {
       simulationUniforms.timestep.value = value;
     });
+
+  pane.addButton({
+    title: 'Pick parameter values from map'
+  })
+    .on('click', () => {
+      expandMap();
+    });
 }
 
 
@@ -111,8 +125,7 @@ function setupSeedFolder() {
   })
     .on('change', (value) => {
       currentSeedType = parseInt(value);
-      pane.dispose();
-      setupUI();
+      rebuildUI();
     });
 
   seedFolder.addButton({
@@ -144,8 +157,7 @@ function setupRenderingFolder() {
   })
     .on('change', (value) => {
       displayUniforms.renderingStyle.value = value;
-      pane.dispose();
-      setupUI();
+      rebuildUI();
     });
 
   renderingFolder.addSeparator();
@@ -358,8 +370,7 @@ function setupCanvasSize() {
       resetTextureSizes();
       drawFirstFrame(currentSeedType);
 
-      pane.dispose();
-      setupUI();
+      rebuildUI();
     });
 }
 
@@ -381,9 +392,6 @@ function setupActions() {
     title: '💾 Save as image'
   })
     .on('click', () => {
-      let link = document.createElement('a');
-      link.download = 'reaction-diffusion.png';
-      link.href = renderer.domElement.toDataURL();
-      link.click();
+      exportImage();
     });
 }
