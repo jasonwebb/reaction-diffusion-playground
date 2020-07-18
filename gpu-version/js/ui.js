@@ -3,6 +3,7 @@ import Tweakpane from 'tweakpane';
 
 import parameterValues from './parameterValues';
 import parameterMetadata from './parameterMetadata';
+import parameterPresets from './parameterPresets';
 
 import { simulationUniforms, displayUniforms } from './uniforms';
 
@@ -36,12 +37,24 @@ export function setupUI() {
 //  REACTION-DIFFUSION PARAMETERS
 //==============================================================
 function setupReactionDiffusionParameters() {
+  let parameterPresetsSimpleList = {};
+  Object.values(parameterPresets).forEach((preset, i) => {
+    parameterPresetsSimpleList[preset.name] = i
+  });
+
   pane.addInput(parameterValues, 'presets', {
     label: 'Presets',
-    options: {
-      none: ''
-    }
-  });
+    options: parameterPresetsSimpleList
+  })
+    .on('change', (index) => {
+      parameterValues.f = parameterPresets[index].f;
+      parameterValues.k = parameterPresets[index].k;
+
+      simulationUniforms.f.value = parameterPresets[index].f;
+      simulationUniforms.k.value = parameterPresets[index].k;
+
+      rebuildUI();
+    });
 
   // f ------------------------------------------
   pane.addInput(parameterValues, 'f', {
