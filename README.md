@@ -1,1 +1,1 @@
-# 2d-reaction-diffusion-experiments
+`TODO` For now see [https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion](https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion).
