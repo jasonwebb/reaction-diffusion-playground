@@ -2,9 +2,10 @@
 //  RENDER TARGETS
 //  - Render targets are invisible buffers that we can send
 //    data to in the form of textures.
-//  - In render(), the simulation shaders store computation
-//    results as textures and pass these results between two
-//    render targets to run multiple iterations per frame.
+//  - In the main update() method, the simulation shaders store
+//    computation results as textures and pass these results
+//    between two render targets to run multiple iterations per
+//    frame.
 //==============================================================
 
 import * as THREE from 'three';
