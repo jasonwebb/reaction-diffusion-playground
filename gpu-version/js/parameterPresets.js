@@ -5,7 +5,14 @@
 //    https://mrob.com/pub/comp/xmorphia/ogl/index.html
 //==============================================================
 
+import parameterMetadata from './parameterMetadata';
+
 export default [
+  {
+    name: '',
+    f: parameterMetadata.f.initial,
+    k: parameterMetadata.k.initial
+  },
   {
     name: 'Negative bubbles',
     f: 0.098,
