@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Stats from 'stats.js';
+import fps from 'fps';
 
 import { containerSize } from './js/globals';
 
@@ -18,11 +18,10 @@ let currentRenderTargetIndex = 0;  // render targets are invisible meshes that a
 const pingPongSteps = 60;          // number of times per frame that the simulation is run before being displayed
 global.isPaused = false;
 
-// FPS counter via Stats.js
-let stats = new Stats();
-document.body.appendChild(stats.dom);
-
 let clock = new THREE.Clock();
+
+let ticker = fps({ every: 10 });
+let fpsEl;
 
 setupEnvironment();
 setupUI();
@@ -71,6 +70,15 @@ function setupEnvironment() {
 
   // Set up and render the first frame
   drawFirstFrame();
+
+  // Set up the FPS counter
+  fpsEl = document.createElement('div');
+  fpsEl.setAttribute('id', 'fps-counter');
+  document.body.appendChild(fpsEl);
+
+  ticker.on('data', (framerate) => {
+    fpsEl.innerHTML = String(Math.round(framerate)) + ' fps';
+  });
 }
 
   export function resetTextureSizes() {
@@ -95,7 +103,7 @@ function setupEnvironment() {
 //  - Main program loop, runs once per frame no matter what.
 //==============================================================
 function update() {
-  stats.begin();
+  ticker.tick();
 
   if(!isPaused) {
     // Activate the simulation shaders
@@ -125,6 +133,4 @@ function update() {
   }
 
   requestAnimationFrame(update);
-
-  stats.end();
 }
