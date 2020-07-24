@@ -20,7 +20,7 @@ global.isPaused = false;
 
 let clock = new THREE.Clock();
 
-let ticker = fps({ every: 10 });
+let ticker = fps({ every: 60 });
 let fpsEl;
 
 setupEnvironment();
