@@ -1,5 +1,5 @@
-import { setupRightPane } from "./ui/right-pane";
-import { setupLeftPane } from "./ui/left-pane";
+import { setupRightPane, rebuildRightPane } from "./ui/right-pane";
+import { setupLeftPane, rebuildLeftPane } from "./ui/left-pane";
 
 export function setupUI() {
   setupRightPane();
