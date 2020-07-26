@@ -6,7 +6,6 @@
 
 import * as THREE from 'three';
 import parameterValues from './parameterValues';
-import { containerSize } from './globals';
 
 export let simulationUniforms = {
   previousIterationTexture: {
@@ -15,7 +14,7 @@ export let simulationUniforms = {
   },
   resolution: {
     type: "v2",
-    value: new THREE.Vector2(containerSize.width, containerSize.height)
+    value: new THREE.Vector2(parameterValues.canvas.width, parameterValues.canvas.height)
   },
   mousePosition: {
     type: "v2",
@@ -24,6 +23,18 @@ export let simulationUniforms = {
   brushRadius: {
     type: "f",
     value: 10.0
+  },
+  styleMapTexture: {
+    type: "t",
+    value: undefined
+  },
+  styleMapResolution: {
+    type: "vec2",
+    value: new THREE.Vector2(-1,-1)
+  },
+  styleMapTransforms: {
+    type: "v4",
+    value: new THREE.Vector4(1.0, 0.0, 0.0, 0.0)  // {scale, rotation, xOffset, yOffset}
   },
 
   // Reaction-diffusion equation parameters

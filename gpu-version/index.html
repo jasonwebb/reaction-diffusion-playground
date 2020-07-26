@@ -32,21 +32,35 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/map-dialog.css">
   <link rel="stylesheet" href="css/corner-links.css">
+  <link rel="stylesheet" href="css/fps-counter.css">
+  <link rel="stylesheet" href="css/effects-panel.css">
 
   <style>
-  .tp-dfwv {
-    width: 350px !important;
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
   }
 
-  .tp-lblv_v {
-    width: 250px !important;
+  #left-pane-container {
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    width: 350px;
   }
+
+  .tp-dfwv { width: 350px !important; }
+  .tp-lblv_v { width: 250px !important; }
   </style>
 </head>
 
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh">
+<body>
+  <!-- Container that the main ThreeJS canvas gets injected into. -->
   <div id="container"></div>
 
+  <!-- Dialog popup containing parameter map. Bring it up using the "Pick parameter values from map" button on the right pane. -->
   <div id="map-dialog">
     <div class="inner-panel">
       <div class="title">Click anywhere on the map to set feed and kill rate values</div>
@@ -61,6 +75,7 @@
     </div>
   </div>
 
+  <!-- Github and other links in the bottom left corner. -->
   <div class="corner-links">
     <a href="https://github.com/jasonwebb/2d-reaction-diffusion-experiments" target="_blank" class="github-link" title="Github repo">
       <span class="fa fa-github" aria-hidden="true"></span>
@@ -71,8 +86,12 @@
     <!-- <a href="#" class="credits-link">Credits</a> -->
   </div>
 
+  <!-- Hidden canvas and image used to copy image pixel data into the main canvas. -->
   <canvas id="buffer-canvas" style="display: none;"></canvas>
   <img id="buffer-image" style="display: none;">
+
+  <!-- Visually-hidden file chooser used to load a local image for use as a style map. -->
+  <input type="file" id="style-map-chooser" accept="image/*" class="sr-only">
 
   <script src="../dist/gpu.bundle.js"></script>
 </body>

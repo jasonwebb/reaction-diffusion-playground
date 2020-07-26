@@ -12,6 +12,8 @@ uniform float dB;
 uniform float timestep;
 uniform vec2 mousePosition;
 uniform float brushRadius;
+uniform sampler2D styleMapTexture;
+uniform vec4 styleMapTransforms;
 uniform vec2 resolution;
 
 varying vec2 v_uvs[9];
@@ -61,10 +63,46 @@ vec2 getLaplacian(vec4 centerTexel) {
   return laplacian;
 }
 
+vec4 getStyleMapTexel(vec2 uv) {
+  float scale = styleMapTransforms[0];
+  float angle = styleMapTransforms[1];
+  float xOffset = - styleMapTransforms[2] / resolution.x;
+  float yOffset = styleMapTransforms[3] / resolution.y;
+
+  vec2 transformedUV = uv;
+
+  // Calculate translation (X and Y)
+  transformedUV.x += xOffset;
+  transformedUV.y += yOffset;
+
+  // Calculate scale
+  transformedUV /= scale;
+
+  // Calculate rotation
+  float s = sin(angle);
+  float c = cos(angle);
+  mat2 rotationMatrix = mat2(c, s,
+                            -s, c);
+  vec2 pivot = vec2(0.5, 0.5);
+  transformedUV = rotationMatrix * (transformedUV - pivot) + pivot;
+
+  return texture2D(styleMapTexture, transformedUV);
+}
+
 void main() {
+  // A/B chemical data
   vec4 centerTexel = texture2D(previousIterationTexture, v_uvs[0]);
   float A = centerTexel[0];
   float B = centerTexel[1];
+
+  // Get the style map texel that corresponds with this location
+  vec4 styleMapTexel = getStyleMapTexel(v_uvs[0]);
+
+  // DEBUG: "skip" this pixel if its white in the style map
+  if(styleMapTexel == vec4(1,1,1,1)) {
+    gl_FragColor = vec4(0,0,0,0);
+    return;
+  }
 
   // Draw more of the B chemical around the mouse on mouse down
   if(mousePosition.x > 0.0 && mousePosition.y > 0.0) {

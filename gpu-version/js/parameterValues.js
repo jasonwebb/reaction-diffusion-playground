@@ -30,7 +30,7 @@ export default {
     color2RGB: {r:0, g:255, b:0},
     color3RGB: {r:255, g:255, b:0},
     color4RGB: {r:255, g:0, b:0},
-    color5RGB: {r:255, g:255, b:255},
+    color5RGB: {r:100, g:0, b:0},
 
     color1Stop: 0,
     color2Stop: .2,
@@ -43,5 +43,27 @@ export default {
     color3Enabled: true,
     color4Enabled: true,
     color5Enabled: true
+  },
+
+  canvas: {
+    width: parameterMetadata.canvas.width.initial,
+    height: parameterMetadata.canvas.height.initial,
+    isMaximized: false
+  },
+
+  styleMap: {
+    imageLoaded: false,
+    scale: 1.0,
+    rotation: 0,
+    translate: {
+      x: 0.0,
+      y: 0.0
+    },
+    animation: {
+      enabled: false,
+      parameter: '',
+      easingEquation: '',
+      speed: 1.0
+    }
   }
 };
