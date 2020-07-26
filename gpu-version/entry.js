@@ -1,8 +1,6 @@
 import * as THREE from 'three';
 import fps from 'fps';
 
-import { containerSize } from './js/globals';
-
 import { drawFirstFrame } from './js/firstFrame';
 import { setupRenderTargets } from './js/renderTargets';
 import { setupUI } from './js/ui';
@@ -13,6 +11,7 @@ import { setupMap } from './js/map';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
+import parameterValues from './js/parameterValues';
 
 let currentRenderTargetIndex = 0;  // render targets are invisible meshes that allow shaders to generate textures for computation, not display
 const pingPongSteps = 60;          // number of times per frame that the simulation is run before being displayed
@@ -54,7 +53,7 @@ function setupEnvironment() {
   // Set up the renderer (a WebGL context inside a <canvas>)
   global.renderer = new THREE.WebGLRenderer({ preserveDrawingBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
-  renderer.setSize(containerSize.width, containerSize.height);
+  renderer.setSize(parameterValues.canvas.width, parameterValues.canvas.height);
 
   // Uncomment this line to see how many shader varyings your GPU supports.
   // console.log(renderer.capabilities.maxVaryings);
@@ -82,19 +81,19 @@ function setupEnvironment() {
 }
 
   export function resetTextureSizes() {
-    containerSize.width = canvas.clientWidth;
-    containerSize.height = canvas.clientHeight;
+    parameterValues.canvas.width = canvas.clientWidth;
+    parameterValues.canvas.height = canvas.clientHeight;
 
     // Resize render targets
     setupRenderTargets();
 
     // Reset the resolution in the simulation code to match new container size
-    simulationUniforms.resolution.value = new THREE.Vector2(containerSize.width, containerSize.height);
+    simulationUniforms.resolution.value = new THREE.Vector2(parameterValues.canvas.width, parameterValues.canvas.height);
 
     // Resize the buffer canvas
     global.bufferCanvas = document.querySelector('#buffer-canvas');
-    bufferCanvas.width = containerSize.width;
-    bufferCanvas.height = containerSize.height;
+    bufferCanvas.width = parameterValues.canvas.width;
+    bufferCanvas.height = parameterValues.canvas.height;
   }
 
 

@@ -23,5 +23,17 @@ export default {
     min: 0.0,
     max: 2.0,
     initial: 1.0
+  },
+  canvas: {
+    width: {
+      min: 0,
+      max: window.innerWidth,
+      initial: 900
+    },
+    height: {
+      min: 0,
+      max: window.innerHeight,
+      initial: 900
+    }
   }
 };

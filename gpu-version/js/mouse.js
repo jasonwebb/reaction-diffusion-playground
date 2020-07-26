@@ -2,8 +2,8 @@
 //  MOUSE CONTROLS
 //==============================================================
 
-import { containerSize } from "./globals";
 import { simulationUniforms } from './uniforms';
+import parameterValues from './parameterValues';
 
 export function setupMouse() {
   let mouseDown = false;
@@ -18,8 +18,8 @@ export function setupMouse() {
 
   canvas.addEventListener('mousemove', function(e) {
     if(mouseDown) {
-      simulationUniforms.mousePosition.value.x = e.offsetX / containerSize.width;
-      simulationUniforms.mousePosition.value.y = 1 - e.offsetY / containerSize.height;
+      simulationUniforms.mousePosition.value.x = e.offsetX / parameterValues.canvas.width;
+      simulationUniforms.mousePosition.value.y = 1 - e.offsetY / parameterValues.canvas.height;
     } else {
       simulationUniforms.mousePosition.value.x = -1;
       simulationUniforms.mousePosition.value.y = -1;

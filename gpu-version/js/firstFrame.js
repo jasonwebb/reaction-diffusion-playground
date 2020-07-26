@@ -6,7 +6,7 @@
 
 import * as THREE from 'three';
 
-import { containerSize } from './globals';
+import parameterValues from './parameterValues';
 import { displayUniforms, passthroughUniforms } from './uniforms';
 import { displayMaterial, passthroughMaterial } from './materials';
 
@@ -31,11 +31,11 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
   // Clear the invisible canvas
   bufferCanvasCtx.fillStyle = '#fff';
-  bufferCanvasCtx.fillRect(0, 0, containerSize.width, containerSize.height);
+  bufferCanvasCtx.fillRect(0, 0, parameterValues.canvas.width, parameterValues.canvas.height);
 
   // Build initial simulation texture data and pass it on to the render targets
-  const centerX = containerSize.width/2,
-        centerY = containerSize.height/2;
+  const centerX = parameterValues.canvas.width/2,
+        centerY = parameterValues.canvas.height/2;
 
   switch(type) {
     case InitialTextureTypes.SINGLE_POINT:
@@ -49,8 +49,8 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
       for(let i=0; i<randomInt(1,10); i++) {
         bufferCanvasCtx.fillRect(
-          randomInt(0, containerSize.width),
-          randomInt(0, containerSize.height),
+          randomInt(0, parameterValues.canvas.width),
+          randomInt(0, parameterValues.canvas.height),
           1,1
         );
       }
@@ -93,7 +93,7 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
   function renderInitialDataToRenderTargets(initialData) {
     // Put the initial data into a texture format that ThreeJS can pass into the render targets
-    let texture = new THREE.DataTexture(initialData, containerSize.width, containerSize.height, THREE.RGBAFormat, THREE.FloatType);
+    let texture = new THREE.DataTexture(initialData, parameterValues.canvas.width, parameterValues.canvas.height, THREE.RGBAFormat, THREE.FloatType);
     texture.flipY = true;  // DataTexture coordinates are vertically inverted compared to canvas coordinates
     texture.needsUpdate = true;
 
@@ -133,7 +133,7 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
   // Create initial data based on the current content of the invisible canvas
   function convertPixelsToTextureData() {
-    let pixels = bufferCanvasCtx.getImageData(0, 0, containerSize.width, containerSize.height).data;
+    let pixels = bufferCanvasCtx.getImageData(0, 0, parameterValues.canvas.width, parameterValues.canvas.height).data;
     let data = new Float32Array(pixels.length);
 
     for(let i=0; i<data.length; i+=4) {
