@@ -18,7 +18,8 @@ body.modal-open {
 }
 
   #map-dialog.is-hidden {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
   }
 
   #map-dialog .inner-panel {
