@@ -64,7 +64,7 @@ function setupReactionDiffusionParameters() {
 
   // f
   pane.addInput(parameterValues, 'f', {
-    label: 'f',
+    label: 'Feed rate',
     min: parameterMetadata.f.min,
     max: parameterMetadata.f.max,
     step: .0001
@@ -75,7 +75,7 @@ function setupReactionDiffusionParameters() {
 
   // k
   pane.addInput(parameterValues, 'k', {
-    label: 'k',
+    label: 'Kill rate',
     min: parameterMetadata.k.min,
     max: parameterMetadata.k.max,
     step: .0001
@@ -214,7 +214,6 @@ function setupRenderingFolder() {
         break;
 
       default:
-        console.log('test');
     }
   }
 
@@ -375,7 +374,7 @@ function setupCanvasSize() {
     .on('change', (checked) => {
       if(checked) {
         parameterValues.canvas._lastWidth = parameterValues.canvas.width;
-        parameterValues._lastHeight = parameterValues.canvas.height;
+        parameterValues.canvas._lastHeight = parameterValues.canvas.height;  // change to this for 1D glitch parameterValues._lastHeight = parameterValues.canvas.height;
 
         parameterValues.canvas.width = window.innerWidth;
         parameterValues.canvas.height = window.innerHeight;

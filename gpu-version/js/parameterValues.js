@@ -59,6 +59,8 @@ export default {
       x: 0.0,
       y: 0.0
     },
+    f: parameterMetadata.f.initial,
+    k: parameterMetadata.k.initial,
     animation: {
       enabled: false,
       parameter: '',

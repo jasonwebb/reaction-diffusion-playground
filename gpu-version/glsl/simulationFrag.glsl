@@ -10,10 +10,15 @@ uniform float k;
 uniform float dA;
 uniform float dB;
 uniform float timestep;
+
 uniform vec2 mousePosition;
 uniform float brushRadius;
+
 uniform sampler2D styleMapTexture;
 uniform vec4 styleMapTransforms;
+uniform vec2 styleMapParameters;
+uniform vec2 styleMapResolution;
+
 uniform vec2 resolution;
 
 varying vec2 v_uvs[9];
@@ -64,6 +69,8 @@ vec2 getLaplacian(vec4 centerTexel) {
 }
 
 vec4 getStyleMapTexel(vec2 uv) {
+  vec4 texel = vec4(-1.0, -1.0, -1.0, -1.0);
+
   float scale = styleMapTransforms[0];
   float angle = styleMapTransforms[1];
   float xOffset = - styleMapTransforms[2] / resolution.x;
@@ -81,27 +88,33 @@ vec4 getStyleMapTexel(vec2 uv) {
   // Calculate rotation
   float s = sin(angle);
   float c = cos(angle);
-  mat2 rotationMatrix = mat2(c, s,
-                            -s, c);
+  mat2 rotationMatrix = mat2(c, s, -s, c);
   vec2 pivot = vec2(0.5, 0.5);
   transformedUV = rotationMatrix * (transformedUV - pivot) + pivot;
 
-  return texture2D(styleMapTexture, transformedUV);
+  texel = texture2D(styleMapTexture, transformedUV);
+
+  return texel;
 }
 
 void main() {
-  // A/B chemical data
+  // Get A/B chemical data
   vec4 centerTexel = texture2D(previousIterationTexture, v_uvs[0]);
   float A = centerTexel[0];
   float B = centerTexel[1];
 
-  // Get the style map texel that corresponds with this location
-  vec4 styleMapTexel = getStyleMapTexel(v_uvs[0]);
+  // Copy the f/k parameters so they can be modified locally ("n" for "new")
+  float nf = f;
+  float nk = k;
 
-  // DEBUG: "skip" this pixel if its white in the style map
-  if(styleMapTexel == vec4(1,1,1,1)) {
-    gl_FragColor = vec4(0,0,0,0);
-    return;
+  // If a style map image is set, smoothly interpolate between the main f/k and the f/k values set in the Style Map pane
+  if(styleMapResolution != vec2(-1.0, -1.0)) {
+    // Get the style map texel that corresponds with this location
+    vec4 styleMapTexel = getStyleMapTexel(v_uvs[0]);
+
+    float luminance = 0.3 * styleMapTexel.r + 0.59 * styleMapTexel.g + 0.11 * styleMapTexel.b;
+    nf = mix(f, styleMapParameters[0], luminance);
+    nk = mix(k, styleMapParameters[1], luminance);
   }
 
   // Draw more of the B chemical around the mouse on mouse down
@@ -123,8 +136,8 @@ void main() {
   float reactionTerm = A * B * B;
 
   gl_FragColor = vec4(
-    A + ((dA * laplacian[0] - reactionTerm + f * (1.0 - A)) * timestep),
-    B + ((dB * laplacian[1] + reactionTerm - (k + f) * B) * timestep),
+    A + ((dA * laplacian[0] - reactionTerm + nf * (1.0 - A)) * timestep),
+    B + ((dB * laplacian[1] + reactionTerm - (nk + nf) * B) * timestep),
     centerTexel.b,
     1.0
   );

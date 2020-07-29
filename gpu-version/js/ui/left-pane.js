@@ -8,7 +8,8 @@ import * as THREE from 'three';
 import Tweakpane from 'tweakpane';
 
 import parameterValues from '../parameterValues';
-import { simulationUniforms, displayUniforms } from '../uniforms';
+import { simulationUniforms } from '../uniforms';
+import parameterMetadata from '../parameterMetadata';
 
 let pane, paneContainer,
     styleMapChooser, styleMapPreviewImageContainer, styleMapPreviewImage;
@@ -39,9 +40,17 @@ export function setupLeftPane() {
         const loader = new THREE.TextureLoader();
         simulationUniforms.styleMapTexture.value = loader.load(reader.result);
 
+        const img = new Image();
+        img.onload = function() {
+          simulationUniforms.styleMapResolution.value = new THREE.Vector2(
+            parseFloat(img.width),
+            parseFloat(img.height)
+          );
+        };
+        img.src = reader.result;
+
         // Visually display the image as a thumbnail next to the UI
         styleMapPreviewImage.setAttribute('src', reader.result);
-        styleMapPreviewImageContainer.style.height = styleMapPreviewImage.style.offsetHeight + 'px';
 
         parameterValues.styleMap.imageLoaded = true;
         rebuildLeftPane();
@@ -74,6 +83,10 @@ export function setupLeftPane() {
     setupLeftPane();
   }
 
+
+//===========================================================
+//  STYLE MAP
+//===========================================================
 function setupStyleMapFolder() {
   const styleMapFolder = pane.addFolder({ title: 'Style map' });
 
@@ -82,8 +95,8 @@ function setupStyleMapFolder() {
     // Scale range slider
     styleMapFolder.addInput(parameterValues.styleMap, 'scale', {
       label: 'Scale',
-      min: 1.0,
-      max: 5.0,
+      min: .1,
+      max: 3.0,
       step: .01
     })
       .on('change', () => {
@@ -102,7 +115,6 @@ function setupStyleMapFolder() {
     })
       .on('change', () => {
         simulationUniforms.styleMapTransforms.value.y = parameterValues.styleMap.rotation * 3.14159265359/180;
-        console.log(simulationUniforms.styleMapTransforms);
 
         styleMapPreviewImage.style.transform = 'scale(' + parameterValues.styleMap.scale + ') ' +
                                                'rotate(' + parameterValues.styleMap.rotation + 'deg) ';
@@ -134,6 +146,32 @@ function setupStyleMapFolder() {
 
       styleMapFolder.addSeparator();
 
+    // f/k RATES ----------------------------------------------------------------------
+    styleMapFolder.addInput(parameterValues.styleMap, 'f', {
+      label: 'Feed (#2)',
+      min: parameterMetadata.f.min,
+      max: parameterMetadata.f.max,
+      initial: parameterValues.f.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.x = value;
+      });
+
+    styleMapFolder.addInput(parameterValues.styleMap, 'k', {
+      label: 'Kill (#2)',
+      min: parameterMetadata.k.min,
+      max: parameterMetadata.k.max,
+      initial: parameterValues.k.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.y = value;
+      });
+
+      styleMapFolder.addSeparator();
+
+    // ANIMATION ----------------------------------------------------------------------
     // Animate checkbox
     styleMapFolder.addInput(parameterValues.styleMap.animation, 'enabled', { label: 'Animate' })
       .on('change', () => {
@@ -171,6 +209,20 @@ function setupStyleMapFolder() {
     }
 
       styleMapFolder.addSeparator();
+  }
+
+  // Unload style map button (only when a style map has been loaded)
+  if(parameterValues.styleMap.imageLoaded) {
+    styleMapFolder.addButton({
+      title: 'Unload style map image'
+    })
+      .on('click', () => {
+        styleMapPreviewImageContainer.remove();
+        styleMapChooser.remove();
+        simulationUniforms.styleMapTexture.value = undefined;
+        parameterValues.styleMap.imageLoaded = false;
+        rebuildLeftPane();
+      });
   }
 
   // Load style map image button
