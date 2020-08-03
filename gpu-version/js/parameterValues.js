@@ -10,7 +10,7 @@ export default {
   timestep: parameterMetadata.timestep.initial,
 
   seed: {
-    type: 'Circle',
+    type: 2,
     circle: {
       radius: 100
     },
