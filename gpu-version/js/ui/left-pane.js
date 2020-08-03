@@ -25,7 +25,7 @@ export function setupLeftPane() {
 
       let reader = new FileReader();
       reader.onload = function() {
-        // Create the DOM elements needd for the floating thumbnail, if they aren't already set up
+        // Create the DOM elements needed for the floating thumbnail, if they aren't already set up
         if(styleMapPreviewImageContainer === undefined) {
           styleMapPreviewImageContainer = document.createElement('div');
           styleMapPreviewImageContainer.setAttribute('id', 'style-map-preview-image-container');
@@ -120,28 +120,28 @@ function setupStyleMapFolder() {
                                                'rotate(' + parameterValues.styleMap.rotation + 'deg) ';
       });
 
-    // X offset range slider
-    styleMapFolder.addInput(parameterValues.styleMap.translate, 'x', {
-      label: 'X offset',
-      min: -parameterValues.canvas.width/2,
-      max: parameterValues.canvas.width/2,
-      step: .01
+    // X/Y offset 2D slider
+    styleMapFolder.addInput(parameterValues.styleMap, 'translate', {
+      label: 'Offset',
+      x: {
+        min: -parameterValues.canvas.width/2,
+        max: parameterValues.canvas.width/2,
+        step: .01
+      },
+      y: {
+        min: -parameterValues.canvas.height/2,
+        max: parameterValues.canvas.height/2,
+        step: .01
+      }
     })
-      .on('change', () => {
-        simulationUniforms.styleMapTransforms.value.z = parameterValues.styleMap.translate.x;
-        styleMapPreviewImage.style.marginLeft = parameterValues.styleMap.translate.x + 'px';
-      });
+      .on('change', (value) => {
+        // X component
+        simulationUniforms.styleMapTransforms.value.z = value.x;
+        styleMapPreviewImage.style.marginLeft = value.x + 'px';
 
-    // Y offset range slider
-    styleMapFolder.addInput(parameterValues.styleMap.translate, 'y', {
-      label: 'Y offset',
-      min: -parameterValues.canvas.height/2,
-      max: parameterValues.canvas.height/2,
-      step: .01
-    })
-      .on('change', () => {
-        simulationUniforms.styleMapTransforms.value.w = parameterValues.styleMap.translate.y;
-        styleMapPreviewImage.style.marginTop = parameterValues.styleMap.translate.y + 'px';
+        // Y component
+        simulationUniforms.styleMapTransforms.value.w = value.y;
+        styleMapPreviewImage.style.marginTop = value.y + 'px';
       });
 
       styleMapFolder.addSeparator();
@@ -193,7 +193,7 @@ function setupStyleMapFolder() {
 
       // Easing equation dropdown
       styleMapFolder.addInput(parameterValues.styleMap.animation, 'easingEquation', {
-        label: 'Easing style',
+        label: 'Easing',
         options: {
           'Linear': 0
         }
@@ -217,9 +217,9 @@ function setupStyleMapFolder() {
       title: 'Unload style map image'
     })
       .on('click', () => {
-        styleMapPreviewImageContainer.remove();
-        styleMapChooser.remove();
+        styleMapPreviewImageContainer.style.display = 'none';
         simulationUniforms.styleMapTexture.value = undefined;
+        simulationUniforms.styleMapResolution.value = new THREE.Vector2(-1,-1);
         parameterValues.styleMap.imageLoaded = false;
         rebuildLeftPane();
       });
