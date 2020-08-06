@@ -4,6 +4,7 @@
 
 import { drawFirstFrame } from './firstFrame';
 import { exportImage } from './export';
+import { toggleUI } from './ui';
 
 export function setupKeyboard() {
   window.addEventListener('keyup', function(e) {
@@ -19,6 +20,10 @@ export function setupKeyboard() {
 
       case 's':
         exportImage();
+        break;
+
+      case 'g':
+        toggleUI();
         break;
     }
   });

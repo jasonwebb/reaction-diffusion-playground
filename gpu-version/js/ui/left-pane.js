@@ -83,6 +83,14 @@ export function setupLeftPane() {
     setupLeftPane();
   }
 
+  export function hideLeftPane() {
+    pane.containerElem_.style.display = 'none';
+  }
+
+  export function showLeftPane() {
+    pane.containerElem_.style.display = 'block';
+  }
+
 
 //===========================================================
 //  STYLE MAP

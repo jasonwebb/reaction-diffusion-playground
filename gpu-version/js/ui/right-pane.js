@@ -37,6 +37,14 @@ export function setupRightPane() {
     setupRightPane();
   }
 
+  export function hideRightPane() {
+    pane.containerElem_.style.display = 'none';
+  }
+
+  export function showRightPane() {
+    pane.containerElem_.style.display = 'block';
+  }
+
 
 //==============================================================
 //  REACTION-DIFFUSION PARAMETERS
