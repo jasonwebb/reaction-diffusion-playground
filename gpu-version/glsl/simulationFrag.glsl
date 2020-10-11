@@ -54,16 +54,16 @@ vec2 getLaplacian(vec4 centerTexel) {
   vec2 laplacian = centerTexel.xy * weights[1][1];  // center
 
   // Add in orthogonal values
-  laplacian += texture2D(previousIterationTexture, v_uvs[1]).xy * weights[0][1];  // top
-  laplacian += texture2D(previousIterationTexture, v_uvs[2]).xy * weights[1][2];  // right
-  laplacian += texture2D(previousIterationTexture, v_uvs[3]).xy * weights[2][1];  // bottom
-  laplacian += texture2D(previousIterationTexture, v_uvs[4]).xy * weights[1][0];  // left
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[1])).xy * weights[0][1];  // top
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[2])).xy * weights[1][2];  // right
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[3])).xy * weights[2][1];  // bottom
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[4])).xy * weights[1][0];  // left
 
   // Add in diagonal values
-  laplacian += texture2D(previousIterationTexture, v_uvs[5]).xy * weights[0][2];  // top-right
-  laplacian += texture2D(previousIterationTexture, v_uvs[6]).xy * weights[2][2];  // bottom-right
-  laplacian += texture2D(previousIterationTexture, v_uvs[7]).xy * weights[2][0];  // bottom-left
-  laplacian += texture2D(previousIterationTexture, v_uvs[8]).xy * weights[0][0];  // top-left
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[5])).xy * weights[0][2];  // top-right
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[6])).xy * weights[2][2];  // bottom-right
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[7])).xy * weights[2][0];  // bottom-left
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[8])).xy * weights[0][0];  // top-left
 
   return laplacian;
 }
@@ -122,14 +122,14 @@ void main() {
     float distToMouse = distance(mousePosition * resolution, v_uvs[0] * resolution);
 
     if(distToMouse < brushRadius) {
-      gl_FragColor = vec4(0.0, 0.9, 0.0, 1.0);
+      gl_FragColor = vec4(0.0, mix(0.0, 0.3, distToMouse/brushRadius), 0.0, 1.0);
       return;
     }
   }
 
   // DEBUGGING: override f/k uniforms to generate parameter map
-  // float f = 0.1 * v_uvs[0].y;
-  // float k = 0.03 + 0.04 * v_uvs[0].x;
+  // nf = 0.1 * v_uvs[0].y;
+  // nk = 0.03 + 0.04 * v_uvs[0].x;
 
   // Pre-calculate complex and repeated terms
   vec2 laplacian = getLaplacian(centerTexel);
