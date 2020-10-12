@@ -72,9 +72,9 @@ export function setupLeftPane() {
   });
 
   setupStyleMapFolder();
+  setupOrientationFolder();
 
   // TODO: setupFlowFolder();
-  // TODO: setupDirectionBiasFolder();
   // TODO: setupScaleFolder();
 }
 
@@ -239,5 +239,32 @@ function setupStyleMapFolder() {
   })
     .on('click', () => {
       styleMapChooser.click();
+    });
+}
+
+
+//===========================================================
+//  ORIENTATION
+//===========================================================
+function setupOrientationFolder() {
+  const styleMapFolder = pane.addFolder({ title: 'Orientation' });
+
+  // X/Y orientation direction 2D slider
+  styleMapFolder.addInput(parameterValues.orientation, 'direction', {
+    label: 'Direction',
+    x: {
+      min: -parameterMetadata.effects.orientation.direction.horizontal.max,
+      max: parameterMetadata.effects.orientation.direction.vertical.max,
+      step: .001
+    },
+    y: {
+      min: -parameterMetadata.effects.orientation.direction.vertical.max,
+      max: parameterMetadata.effects.orientation.direction.vertical.max,
+      step: .001
+    }
+  })
+    .on('change', (value) => {
+      simulationUniforms.orientationHorizontal.value = value.x;
+      simulationUniforms.orientationVertical.value = value.y;
     });
 }

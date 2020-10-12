@@ -19,6 +19,9 @@ uniform vec4 styleMapTransforms;
 uniform vec2 styleMapParameters;
 uniform vec2 styleMapResolution;
 
+uniform float orientationHorizontal;
+uniform float orientationVertical;
+
 uniform vec2 resolution;
 
 varying vec2 v_uvs[9];
@@ -54,10 +57,10 @@ vec2 getLaplacian(vec4 centerTexel) {
   vec2 laplacian = centerTexel.xy * weights[1][1];  // center
 
   // Add in orthogonal values
-  laplacian += texture2D(previousIterationTexture, fract(v_uvs[1])).xy * weights[0][1];  // top
-  laplacian += texture2D(previousIterationTexture, fract(v_uvs[2])).xy * weights[1][2];  // right
-  laplacian += texture2D(previousIterationTexture, fract(v_uvs[3])).xy * weights[2][1];  // bottom
-  laplacian += texture2D(previousIterationTexture, fract(v_uvs[4])).xy * weights[1][0];  // left
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[1])).xy * (weights[0][1] + orientationVertical);  // top
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[2])).xy * (weights[1][2] + orientationHorizontal);  // right
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[3])).xy * (weights[2][1] - orientationVertical);  // bottom
+  laplacian += texture2D(previousIterationTexture, fract(v_uvs[4])).xy * (weights[1][0] - orientationHorizontal);  // left
 
   // Add in diagonal values
   laplacian += texture2D(previousIterationTexture, fract(v_uvs[5])).xy * weights[0][2];  // top-right

@@ -67,5 +67,12 @@ export default {
       easingEquation: '',
       speed: 1.0
     }
+  },
+
+  orientation: {
+    direction: {
+      x: parameterMetadata.effects.orientation.direction.horizontal.initial,
+      y: parameterMetadata.effects.orientation.direction.vertical.initial
+    }
   }
 };

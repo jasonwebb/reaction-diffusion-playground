@@ -40,6 +40,14 @@ export let simulationUniforms = {
     type: "v2",
     value: new THREE.Vector2(parameterValues.f, parameterValues.k)
   },
+  orientationVertical: {
+    type: 'f',
+    value: parameterValues.orientation.direction.y
+  },
+  orientationHorizontal: {
+    type: 'f',
+    value: parameterValues.orientation.direction.x
+  },
 
   // Reaction-diffusion equation parameters
   f: {   // feed rate
