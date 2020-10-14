@@ -36,18 +36,14 @@ export default {
       initial: 900
     }
   },
-  effects: {
-    orientation: {
-      direction: {
-        vertical: {
-          max: .5,
-          initial: 0.0
-        },
-        horizontal: {
-          max: .5,
-          initial: 0.0
-        }
-      }
+  bias: {
+    x: {
+      max: .5,
+      initial: 0.0
+    },
+    y: {
+      max: .5,
+      initial: 0.0
     }
   }
 };

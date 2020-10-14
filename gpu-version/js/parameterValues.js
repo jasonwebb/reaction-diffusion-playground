@@ -69,10 +69,8 @@ export default {
     }
   },
 
-  orientation: {
-    direction: {
-      x: parameterMetadata.effects.orientation.direction.horizontal.initial,
-      y: parameterMetadata.effects.orientation.direction.vertical.initial
-    }
+  bias: {
+    x: parameterMetadata.bias.x.initial,
+    y: parameterMetadata.bias.y.initial
   }
 };

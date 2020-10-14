@@ -72,7 +72,7 @@ export function setupLeftPane() {
   });
 
   setupStyleMapFolder();
-  setupOrientationFolder();
+  setupBiasFolder();
 
   // TODO: setupFlowFolder();
   // TODO: setupScaleFolder();
@@ -244,27 +244,27 @@ function setupStyleMapFolder() {
 
 
 //===========================================================
-//  ORIENTATION
+//  Bias (orientation)
 //===========================================================
-function setupOrientationFolder() {
-  const styleMapFolder = pane.addFolder({ title: 'Orientation' });
+function setupBiasFolder() {
+  const biasFolder = pane.addFolder({ title: 'Bias' });
 
-  // X/Y orientation direction 2D slider
-  styleMapFolder.addInput(parameterValues.orientation, 'direction', {
+  // X/Y bias direction 2D pad
+  biasFolder.addInput(parameterValues, 'bias', {
     label: 'Direction',
     x: {
-      min: -parameterMetadata.effects.orientation.direction.horizontal.max,
-      max: parameterMetadata.effects.orientation.direction.vertical.max,
+      min: -parameterMetadata.bias.x.max,
+      max: parameterMetadata.bias.x.max,
       step: .001
     },
     y: {
-      min: -parameterMetadata.effects.orientation.direction.vertical.max,
-      max: parameterMetadata.effects.orientation.direction.vertical.max,
+      min: -parameterMetadata.bias.y.max,
+      max: parameterMetadata.bias.y.max,
       step: .001
     }
   })
     .on('change', (value) => {
-      simulationUniforms.orientationHorizontal.value = value.x;
-      simulationUniforms.orientationVertical.value = value.y;
+      simulationUniforms.bias.value.x = value.x;
+      simulationUniforms.bias.value.y = value.y;
     });
 }
