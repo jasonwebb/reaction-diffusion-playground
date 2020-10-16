@@ -53,7 +53,9 @@ export default {
     to: {
       min: 0.0,
       max: 1.0
-    }
+    },
+    saturation: .7,
+    luminosity: .7
   },
 
   canvas: {

@@ -146,6 +146,14 @@ export let displayUniforms = {
       parameterValues.hsl.to.min,
       parameterValues.hsl.to.max
     )
+  },
+  hslSaturation: {
+    type: 'f',
+    value: parameterValues.hsl.saturation
+  },
+  hslLuminosity: {
+    type: 'f',
+    value: parameterValues.hsl.luminosity
   }
 };
 

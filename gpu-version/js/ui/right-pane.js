@@ -345,11 +345,17 @@ function setupRenderingFolder() {
       folder.addInput(parameterValues.hsl.from, 'max', { label: 'From (high)', min: 0.0, max: 1.0 })
         .on('change', (value) => { displayUniforms.hslFrom.value.y = value; });
 
-      folder.addInput(parameterValues.hsl.to, 'min', { label: 'To (low)', min: 0.0, max: 1.0 })
+      folder.addInput(parameterValues.hsl.to, 'min', { label: 'To (low)', min: 0.0, max: 1.0, step: .001 })
         .on('change', (value) => { displayUniforms.hslTo.value.x = value; });
 
-      folder.addInput(parameterValues.hsl.to, 'max', { label: 'To (high)', min: 0.0, max: 1.0 })
+      folder.addInput(parameterValues.hsl.to, 'max', { label: 'To (high)', min: 0.0, max: 1.0, step: .001 })
         .on('change', (value) => { displayUniforms.hslTo.value.y = value; });
+
+      folder.addInput(parameterValues.hsl, 'saturation', { label: 'Saturation', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslSaturation.value = value; });
+
+      folder.addInput(parameterValues.hsl, 'luminosity', { label: 'Luminosity', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslLuminosity.value = value; });
     }
 
 

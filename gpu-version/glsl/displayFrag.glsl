@@ -13,6 +13,8 @@ uniform vec4 colorStop5;
 
 uniform vec2 hslFrom;
 uniform vec2 hslTo;
+uniform float hslSaturation;
+uniform float hslLuminosity;
 
 // http://theorangeduck.com/page/avoiding-shader-conditionals
 float when_eq(float x, float y)  { return 1.0 - abs(sign(x - y)); }
@@ -163,8 +165,8 @@ void main() {
       // map(B, .6, 1., 0.5, 1.),
       // map(B-A, 0.2, 1., .3, .8),
       map(B-A, hslFrom[0], hslFrom[1], hslTo[0], hslTo[1]),
-      .7,
-      .7
+      hslSaturation,
+      hslLuminosity
     )), 1.);
   }
 
