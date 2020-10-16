@@ -130,6 +130,22 @@ export let displayUniforms = {
       parameterValues.gradientColors.color5RGB.b/255,
       parameterValues.gradientColors.color5Stop
     )
+  },
+
+  // HSL mapping
+  hslFrom: {
+    type: 'vec2',
+    value: new THREE.Vector2(
+      parameterValues.hsl.from.min,
+      parameterValues.hsl.from.max
+    )
+  },
+  hslTo: {
+    type: 'vec2',
+    value: new THREE.Vector2(
+      parameterValues.hsl.to.min,
+      parameterValues.hsl.to.max
+    )
   }
 };
 

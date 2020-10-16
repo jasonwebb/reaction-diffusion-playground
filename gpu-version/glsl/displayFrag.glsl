@@ -11,6 +11,9 @@ uniform vec4 colorStop3;
 uniform vec4 colorStop4;
 uniform vec4 colorStop5;
 
+uniform vec2 hslFrom;
+uniform vec2 hslTo;
+
 // http://theorangeduck.com/page/avoiding-shader-conditionals
 float when_eq(float x, float y)  { return 1.0 - abs(sign(x - y)); }
 float when_neq(float x, float y) { return abs(sign(x - y)); }
@@ -18,6 +21,21 @@ float when_gt(float x, float y)  { return max(sign(x - y), 0.0); }
 float when_lt(float x, float y)  { return max(sign(y - x), 0.0); }
 float when_le(float x, float y)  { return 1.0 - max(sign(x - y), 0.0); }
 float when_ge(float x, float y)  { return 1.0 - max(sign(y - x), 0.0); }
+
+float map(float value, float min1, float max1, float min2, float max2) {
+  return min2 + (value - min1) * (max2 - min2) / (max1 - min1);
+}
+
+//  Function from Iñigo Quiles
+//  https://www.shadertoy.com/view/MsS3Wc
+vec3 hsb2rgb(in vec3 c){
+  vec3 rgb = clamp(abs(mod(c.x*6.0+vec3(0.0,4.0,2.0),
+    6.0)-3.0)-1.0,
+    0.0,
+    1.0 );
+  rgb = rgb*rgb*(3.0-2.0*rgb);
+  return c.z * mix(vec3(1.0), rgb, c.y);
+}
 
 vec4 rainbow(vec2 uv) {
   float PI = 3.1415926535897932384626433832795;
@@ -137,6 +155,17 @@ void main() {
   // No processing - red for chemical A, green for chemical B =====================================
   } else if(renderingStyle == 7) {
     outputColor = pixel;
+
+  // HSL mapping ==================================================================================
+  } else if(renderingStyle == 8) {
+    outputColor = vec4(hsb2rgb(vec3(
+      // map(A, .6, 1., 0., .6),
+      // map(B, .6, 1., 0.5, 1.),
+      // map(B-A, 0.2, 1., .3, .8),
+      map(B-A, hslFrom[0], hslFrom[1], hslTo[0], hslTo[1]),
+      .7,
+      .7
+    )), 1.);
   }
 
   gl_FragColor = outputColor;

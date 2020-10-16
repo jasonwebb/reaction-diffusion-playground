@@ -45,6 +45,17 @@ export default {
     color5Enabled: true
   },
 
+  hsl: {
+    from: {
+      min: 0.0,
+      max: 1.0
+    },
+    to: {
+      min: 0.0,
+      max: 1.0
+    }
+  },
+
   canvas: {
     width: parameterMetadata.canvas.width.initial,
     height: parameterMetadata.canvas.height.initial,

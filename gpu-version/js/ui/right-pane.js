@@ -184,7 +184,8 @@ function setupRenderingFolder() {
       'Rainbow': 4,
       'Black and white (soft)': 5,
       'Black and white (hard)': 6,
-      'Raw': 7
+      'Raw': 7,
+      'HSL mapping': 8
     }
   })
     .on('change', (value) => {
@@ -219,6 +220,13 @@ function setupRenderingFolder() {
         break;
 
       case 6:
+        break;
+
+      case 7:
+        break;
+
+      case 8:
+        addHSLMappingOptions(folder);
         break;
 
       default:
@@ -328,6 +336,20 @@ function setupRenderingFolder() {
             displayUniforms.colorStop5.value = new THREE.Vector4(-1, -1, -1, -1);
           }
         });
+    }
+
+    function addHSLMappingOptions(folder) {
+      folder.addInput(parameterValues.hsl.from, 'min', { label: 'From (low)', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslFrom.value.x = value; });
+
+      folder.addInput(parameterValues.hsl.from, 'max', { label: 'From (high)', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslFrom.value.y = value; });
+
+      folder.addInput(parameterValues.hsl.to, 'min', { label: 'To (low)', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslTo.value.x = value; });
+
+      folder.addInput(parameterValues.hsl.to, 'max', { label: 'To (high)', min: 0.0, max: 1.0 })
+        .on('change', (value) => { displayUniforms.hslTo.value.y = value; });
     }
 
 
