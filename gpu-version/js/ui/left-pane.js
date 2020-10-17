@@ -83,6 +83,10 @@ export function setupLeftPane() {
     setupLeftPane();
   }
 
+  export function refreshLeftPane() {
+    pane.refresh();
+  }
+
   export function hideLeftPane() {
     pane.containerElem_.style.display = 'none';
   }

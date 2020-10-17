@@ -1,5 +1,5 @@
-import { setupRightPane, rebuildRightPane, hideRightPane, showRightPane } from "./ui/right-pane";
-import { setupLeftPane, rebuildLeftPane, hideLeftPane, showLeftPane } from "./ui/left-pane";
+import { setupRightPane, rebuildRightPane, refreshRightPane, hideRightPane, showRightPane } from "./ui/right-pane";
+import { setupLeftPane, rebuildLeftPane, refreshLeftPane, hideLeftPane, showLeftPane } from "./ui/left-pane";
 
 let isVisible = true;
 let fpsCounterEl, cornerLinksEl;
@@ -15,6 +15,11 @@ export function setupUI() {
   export function rebuildUI() {
     rebuildRightPane();
     rebuildLeftPane();
+  }
+
+  export function refreshUI() {
+    refreshRightPane();
+    refreshLeftPane();
   }
 
   export function toggleUI() {

@@ -37,6 +37,10 @@ export function setupRightPane() {
     setupRightPane();
   }
 
+  export function refreshRightPane() {
+    pane.refresh();
+  }
+
   export function hideRightPane() {
     pane.containerElem_.style.display = 'none';
   }
