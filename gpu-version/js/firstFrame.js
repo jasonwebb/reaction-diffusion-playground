@@ -82,7 +82,7 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
       break;
 
     case InitialTextureTypes.IMAGE:
-      getImagePixels('./seed-images/test.png', centerX, centerY)
+      getImagePixels('./images/seeds/test.png', centerX, centerY)
         .then((initialData) => {
           renderInitialDataToRenderTargets(initialData);
         })
