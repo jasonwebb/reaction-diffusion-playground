@@ -93,12 +93,12 @@ export function setupMap() {
 
 export function expandMap() {
   document.body.classList.add('modal-open');
-  mapDialog.classList.remove('is-hidden');
+  mapDialog.classList.add('is-visible');
 }
 
 export function collapseMap() {
   document.body.classList.remove('modal-open');
-  mapDialog.classList.add('is-hidden');
+  mapDialog.classList.remove('is-visible');
 }
 
 function getFeedKillValuesFromMouse(mouseX, mouseY) {

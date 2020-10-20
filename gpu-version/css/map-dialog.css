@@ -10,16 +10,15 @@ body.modal-open {
   left: 0;
   z-index: 1;
 
-  display: flex;
+  display: none;
   justify-content: center;
   align-items: center;
 
   background-color: rgba(0,0,0,.9);
 }
 
-  #map-dialog.is-hidden {
-    opacity: 0;
-    pointer-events: none;
+  #map-dialog.is-visible {
+    display: flex;
   }
 
   #map-dialog .inner-panel {
