@@ -74,6 +74,8 @@ export default {
     },
     f: parameterMetadata.f.initial,
     k: parameterMetadata.k.initial,
+    dA: parameterMetadata.dA.initial,
+    dB: parameterMetadata.dB.initial,
     animation: {
       enabled: false,
       parameter: '',

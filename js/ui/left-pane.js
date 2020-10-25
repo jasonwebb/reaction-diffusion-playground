@@ -158,7 +158,7 @@ function setupStyleMapFolder() {
 
       styleMapFolder.addSeparator();
 
-    // f/k RATES ----------------------------------------------------------------------
+    // f/k/dA/dB PARAMETERS ----------------------------------------------------------------------
     styleMapFolder.addInput(parameterValues.styleMap, 'f', {
       label: 'Feed (#2)',
       min: parameterMetadata.f.min,
@@ -179,6 +179,28 @@ function setupStyleMapFolder() {
     })
       .on('change', (value) => {
         simulationUniforms.styleMapParameters.value.y = value;
+      });
+
+    styleMapFolder.addInput(parameterValues.styleMap, 'dA', {
+      label: 'dA (#2)',
+      min: parameterMetadata.dA.min,
+      max: parameterMetadata.dA.max,
+      initial: parameterValues.dA.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.z = value;
+      });
+
+    styleMapFolder.addInput(parameterValues.styleMap, 'dB', {
+      label: 'dB (#2)',
+      min: parameterMetadata.dB.min,
+      max: parameterMetadata.dB.max,
+      initial: parameterValues.dB.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.w = value;
       });
 
       styleMapFolder.addSeparator();

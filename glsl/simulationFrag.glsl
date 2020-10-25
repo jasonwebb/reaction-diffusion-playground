@@ -16,7 +16,7 @@ uniform float brushRadius;
 
 uniform sampler2D styleMapTexture;
 uniform vec4 styleMapTransforms;
-uniform vec2 styleMapParameters;
+uniform vec4 styleMapParameters;
 uniform vec2 styleMapResolution;
 
 uniform vec2 bias;
@@ -108,6 +108,8 @@ void main() {
   // Copy the f/k parameters so they can be modified locally ("n" for "new")
   float nf = f;
   float nk = k;
+  float ndA = dA;
+  float ndB = dB;
 
   // If a style map image is set, smoothly interpolate between the main f/k and the f/k values set in the Style Map pane
   if(styleMapResolution != vec2(-1.0, -1.0)) {
@@ -117,6 +119,8 @@ void main() {
     float luminance = 0.3 * styleMapTexel.r + 0.59 * styleMapTexel.g + 0.11 * styleMapTexel.b;
     nf = mix(f, styleMapParameters[0], luminance);
     nk = mix(k, styleMapParameters[1], luminance);
+    ndA = mix(dA, styleMapParameters[2], luminance);
+    ndB = mix(dB, styleMapParameters[3], luminance);
   }
 
   // Draw more of the B chemical around the mouse on mouse down
@@ -138,8 +142,8 @@ void main() {
   float reactionTerm = A * B * B;
 
   gl_FragColor = vec4(
-    A + ((dA * laplacian[0] - reactionTerm + nf * (1.0 - A)) * timestep),
-    B + ((dB * laplacian[1] + reactionTerm - (nk + nf) * B) * timestep),
+    A + ((ndA * laplacian[0] - reactionTerm + nf * (1.0 - A)) * timestep),
+    B + ((ndB * laplacian[1] + reactionTerm - (nk + nf) * B) * timestep),
     centerTexel.b,
     1.0
   );

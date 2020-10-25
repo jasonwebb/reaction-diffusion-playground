@@ -37,8 +37,8 @@ export let simulationUniforms = {
     value: new THREE.Vector4(1.0, 0.0, 0.0, 0.0)  // {scale, rotation, xOffset, yOffset}
   },
   styleMapParameters: {
-    type: "v2",
-    value: new THREE.Vector2(parameterValues.f, parameterValues.k)
+    type: "v4",
+    value: new THREE.Vector4(parameterValues.f, parameterValues.k, parameterValues.dA, parameterValues.dB)
   },
   bias: {
     type: 'vec2',
