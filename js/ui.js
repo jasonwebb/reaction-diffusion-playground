@@ -2,13 +2,13 @@ import { setupRightPane, rebuildRightPane, refreshRightPane, hideRightPane, show
 import { setupLeftPane, rebuildLeftPane, refreshLeftPane, hideLeftPane, showLeftPane } from "./ui/left-pane";
 
 let isVisible = true;
-let fpsCounterEl, cornerLinksEl;
+let statsContainerEl, cornerLinksEl;
 
 export function setupUI() {
   setupRightPane();
   setupLeftPane();
 
-  fpsCounterEl = document.querySelector('#fps-counter');
+  statsContainerEl = document.querySelector('#stats-container');
   cornerLinksEl = document.querySelector('.corner-links');
 }
 
@@ -26,12 +26,12 @@ export function setupUI() {
     if(isVisible) {
       hideLeftPane();
       hideRightPane();
-      fpsCounterEl.style.display = 'none';
+      statsContainerEl.style.display = 'none';
       cornerLinksEl.style.display = 'none';
     } else {
       showLeftPane();
       showRightPane();
-      fpsCounterEl.style.display = 'block';
+      statsContainerEl.style.display = 'flex';
       cornerLinksEl.style.display = 'block';
     }
 
