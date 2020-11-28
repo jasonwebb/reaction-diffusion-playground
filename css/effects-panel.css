@@ -1,3 +1,10 @@
+#left-pane-container {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 350px;
+}
+
 #style-map-preview-image-container {
   position: absolute;
   top: 55px;

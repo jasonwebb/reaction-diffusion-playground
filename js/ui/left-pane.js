@@ -158,7 +158,7 @@ function setupStyleMapFolder() {
 
       styleMapFolder.addSeparator();
 
-    // f/k RATES ----------------------------------------------------------------------
+    // f/k/dA/dB PARAMETERS ----------------------------------------------------------------------
     styleMapFolder.addInput(parameterValues.styleMap, 'f', {
       label: 'Feed (#2)',
       min: parameterMetadata.f.min,

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import fps from 'fps';
 
 import { drawFirstFrame } from './js/firstFrame';
 import { setupRenderTargets } from './js/renderTargets';
@@ -8,6 +7,7 @@ import { setupMIDI } from './js/midi';
 import { setupKeyboard } from './js/keyboard';
 import { setupMouse } from './js/mouse';
 import { setupMap } from './js/map';
+import { setupStats, updateStats } from './js/stats';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
@@ -19,10 +19,8 @@ global.isPaused = false;
 
 let clock = new THREE.Clock();
 
-let ticker = fps({ every: 60 });
-let fpsEl;
-
 setupEnvironment();
+setupStats(pingPongSteps);
 setupUI();
 setupMap();
 setupKeyboard();
@@ -69,15 +67,6 @@ function setupEnvironment() {
 
   // Set up and render the first frame
   drawFirstFrame();
-
-  // Set up the FPS counter
-  fpsEl = document.createElement('div');
-  fpsEl.setAttribute('id', 'fps-counter');
-  document.body.appendChild(fpsEl);
-
-  ticker.on('data', (framerate) => {
-    fpsEl.innerHTML = String(Math.round(framerate)) + ' fps';
-  });
 }
 
   export function resetTextureSizes() {
@@ -102,8 +91,6 @@ function setupEnvironment() {
 //  - Main program loop, runs once per frame no matter what.
 //==============================================================
 function update() {
-  ticker.tick();
-
   if(!isPaused) {
     // Activate the simulation shaders
     displayMesh.material = simulationMaterial;
@@ -130,6 +117,8 @@ function update() {
     renderer.setRenderTarget(null);
     renderer.render(scene, camera);
   }
+
+  updateStats(isPaused);
 
   requestAnimationFrame(update);
 }
