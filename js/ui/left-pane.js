@@ -181,6 +181,28 @@ function setupStyleMapFolder() {
         simulationUniforms.styleMapParameters.value.y = value;
       });
 
+    styleMapFolder.addInput(parameterValues.styleMap, 'dA', {
+      label: 'dA (#2)',
+      min: parameterMetadata.dA.min,
+      max: parameterMetadata.dA.max,
+      initial: parameterValues.dA.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.z = value;
+      });
+
+    styleMapFolder.addInput(parameterValues.styleMap, 'dB', {
+      label: 'dB (#2)',
+      min: parameterMetadata.dB.min,
+      max: parameterMetadata.dB.max,
+      initial: parameterValues.dB.value,
+      step: .0001
+    })
+      .on('change', (value) => {
+        simulationUniforms.styleMapParameters.value.w = value;
+      });
+
       styleMapFolder.addSeparator();
 
     // ANIMATION ----------------------------------------------------------------------
