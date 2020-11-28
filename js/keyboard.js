@@ -22,7 +22,7 @@ export function setupKeyboard() {
         exportImage();
         break;
 
-      case 'g':
+      case 'u':
         toggleUI();
         break;
     }
