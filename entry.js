@@ -2,12 +2,12 @@ import * as THREE from 'three';
 
 import { drawFirstFrame } from './js/firstFrame';
 import { setupRenderTargets } from './js/renderTargets';
+import { setupStats, updateStats } from './js/stats';
 import { setupUI } from './js/ui';
-import { setupMIDI } from './js/midi';
+import { setupMap } from './js/map';
 import { setupKeyboard } from './js/keyboard';
 import { setupMouse } from './js/mouse';
-import { setupMap } from './js/map';
-import { setupStats, updateStats } from './js/stats';
+import { setupMIDI } from './js/midi';
 
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
@@ -19,14 +19,14 @@ global.isPaused = false;
 
 let clock = new THREE.Clock();
 
-setupEnvironment();
-setupStats(pingPongSteps);
-setupUI();
-setupMap();
-setupKeyboard();
-setupMouse();
-setupMIDI();
-update();
+setupEnvironment();         // set up the camera, scene, and other stuff ThreeJS needs to
+setupStats(pingPongSteps);  // set up the FPS and iteration counters
+setupUI();                  // set up the Tweakpane UI
+setupMap();                 // set up the live parameter map picker
+setupKeyboard();            // set up keyboard commands
+setupMouse();               // set up mouse controls
+setupMIDI();                // set up MIDI mappings
+update();                   // kick off the main render loop
 
 //==============================================================
 //  ENVIRONMENT (scene, camera, display mesh, etc)
@@ -118,7 +118,9 @@ function update() {
     renderer.render(scene, camera);
   }
 
+  // Tick the FPS and iteration counters
   updateStats(isPaused);
 
+  // Kick off next frame
   requestAnimationFrame(update);
 }

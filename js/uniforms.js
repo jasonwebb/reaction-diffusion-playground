@@ -2,6 +2,8 @@
 //  UNIFORMS
 //  - Uniforms are custom variables that get passed to the
 //    shaders. They get set on the CPU, then used on the GPU.
+//  - Many of these uniforms get modified by the UI.
+//  - See https://threejs.org/docs/index.html#api/en/core/Uniform
 //==============================================================
 
 import * as THREE from 'three';

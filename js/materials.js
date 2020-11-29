@@ -1,8 +1,11 @@
 //==============================================================
 //  MATERIALS
-//  - Materials are data structures that associate uniforms,
-//    vert shaders, and frag shaders along with some render-
-//    related configuration options.
+//  - Materials are data structures that describe how the surface
+//    of a mesh should look (color, shininess, etc).
+//  - Materials associate variables (uniforms) with shaders (small
+//    programs that run on the GPU)
+//  - Using ShaderMaterial, we can use our own shaders and uniforms.
+//  - See https://threejs.org/docs/index.html#api/en/materials/ShaderMaterial
 //==============================================================
 
 import * as THREE from 'three';
@@ -18,7 +21,7 @@ import { simulationUniforms, displayUniforms, passthroughUniforms } from './unif
 
 /**
   Simulation material
-  - This material takes a texture full of data (assumed to be
+  - This material takes a texture full of data encoded as pixels (assumed to be
     the previous iteration result), then applies the reaction-
     diffusion equation to each pixel.
 */

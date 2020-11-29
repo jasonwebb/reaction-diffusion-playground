@@ -63,7 +63,7 @@ export function setupMap() {
     verticalLine.classList.add('is-hidden');
   });
 
-  // Pass new f/k values (from mouse coords) to UI and simulation frag shader uniforms when the map is clicked
+  // When the map is clicked, pass new f/k values (from mouse coords) to UI and simulation frag shader uniforms
   mapImage.addEventListener('click', (e) => {
     const newFeedKillValues = getFeedKillValuesFromMouse(e.offsetX, e.offsetY);
 

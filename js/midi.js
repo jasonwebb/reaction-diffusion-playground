@@ -9,9 +9,6 @@ import { simulationUniforms, displayUniforms } from './uniforms';
 import { refreshUI } from './ui';
 import parameterValues from './parameterValues';
 
-let lastEventTime = Date.now();
-const eventIntervalThreshold = 500;
-
 export function setupMIDI() {
   WebMIDI.enable((error) => {
     if(error) {
@@ -26,7 +23,7 @@ export function setupMIDI() {
       setupLPD8(lpd8);
     }
 
-    // Launch Control XL ----------------------------------------------------
+    // Novation Launch Control XL ----------------------------------------------------
     let launchControlXL = WebMIDI.getInputByName('Launch Control XL');
 
     if(launchControlXL) {
@@ -35,6 +32,11 @@ export function setupMIDI() {
   });
 }
 
+
+/**
+  Akai LPD8 Wireless
+  ==================
+*/
 function setupLPD8(lpd8) {
   lpd8.addListener('noteon', 'all', (e) => {
     // Pads ===============================================
@@ -119,6 +121,11 @@ function setupLPD8(lpd8) {
   });
 }
 
+
+/**
+  Novation Launch Control XL
+  ==========================
+*/
 function setupLaunchControlXL(launchControlXL) {
   // PADS =====================================================================
   launchControlXL.addListener('noteon', 'all', (e) => {
