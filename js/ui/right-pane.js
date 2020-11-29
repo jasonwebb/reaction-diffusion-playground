@@ -343,16 +343,16 @@ function setupRenderingFolder() {
     }
 
     function addHSLMappingOptions(folder) {
-      folder.addInput(parameterValues.hsl.from, 'min', { label: 'From (low)', min: 0.0, max: 1.0 })
+      folder.addInput(parameterValues.hsl.from, 'min', { label: 'Chemical range (low)', min: 0.0, max: 1.0, step: .0001 })
         .on('change', (value) => { displayUniforms.hslFrom.value.x = value; });
 
-      folder.addInput(parameterValues.hsl.from, 'max', { label: 'From (high)', min: 0.0, max: 1.0 })
+      folder.addInput(parameterValues.hsl.from, 'max', { label: 'Chemical range (high)', min: 0.0, max: 1.0, step: .0001 })
         .on('change', (value) => { displayUniforms.hslFrom.value.y = value; });
 
-      folder.addInput(parameterValues.hsl.to, 'min', { label: 'To (low)', min: 0.0, max: 1.0, step: .001 })
+      folder.addInput(parameterValues.hsl.to, 'min', { label: 'Hue range (low)', min: 0.0, max: 1.0, step: .0001 })
         .on('change', (value) => { displayUniforms.hslTo.value.x = value; });
 
-      folder.addInput(parameterValues.hsl.to, 'max', { label: 'To (high)', min: 0.0, max: 1.0, step: .001 })
+      folder.addInput(parameterValues.hsl.to, 'max', { label: 'Hue range (high)', min: 0.0, max: 1.0, step: .0001 })
         .on('change', (value) => { displayUniforms.hslTo.value.y = value; });
 
       folder.addInput(parameterValues.hsl, 'saturation', { label: 'Saturation', min: 0.0, max: 1.0 })
