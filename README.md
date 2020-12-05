@@ -19,9 +19,9 @@ The most important terms, the ones we'll want to turn into tweakable parameters,
 
 The other terms in the equation are usually kept constant, but might be worth playing around with once you are comfortable with the core parameters:
 
-* ∇<sup>2</sup> - the Laplacian operator. Essentially a single value that represents the chemical concentration of the neighbors to the current cell.
-* AB<sup>2</sup> - reaction rate. Note that it is subtracted in the equation for chemical A and added in the equation for chemical B. This is how the chemical reaction converting chemical A into chemical B is modelled.
-* Δt - timestep. Using `1.0` here means it runs at "normal" speed. Smaller values are like slow motion, and larger values make it run faster. Large values can cause the system to collapse.
+* <code>∇<sup>2</sup></code> - the Laplacian operator. Essentially a single value that represents the chemical concentration of the neighbors to the current cell.
+* <code>AB<sup>2</sup></code> - reaction rate. Note that it is subtracted in the equation for chemical A and added in the equation for chemical B. This is how the chemical reaction converting chemical A into chemical B is modelled.
+* <code>Δt</code> - timestep. Using `1.0` here means it runs at "normal" speed. Smaller values are like slow motion, and larger values make it run faster. Large values can cause the system to collapse.
 
 [Learn more about reaction-diffusion in my morphogenesis-resources repo.](https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion)
 
@@ -34,6 +34,8 @@ In each frame of the simulation, a custom shader (`./glsl/simulationFrag.glsl`) 
 
 ## Using the app
 
+![Annotated screenshot of the UI](https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/ui-guide.png)
+
 ### Equation parameters
 Each of the four fundamental parameters of the reaction-diffusion equation (`f`, `k`, `dA`, `dB`), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.
 
@@ -41,10 +43,20 @@ Each of the four fundamental parameters of the reaction-diffusion equation (`f`,
 Sometimes it can be frustrating to randomly move the parameter sliders around, since you can easily land in a "dead zone" where nothing interesting happens. To help users navigate to interesting regions of the parameter space,
 
 ### Seed pattern
+Choose a **pattern** to use in the first frame of the simulation to **"seed"** the reaction.
+
+Also provides a button to reset the simulation with the selected pattern as the first frame (same exact thing as pressing the `r` key).
 
 ### Rendering style
+Control how the reaction-diffusion data is translated into visuals.
 
 ### Canvas size
+Set the **width** and **height** of the simulation area.
+
+You can also **maximize** the canvas to fit the entire viewport.
+
+### Global actions
+Buttons for **pause/play** and to **export an image** of the current state of the simulation area.
 
 ### Style map
 
@@ -52,10 +64,10 @@ Sometimes it can be frustrating to randomly move the parameter sliders around, s
 
 ### Keyboard controls
 
-* `Space` = pause/play
-* `r` = reset
-* `s` = save an image of the current canvas content
-* `u` = show/hide the UI
+* `Space` = pause/play.
+* `r` = reset using the currently-selected seed pattern.
+* `s` = save an image of the current canvas content.
+* `u` = show/hide the UI.
 
 ### Mouse controls
 Click to set the B to ???
@@ -73,26 +85,24 @@ If you have an Akai LPD8 Wireless or a Novation Launch Control XL, mappings are 
 2. Run `npm run serve` to start up Webpack and launch the application in a live-reloading browser window.
 
 ### Technologies used
-* ThreeJS framework for WebGL rendering
-* GLSL
+* [ThreeJS](https://threejs.org/) for WebGL conveniences like running custom shaders and managing uniforms.
+* [GLSL](https://www.khronos.org/opengl/wiki/Core_Language_(GLSL)) shaders for running the reaction-diffusion equation for every pixel of the screen and rendering.
 * Vanilla ES6 JavaScript.
 * MIDI support using [WebMidi.js](https://github.com/djipco/webmidi).
-* Webpack build system with live-reloading dev server.
-* Github Pages to serve the files.
+* [Webpack](https://webpack.js.org/) build system with live-reloading dev server.
+* [Github Pages](https://pages.github.com/) to serve the files.
 
-When you've got a set of changes that you'd like to
-
-### Files
+### Architecture and file structure
 
 #### JavaScript
-The most important file is `entry.js`. It sets up the ThreeJS environment with a camera, scene, and plane mesh where the simulation output will be rendered. It also contains the main program loop (`update()`) that implements the "ping pong" technique to render simulation data to render targets a bunch of times before displaying anything on the screen.
+The most important file is `entry.js` - that's where the environment, UI, and the simulation itself are set up, and where the main update loop is. It sets up a ThreeJS environment with an orthographic camera and a scene containing a plane mesh that is oriented perpendicular to the camera so that it appears 2D.
 
-In the `./js` folder are:
+In the `./js` folder are a bunch of modules split into files (all referenced in one way or another through `entry.js`):
 
-* `export.js` - functions for downloading the canvas content as an image file.
+* `export.js` - helper functions for downloading the canvas content as an image file.
 * `firstFrame.js` - helper functions for seeding the first frame of the simulation with interesting patterns.
 * `keyboard.js` - global keyboard commands.
-* `map.js` - modal dialog with parameter map picker.
+* `map.js` - handles the modal dialog containing the interactive parameter map picker.
 * `materials.js` - ThreeJS materials that associate uniforms with custom shaders. These get attached to the render targets and plane mesh to run and render the simulation.
 * `midi.js` - mappings for MIDI controllers (Akai LPD8 Wireless and Novation Launch Control XL).
 * `mouse.js` - mouse controls.
@@ -110,12 +120,12 @@ In the `./js` folder are:
 
 In the `./glsl` folder are:
 
-* `displayFrag.glsl` -
-* `displayVert.glsl` -
-* `passthroughFrag.glsl` -
-* `passthroughVert.glsl` -
-* `simulationFrag.glsl` -
-* `simulationVert.glsl` -
+* `displayFrag.glsl` - turns chemical concentration data textures into colorful pixels for the screen using a variety of techniques.
+* `displayVert.glsl` - passes vertex data onto the `displayFrag.glsl` shader with no modifications.
+* `passthroughFrag.glsl` - takes a passed texture and renders it as-is to the render targets to create a first frame of data for the simulation to work with.
+* `passthroughVert.glsl` - passes vertex data onto the `displayFrag.glsl` shader with no modifications.
+* `simulationFrag.glsl` - takes a passed texture of encoded chemical concentration data and applies the reaction-diffusion equation to each pixel, spitting out a new texture of data to be rendered to the screen or fed into another simulation pass.
+* `simulationVert.glsl` - passes vertex data along with precomputed texel neighbor coordinates so that they can be automatically interpolated for use in the frag shader.
 
 ## References
 
