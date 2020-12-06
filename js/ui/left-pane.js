@@ -15,7 +15,7 @@ let pane, paneContainer,
     styleMapChooser, styleMapPreviewImageContainer, styleMapPreviewImage;
 
 export function setupLeftPane() {
-  if(styleMapChooser === undefined) {
+  if(styleMapChooser === undefined || styleMapChooser === null) {
     styleMapChooser = document.getElementById('style-map-chooser');
 
     styleMapChooser.addEventListener('change', (e) => {
@@ -34,12 +34,17 @@ export function setupLeftPane() {
           styleMapPreviewImageContainer.appendChild(styleMapPreviewImage);
 
           document.body.appendChild(styleMapPreviewImageContainer);
+
+        // If the container has been set up previously, that means the user has probably loaded a new image, so we just need to make sure the container is visible.
+        } else {
+          styleMapPreviewImageContainer.style.display = 'block';
         }
 
         // Load the image and pass it to the simulation shader as a texture uniform
         const loader = new THREE.TextureLoader();
         simulationUniforms.styleMapTexture.value = loader.load(reader.result);
 
+        // Also pass the width and height of the image into the shader as uniforms
         const img = new Image();
         img.onload = function() {
           simulationUniforms.styleMapResolution.value = new THREE.Vector2(
@@ -255,6 +260,8 @@ function setupStyleMapFolder() {
         simulationUniforms.styleMapTexture.value = undefined;
         simulationUniforms.styleMapResolution.value = new THREE.Vector2(-1,-1);
         parameterValues.styleMap.imageLoaded = false;
+
+        styleMapChooser.value = null;
         rebuildLeftPane();
       });
   }
