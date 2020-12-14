@@ -10,8 +10,6 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <link rel="stylesheet" type="text/css" href="sketch-styles.css">
-
   <!-- Facebook OG -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="">
@@ -36,16 +34,26 @@
   <link rel="stylesheet" href="css/effects-panel.css">
 
   <style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
   body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
+    background: radial-gradient(circle, rgb(10,10,10) 20%, rgb(20,20,20) 100%);
   }
 
   .tp-dfwv { width: 350px !important; }
   .tp-lblv_v { width: 250px !important; }
+
+  canvas { display: block; }
   </style>
 </head>
 
@@ -54,7 +62,7 @@
   <div id="container"></div>
 
   <!-- Dialog popup containing parameter map. Bring it up using the "Pick parameter values from map" button on the right pane. -->
-  <div id="map-dialog" role="dialog" aria-modal="true">
+  <div id="map-dialog" role="dialog" aria-modal="true" aria-label="Parameter map">
     <div class="inner-panel">
       <div class="title">Click anywhere on the map to set feed and kill rate values</div>
       <button class="close-button" title="Close">
