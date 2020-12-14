@@ -15,11 +15,9 @@ export function setupMap() {
   // Create crosshair lines
   horizontalLine = document.createElement('div');
   horizontalLine.classList.add('horizontal-line', 'crosshair-line', 'is-hidden');
-  horizontalLine.style.width = mapImage.scrollWidth + 'px';
 
   verticalLine = document.createElement('div');
   verticalLine.classList.add('vertical-line', 'crosshair-line', 'is-hidden');
-  verticalLine.style.height = mapImage.scrollHeight + 'px';
 
   // Create crosshair labels
   horizontalLabel = document.createElement('div');
@@ -55,6 +53,9 @@ export function setupMap() {
   mapImage.addEventListener('mouseover', (e) => {
     horizontalLine.classList.remove('is-hidden');
     verticalLine.classList.remove('is-hidden');
+
+    horizontalLine.style.width = mapImage.clientWidth + 'px';
+    verticalLine.style.height = mapImage.height + 'px';
   });
 
   // Hide the crosshairs when map image loses hover
