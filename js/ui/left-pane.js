@@ -205,6 +205,7 @@ function setupStyleMapFolder() {
 
       styleMapFolder.addSeparator();
 
+    /*
     // ANIMATION ----------------------------------------------------------------------
     // Animate checkbox
     styleMapFolder.addInput(parameterValues.styleMap.animation, 'enabled', { label: 'Animate' })
@@ -243,6 +244,7 @@ function setupStyleMapFolder() {
     }
 
       styleMapFolder.addSeparator();
+    */
   }
 
   // Unload style map button (only when a style map has been loaded)
