@@ -1,10 +1,10 @@
 
 ## What is reaction-diffusion?
-Reaction-diffusion is a mathematical model describing how two chemicals might _react_ to each other as they _diffuse_ through a medium together. It was proposed by Alan Turing in 1952 as a possible explanation for the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards.
+Reaction-diffusion is a mathematical model describing how two chemicals might _react_ to each other as they _diffuse_ through a medium together. It was [proposed by Alan Turing in 1952](https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf) as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form.
 
-The reaction-diffusion equations really only describes how the concentrations of the chemicals change over time, which means that all of the interesting patterns and behaviors that we see are [emergent](https://en.wikipedia.org/wiki/Emergence) phenomena.
+The reaction-diffusion equations really only describes how the concentrations of the chemicals change over time, which means that all of the interesting patterns and behaviors that we see are [emergent phenomena](https://en.wikipedia.org/wiki/Emergence).
 
-Here's what the equations looks like:
+Here's what the equations look like:
 
 ![The two reaction-diffusion differential equations with boxes around each part, explained in text bubbles nearby.](https://camo.githubusercontent.com/6a5b7b40467455254ed239cfc966eda29f7cfcafda71e1212f407046396017e8/68747470733a2f2f7777772e6b61726c73696d732e636f6d2f72642d6571756174696f6e2e706e67)
 
@@ -27,9 +27,15 @@ The other terms in the equation are usually kept constant, but might be worth pl
 
 
 ## How does this project work?
-Most reaction-diffusion simulations store values representing the concentrations of the two chemicals (`A` and `B`) in a 2D grid format, then applies the reaction-diffusion equation. In this simulation, image textures are used as the grid, with each pixel encoding the `A` and `B` concentration values for that location in the `R` and `G` channels. To render interesting imagery to the screen, a fragment shader (`./glsl/displayFrag.glsl`) reads these texture values and turns them into colors for every pixel using a few different techniques.
+Most reaction-diffusion simulations store values representing the concentrations of the two chemicals (`A` and `B`) in a 2D grid format, then applies the reaction-diffusion equations to each cell in the grid. In this simulation, [data textures](https://threejs.org/docs/index.html#api/en/textures/DataTexture) matching the size of the screen (canvas) are used for the 2D grid, and custom shaders are used to apply the reaction-diffusion equations to each pixel (texel) of these textures.
 
-In each frame of the simulation, a custom shader (`./glsl/simulationFrag.glsl`) reads the values of the last frame's image texture and applies the reaction-diffusion equation to every pixel. It produces a new "image" that is rendered to an invisible [render target](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderTarget), which can then be read as a texture and used as input for the following frame. To speed things up, this process of rendering to a render target and feeding the resulting data (texture) to the next pass of the simulation is done many times per frame - a graphics programming trick called "ping pong". Once this simulation cycle has run a certain number of times, a different shader (`./glsl/displayFrag.glsl`) reads the image texture and translate it into pretty colors.
+Each pixel/texel of the simulation data texture encodes the `A` and `B` concentrations for that location in the `R` and `G` channels as a normalized float value (`[0.0-1.0]`).
+
+In each frame of the simulation, a custom fragment shader (`./glsl/simulationFrag.glsl`) reads the values of the last frame's data texture as an input and applies the reaction-diffusion equation to every pixel. Data textures are rendered back and forth between two [render targets](https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderTarget) many times per frame with a technique called ping-pong to speed things up.
+
+Once the simulation has been run enough times, another fragment shader (`./glsl/displayFrag.glsl`) reads the latest data texture and maps the chemical concentration data to color values (configurable in the UI).
+
+Just about every option you see in the UI controls one or more [uniforms](https://threejs.org/docs/#api/en/core/Uniform) that get passed to these fragment shaders to influence the reaction-diffusion equations or the way the data texture information is translated into colors.
 
 
 ## Using the app
@@ -39,28 +45,38 @@ In each frame of the simulation, a custom shader (`./glsl/simulationFrag.glsl`) 
 ### Equation parameters
 Each of the four fundamental parameters of the reaction-diffusion equation (`f`, `k`, `dA`, `dB`), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.
 
-### Parameter picker map
-Sometimes it can be frustrating to randomly move the parameter sliders around, since you can easily land in a "dead zone" where nothing interesting happens. To help users navigate to interesting regions of the parameter space,
+### Interactive parameter map
+<a href="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" align="right" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. `k` values are plotted along the X axis, `f` values along the Y axis.
+
+Use the crosshairs attached to the mouse position to navigate to a region you're interested in, then click to set the main `f` and `k` values to match where you clicked.
+
+This map is inspired by the [work of Robert Munafo](http://mrob.com/pub/comp/xmorphia/).
 
 ### Seed pattern
-Choose a **pattern** to use in the first frame of the simulation to **"seed"** the reaction.
+Choose a pattern to use in the first frame of the simulation to seed the reaction.
 
 Also provides a button to reset the simulation with the selected pattern as the first frame (same exact thing as pressing the `r` key).
 
 ### Rendering style
-Control how the reaction-diffusion data is translated into visuals.
+Control how the chemical concentration data is translated into visuals.
 
 ### Canvas size
-Set the **width** and **height** of the simulation area.
+Set the width and height of the simulation area.
 
-You can also **maximize** the canvas to fit the entire viewport.
+You can also maximize the canvas to fit the entire viewport.
 
 ### Global actions
-Buttons for **pause/play** and to **export an image** of the current state of the simulation area.
+Buttons to pause/play or export an image of the current state of the simulation area.
 
 ### Style map
+Upload an image from your computer to vary the `f`, `k`, `dA`, and `dB` values based on the brightness value of each pixel. The secondary values you choose here will become endstops in an interpolation calculation with the primary values (on the right UI pane). In other words, the four equation parameters will be interpolated to be between the original parameter values (on the right pane) and these secondary parameter values (left pane) using the brightness value of each pixel.
+
+In addition to the reaction-diffusion equation parameters, you can also adjust the uniform scale, rotation, and X/Y offset of the image for different effects.
+
+Your image will automatically be scaled to fit the entire canvas, so it may be stretched. Resize your image to match the width and height of the canvas (or at least its aspect ratio) to minimize distortion.
 
 ### Bias
+Normally diffusion occurs evenly in all directions due to the default radially symmetrical Laplacian stencil. Using this X/Y pad you can "weight" this stencil to cause diffusion to favor one particular direction.
 
 ### Keyboard controls
 
@@ -70,7 +86,7 @@ Buttons for **pause/play** and to **export an image** of the current state of th
 * `u` = show/hide the UI.
 
 ### Mouse controls
-Click to set the B to ???
+Click and drag anywhere on the canvas to increase the concentration of the `B` chemical around the mouse position.
 
 Use your mouse wheel to change the diameter of the area affected by clicking / dragging.
 
