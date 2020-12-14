@@ -34,7 +34,7 @@ In each frame of the simulation, a custom shader (`./glsl/simulationFrag.glsl`) 
 
 ## Using the app
 
-![Annotated screenshot of the UI](https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/ui-guide.png)
+![Annotated screenshot of the UI](https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/ui-guide.jpg)
 
 ### Equation parameters
 Each of the four fundamental parameters of the reaction-diffusion equation (`f`, `k`, `dA`, `dB`), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.
