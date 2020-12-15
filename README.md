@@ -1,3 +1,4 @@
+<a href="https://jasonwebb.github.io/2d-reaction-diffusion-experiments"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/screenshots/all-screenshots.png" alt="Grid of 12 screenshots, 4 columns and 3 rows."></a>
 
 ## What is reaction-diffusion?
 Reaction-diffusion is a mathematical model describing how two chemicals might _react_ to each other as they _diffuse_ through a medium together. It was [proposed by Alan Turing in 1952](https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf) as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form.
@@ -145,6 +146,30 @@ In the `./glsl` folder are:
 
 ## References
 
-```
-TODO
-```
+### Fundamentals
+These papers, articles, and videos helped me understand how the reaction-diffusion algorithm works.
+
+* [The Chemical Basis of Morphogenesis](http://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf) (PDF) paper by Alan Turing (1952)
+* [Reaction-Diffusion Tutorial](https://www.karlsims.com/rd.html) by Karl Sims
+* [Reaction-Diffusion by the Gray-Scott Model: Pearson's Parametrization](https://mrob.com/pub/comp/xmorphia/) by Robert Munafo (mrob)
+* [Reaction Diffusion: A Visual Explanation](https://www.youtube.com/watch?v=LMzYrsfTiEw) by Arsiliath
+* [Coding Challenge #13: Reaction Diffusion Algorithm in p5.js](https://www.youtube.com/watch?v=BV9ny785UNc) by Daniel Shiffman ([Github repo](https://github.com/CodingTrain/website/tree/master/CodingChallenges/CC_013_ReactionDiffusion) with both p5.js and Processing source code)
+
+### Code
+These articles, repos, and project pages helped me figure out how to build my implementation.
+
+* [Gray-Scott - JavaScript experiments](https://github.com/pmneila/jsexp) by @pmneila
+* [Processing: Reaction Diffusion Halftone patterns](https://vimeo.com/233530691) by Ignazio Lucenti
+* [Reaction Diffusion](https://www.redblobgames.com/x/1905-reaction-diffusion/) (JavaScript + WebGL) by Red Blob Games
+* [Reaction Diffusion](https://kaesve.nl/projects/reaction-diffusion/readme.html) by Ken Voskuil (look in the DOM)
+* [Reaction-Diffusion Simulation in Three.js](https://github.com/colejd/Reaction-Diffusion-ThreeJS) (JavaScript + ThreeJS) by Jonathan Cole
+
+### Creative
+These projects inspired me to explore some of the creative possibilities of reaction-diffusion.
+
+* [3D Printed Reaction Diffusion Patterns](https://www.instructables.com/id/3D-Printed-Reaction-Diffusion-Patterns/) Instructable by Reza Ali
+* [Silhouect](https://cacheflowe.com/code/installation/silhouect) by Justin Gitlin (@cacheflowe)
+* [Coral Cup](https://n-e-r-v-o-u-s.com/blog/?p=8222) by Nervous System
+* [Reaction Lamps](https://n-e-r-v-o-u-s.com/projects/albums/reaction-products/) by Nervous System
+* [Reaction Table](https://n-e-r-v-o-u-s.com/projects/albums/reaction-table/) by Nervous System
+* [Reaction shelf](https://n-e-r-v-o-u-s.com/blog/?p=992) by Nervous System
