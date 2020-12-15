@@ -7,7 +7,7 @@
 
   <title>Introduction - Reaction-diffusion playground</title>
 
-  <meta name="description" content="Real-time, interactive simulation that produces organic patterns and behaviors which emerge naturally from two chemicals as they are mixed together.">
+  <meta name="description" content="Real-time, interactive simulation with organic patterns and behaviors emerging naturally from two chemicals as they are mixed together.">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Facebook OG -->
@@ -17,24 +17,316 @@
   <meta property="og:image" content="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/social-media-preview.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="580">
-  <meta property="og:description" content="Real-time, interactive simulation that produces organic patterns and behaviors which emerge naturally from two chemicals as they are mixed together.">
+  <meta property="og:description" content="Real-time, interactive simulation with organic patterns and behaviors emerging naturally from two chemicals as they are mixed together.">
   <meta property="og:locale" content="en_US">
 
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@jasonwebb">
   <meta name="twitter:title" content="Reaction-diffusion playground">
-  <meta name="twitter:description" content="Real-time, interactive simulation that produces organic patterns and behaviors which emerge naturally from two chemicals as they are mixed together.">
+  <meta name="twitter:description" content="Real-time, interactive simulation with organic patterns and behaviors emerging naturally from two chemicals as they are mixed together.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/social-media-preview.jpg">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
 </head>
 
 <body>
-  <h1>Reaction-diffusion experiments</h1>
+  <main>
+    <div class="container">
+      <h1 class="title">Reaction-diffusion playground</h1>
 
-  <p>Reaction-diffusion is a grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they diffuse through a medium and react with one another. At every location on the grid these chemicals (usually referred to as A and B) have a chance of causing a reaction that converts chemicals of one type to another based on their relative concentrations at that location.</p>
+      <p>Reaction-diffusion is a grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they diffuse through a medium and react with one another. At every location on the grid these chemicals (usually referred to as A and B) have a chance of causing a reaction that converts chemicals of one type to another based on their relative concentrations at that location.</p>
 
-  <p>Throughout the simulation chemical A is added at a particular feed rate (f) and chemical B is removed at a particular kill rate (k) - adjusting these rates can result in wildly different emergent patterns.</p>
+      <p>Throughout the simulation chemical A is added at a particular feed rate (f) and chemical B is removed at a particular kill rate (k) - adjusting these rates can result in wildly different emergent patterns.</p>
 
-  <a href="app.html">gpu version</a>
+      <div class="buttons main-buttons">
+        <a href="app.html" class="button is-link">Open the playground</a>
+
+        <a href="https://github.com/jasonwebb/2d-reaction-diffusion-experiments" class="button is-white">
+          <span class="icon is-small"><span class="fab fa-github" aria-hidden="true"></span></span>
+          <span>Source repo on Github</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="screenshots">
+      <a href="images/screenshots/screenshot-1.png" class="tile">
+        <img src="images/screenshots/screenshot-1.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-2.png" class="tile">
+        <img src="images/screenshots/screenshot-2.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-3.png" class="tile">
+        <img src="images/screenshots/screenshot-3.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-4.png" class="tile">
+        <img src="images/screenshots/screenshot-4.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-5.png" class="tile">
+        <img src="images/screenshots/screenshot-5.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-6.png" class="tile">
+        <img src="images/screenshots/screenshot-6.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-7.png" class="tile">
+        <img src="images/screenshots/screenshot-7.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-8.png" class="tile">
+        <img src="images/screenshots/screenshot-8.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-9.png" class="tile">
+        <img src="images/screenshots/screenshot-9.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-10.png" class="tile">
+        <img src="images/screenshots/screenshot-10.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-11.png" class="tile">
+        <img src="images/screenshots/screenshot-11.png" alt="">
+      </a>
+
+      <a href="images/screenshots/screenshot-12.png" class="tile">
+        <img src="images/screenshots/screenshot-12.png" alt="">
+      </a>
+    </div>
+
+    <div class="container">
+      <!-- USAGE section --------------------------->
+      <h2 class="subtitle" id="usage">Usage</h2>
+
+      <img src="images/ui-guide.jpg" alt="Annotated screenshot of the UI">
+
+      <h3 id="style-map">Style map</h3>
+      <p>Upload an image from your computer to vary the <code>f</code>, <code>k</code>, <code>dA</code>, and <code>dB</code> values based on the brightness value of each pixel. The secondary values you choose here will become endstops in an interpolation calculation with the primary values (on the right UI pane). In other words, the four equation parameters will be interpolated to be between the original parameter values (on the right pane) and these secondary parameter values (left pane) using the brightness value of each pixel.</p>
+
+      <p>In addition to the reaction-diffusion equation parameters, you can also adjust the uniform scale, rotation, and X/Y offset of the image for different effects.</p>
+
+      <p>Your image will automatically be scaled to fit the entire canvas, so it may be stretched. Resize your image to match the width and height of the canvas (or at least its aspect ratio) to minimize distortion.</p>
+
+      <p>The following images make for good style maps, and are included in the source repository:</p>
+
+      <ul class="style-map-thumbnails">
+        <li><a href="images/style-maps/black-circle.png"><img src="images/style-maps/black-circle.png" alt="Solid black circle centered against a white background."></a></li>
+        <li><a href="images/style-maps/black-square.png"><img src="images/style-maps/black-square.png" alt="Solid black square centered against a white background."></a></li>
+        <li><a href="images/style-maps/gradient-circle.png"><img src="images/style-maps/gradient-circle.png" alt="Radial gradient starting at white in the center, fading to black on the edges, centered."></a></li>
+        <li><a href="images/style-maps/man.jpg"><img src="images/style-maps/man.jpg" alt="Portrait photo of old man with white beard and one fully white eye facing and looking at the camera."></a></li>
+        <li><a href="images/style-maps/perlin-noise.jpg"><img src="images/style-maps/perlin-noise.jpg" alt="Perlin noise, looking like a close up of a soft cloud."></a></li>
+        <li><a href="images/style-maps/reaction-diffusion-text.jpg"><img src="images/style-maps/reaction-diffusion-text.jpg" alt="The words reaction diffusion in white against a black background."></a></li>
+        <li><a href="images/style-maps/wood-noise.png"><img src="images/style-maps/wood-noise.png" alt="Noise that resembles wood grain, with horizontal lines that occassionally curl into knots."></a></li>
+        <li><a href="images/style-maps/worley-noise.jpg"><img src="images/style-maps/worley-noise.jpg" alt="Worley noise, like a bunch of radial gradients starting with black at their center."></a></li>
+      </ul>
+
+      <h3 id="bias">Bias</h3>
+      <p>Normally diffusion occurs evenly in all directions due to the default radially symmetrical Laplacian stencil. Using this X/Y pad you can "weight" this stencil to cause diffusion to favor one particular direction.</p>
+
+      <h3 id="equation-parameters">Equation parameters</h3>
+      <p>Each of the four fundamental parameters of the reaction-diffusion equation (<code>f</code>, <code>k</code>, <code>dA</code>, <code>dB</code>), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.</p>
+
+      <h3 id="parameter-map">Interactive parameter map</h3>
+      <p><a href="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" style="margin: 0 0 10px 10px"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" align="right" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. <code>k</code> values are plotted along the X axis, <code>f</code> values along the Y axis.</p>
+
+      <p>Use the crosshairs attached to the mouse position to navigate to a region you're interested in, then click to set the main <code>f</code> and <code>k</code> values to match where you clicked.</p>
+
+      <p>This map is inspired by the <a href="http://mrob.com/pub/comp/xmorphia">work of Robert Munafo</a>.</p>
+
+      <h3 id="seed-pattern">Seed pattern</h3>
+      <p>Choose a pattern to use in the first frame of the simulation to seed the reaction.</p>
+
+      <p>Also provides a button to reset the simulation with the selected pattern as the first frame (same exact thing as pressing the <code>r</code> key).</p>
+
+      <h3 id="rendering-style">Rendering style</h3>
+      <p>Control how the chemical concentration data is translated into visuals.</p>
+
+      <h3 id="canvas-size">Canvas size</h3>
+      <p>Set the width and height of the simulation area.</p>
+
+      <p>You can also maximize the canvas to fit the entire viewport.</p>
+
+      <h3 id="global-actions">Global actions</h3>
+      <p>Buttons to pause/play or export an image of the current state of the simulation area.</p>
+
+
+      <h3 id="keyboard">Keyboard controls</h3>
+
+      <ul>
+        <li><code>Space</code> = pause/play.
+        <li><code>r</code> = reset using the currently-selected seed pattern.
+        <li><code>s</code> = save an image of the current canvas content.
+        <li><code>u</code> = show/hide the UI.
+      </ul>
+
+      <h3 id="mouse">Mouse controls</h3>
+      <p>Click and drag anywhere on the canvas to increase the concentration of the <code>B</code> chemical around the mouse position.</p>
+
+      <p>Use your mouse wheel to change the diameter of the area affected by clicking / dragging.</p>
+
+      <h3 id="midi">MIDI controls</h3>
+      <p>If you have an Akai LPD8 Wireless or a Novation Launch Control XL, mappings are provided for the various pads and knobs. See <code>./js/midi.js</code> for details.</p>
+
+
+      <!-- WHAT section --------------------------->
+      <h2 class="subtitle" id="what-is-reaction-diffusion">What is reaction-diffusion?</h2>
+
+      <p>Reaction-diffusion is a mathematical model describing how two chemicals might <b>react</b> to each other as they <b>diffuse</b> through a medium together. It was <a href="https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf">proposed by Alan Turing in 1952</a> as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form.</p>
+
+      <p>The reaction-diffusion equations really only describes how the concentrations of the chemicals change over time, which means that all of the interesting patterns and behaviors that we see are <a href="https://en.wikipedia.org/wiki/Emergence">emergent phenomena</a>.</p>
+
+      <p>Here's what the equations look like:</p>
+
+      <img src="https://camo.githubusercontent.com/6a5b7b40467455254ed239cfc966eda29f7cfcafda71e1212f407046396017e8/68747470733a2f2f7777772e6b61726c73696d732e636f6d2f72642d6571756174696f6e2e706e67" alt="The two reaction-diffusion differential equations with boxes around each part, explained in text bubbles nearby and the text below.">
+
+      <p class="is-italic"><a href="https://www.karlsims.com/rd.html">Credit to Karl Sims for the equation illustration above.</a></p>
+
+      <p>The most important terms, the ones we'll want to turn into tweakable parameters, are:</p>
+
+      <ul>
+        <li><code>f</code> - feed rate. Determines how much of chemical A is added to the system in each iteration.
+        <li><code>k</code> - kill rate. Determines how much of chemical B is removed from the system in each iteration.
+        <li><code>dA</code> - diffusion rate for chemical A. Determines how much chemical A spreads to neighboring cells each iteration.
+        <li><code>dB</code> - diffusion rate for chemical B. Determines how much of chemical B spreads to neighboring cells each iteration.
+      </ul>
+
+      <p>The other terms in the equation are usually kept constant, but might be worth playing around with once you are comfortable with the core parameters:</p>
+
+      <ul>
+        <li><code>∇<sup>2</sup></code> - the Laplacian operator. Essentially a single value that represents the chemical concentration of the neighbors to the current cell.
+        <li><code>AB<sup>2</sup></code> - reaction rate. Note that it is subtracted in the equation for chemical A and added in the equation for chemical B. This is how the chemical reaction converting chemical A into chemical B is modelled.
+        <li><code>Δt</code> - timestep. Using <code>1.0</code> here means it runs at "normal" speed. Smaller values are like slow motion, and larger values make it run faster. Large values can cause the system to collapse.
+      </ul>
+
+      <a href="https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion">Learn more about reaction-diffusion in my morphogenesis-resources repo.</a>
+
+
+      <!-- HOW section -------------------------->
+      <h2 class="subtitle" id="how-does-it-work">How does this work?</h2>
+
+      <p>Most reaction-diffusion simulations store values representing the concentrations of the two chemicals (<code>A</code> and <code>B</code>) in a 2D grid format, then applies the reaction-diffusion equations to each cell in the grid. In this simulation, <a href="https://threejs.org/docs/index.html#api/en/textures/DataTexture">data textures</a> matching the size of the screen (canvas) are used for the 2D grid, and custom shaders are used to apply the reaction-diffusion equations to each pixel (texel) of these textures.</p>
+
+      <p>Each pixel/texel of the simulation data texture encodes the <code>A</code> and <code>B</code> concentrations for that location in the <code>R</code> and <code>G</code> channels as a normalized float value (<code>[0.0-1.0]</code>).</p>
+
+      <p>In each frame of the simulation, a custom fragment shader (<code>./glsl/simulationFrag.glsl</code>) reads the values of the last frame's data texture as an input and applies the reaction-diffusion equation to every pixel. Data textures are rendered back and forth between two <a href="https://threejs.org/docs/index.html#api/en/renderers/WebGLRenderTarget">render targets</a> many times per frame with a technique called ping-pong to speed things up.</p>
+
+      <p>Once the simulation has been run enough times, another fragment shader (<code>./glsl/displayFrag.glsl</code>) reads the latest data texture and maps the chemical concentration data to color values (configurable in the UI).</p>
+
+      <p>Just about every option you see in the UI controls one or more <a href="https://threejs.org/docs/#api/en/core/Uniform">uniforms</a> that get passed to these fragment shaders to influence the reaction-diffusion equations or the way the data texture information is translated into colors.</p>
+    </div>
+  </main>
+
+  <style>
+  main {
+    padding-top: 40px;
+    padding-bottom: 100px;
+    font-size: 18px !important;
+  }
+
+  p {
+    margin: 20px 0;
+  }
+
+  p a {
+    text-decoration: underline;
+  }
+
+  .button {
+    border-radius: 0;
+  }
+
+  ul {
+    list-style-type: disc;
+    margin: 20px 0 20px 40px;
+  }
+
+  h1, h2, h3 {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold !important;
+  }
+
+  h2 {
+    font-size: 28px !important;
+    margin-top: 90px;
+    margin-bottom: 30px !important;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0,0,0,.1);
+  }
+
+  h3 {
+    margin-top: 40px;
+  }
+
+  h3 + p {
+    margin-top: 0;
+  }
+
+  .main-buttons {
+    margin-top: 40px;
+  }
+
+    .main-buttons .button {
+      font-size: 20px;
+    }
+
+      .main-buttons .button.is-white {
+        opacity: .7;
+      }
+
+  .screenshots {
+    display: flex;
+    flex-wrap: wrap;
+
+    padding: 60px 0 0 0;
+  }
+
+  .tile {
+    flex: 0 0 25%;
+    height: 350px;
+
+    display: flex;
+    overflow: hidden;
+  }
+
+  .tile img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .style-map-thumbnails {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 60%;
+
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .style-map-thumbnails li {
+    flex: 0 0 calc(100%/8);
+  }
+
+    .style-map-thumbnails li a {
+      display: block;
+      border: 1px solid rgba(0,0,0,.2);
+      padding: 3px;
+      margin-right: 8px;
+    }
+
+      .style-map-thumbnails li a img {
+        display: block;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+      }
+  </style>
 </body>
 </html>
