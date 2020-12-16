@@ -1,4 +1,4 @@
-<a href="https://jasonwebb.github.io/2d-reaction-diffusion-experiments"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/screenshots/all-screenshots.png" alt="Grid of 12 screenshots, 4 columns and 3 rows."></a>
+<a href="https://jasonwebb.github.io/2d-reaction-diffusion-experiments"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/social-media-preview.jpg" alt="Grid of 12 screenshots, 4 columns and 3 rows, with the text Reaction Diffusion Playground overlaid on top."></a>
 
 ## What is reaction-diffusion?
 Reaction-diffusion is a mathematical model describing how two chemicals might _react_ to each other as they _diffuse_ through a medium together. It was [proposed by Alan Turing in 1952](https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf) as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form.
