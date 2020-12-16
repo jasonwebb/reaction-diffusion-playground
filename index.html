@@ -36,16 +36,16 @@
     <div class="container">
       <h1 class="title">Reaction-diffusion playground</h1>
 
-      <p>Reaction-diffusion is a grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they diffuse through a medium and react with one another. At every location on the grid these chemicals (usually referred to as A and B) have a chance of causing a reaction that converts chemicals of one type to another based on their relative concentrations at that location.</p>
+      <p>Reaction-diffusion is a mathematical model describing how two chemicals might <b>react</b> to each other as they <b>diffuse</b> through a medium together. It was <a href="https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf">proposed by Alan Turing in 1952</a> as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form. <a href="#what-is-reaction-diffusion">Learn more about reaction-diffusion below</a>.</p>
 
-      <p>Throughout the simulation chemical A is added at a particular feed rate (f) and chemical B is removed at a particular kill rate (k) - adjusting these rates can result in wildly different emergent patterns.</p>
+      <p>When run at large scales and high speeds, reaction-diffusion simulations can produce an amazing variety of dynamic, mesmerizing patterns and behaviors, as shown in the screenshots below. In the time since Turing published his original paper on the topic, reaction-diffusion has been studied extensively by researchers in biology, chemistry, physics, computer science, and other fields. Today it has become accepted as a plausible (some say proven) explanation for the formation of patterns such as <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2689028/">zebrafish pigmentation</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2634019">hair follicle spacing</a>, the <a href="https://en.wikipedia.org/wiki/Belousov%E2%80%93Zhabotinsky_reaction">Belousov-Zhabotinsky (BZ) chemical reaction</a>, certain types of coral, zebra and tiger stripes, and more.</p>
 
       <div class="buttons main-buttons">
         <a href="app.html" class="button is-link">Open the playground</a>
 
         <a href="https://github.com/jasonwebb/2d-reaction-diffusion-experiments" class="button is-white">
           <span class="icon is-small"><span class="fab fa-github" aria-hidden="true"></span></span>
-          <span>Source repo on Github</span>
+          <span>See the source code on Github</span>
         </a>
       </div>
     </div>
@@ -104,7 +104,7 @@
       <!-- USAGE section --------------------------->
       <h2 class="subtitle" id="usage">Usage</h2>
 
-      <img src="images/ui-guide.jpg" alt="Annotated screenshot of the UI">
+      <a href="images/ui-guide.jpg"><img src="images/ui-guide.jpg" alt="Annotated screenshot of the UI"></a>
 
       <h3 id="style-map">Style map</h3>
       <p>Upload an image from your computer to vary the <code>f</code>, <code>k</code>, <code>dA</code>, and <code>dB</code> values based on the brightness value of each pixel. The secondary values you choose here will become endstops in an interpolation calculation with the primary values (on the right UI pane). In other words, the four equation parameters will be interpolated to be between the original parameter values (on the right pane) and these secondary parameter values (left pane) using the brightness value of each pixel.</p>
@@ -133,7 +133,7 @@
       <p>Each of the four fundamental parameters of the reaction-diffusion equation (<code>f</code>, <code>k</code>, <code>dA</code>, <code>dB</code>), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.</p>
 
       <h3 id="parameter-map">Interactive parameter map</h3>
-      <p><a href="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" style="margin: 0 0 10px 10px"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" align="right" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. <code>k</code> values are plotted along the X axis, <code>f</code> values along the Y axis.</p>
+      <p><a href="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" style="margin: 0 0 10px 10px; float: right"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. <code>k</code> values are plotted along the X axis, <code>f</code> values along the Y axis.</p>
 
       <p>Use the crosshairs attached to the mouse position to navigate to a region you're interested in, then click to set the main <code>f</code> and <code>k</code> values to match where you clicked.</p>
 
@@ -204,7 +204,7 @@
         <li><code>Δt</code> - timestep. Using <code>1.0</code> here means it runs at "normal" speed. Smaller values are like slow motion, and larger values make it run faster. Large values can cause the system to collapse.
       </ul>
 
-      <a href="https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion">Learn more about reaction-diffusion in my morphogenesis-resources repo.</a>
+      <a href="https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion" class="button is-dark" style="margin-top: 20px; font-size: 18px">Learn more about reaction-diffusion in my morphogenesis-resources repo.</a>
 
 
       <!-- HOW section -------------------------->
@@ -219,13 +219,56 @@
       <p>Once the simulation has been run enough times, another fragment shader (<code>./glsl/displayFrag.glsl</code>) reads the latest data texture and maps the chemical concentration data to color values (configurable in the UI).</p>
 
       <p>Just about every option you see in the UI controls one or more <a href="https://threejs.org/docs/#api/en/core/Uniform">uniforms</a> that get passed to these fragment shaders to influence the reaction-diffusion equations or the way the data texture information is translated into colors.</p>
+
+      <a href="https://github.com/jasonwebb/2d-reaction-diffusion-experiments" class="button is-link" style="margin-top: 20px; font-size: 18px">
+        <span class="icon is-small"><span class="fab fa-github" aria-hidden="true"></span></span>
+        <span>See the source code on Github</span>
+      </a>
+
+
+      <!-- REFERENCES section ------------------>
+      <h2 class="subtitle" id="references">References</h2>
+
+      <h3 id="fundamentals">Fundamentals</h3>
+      <p>These papers, articles, and videos helped me understand how the reaction-diffusion algorithm works.</p>
+      <ul>
+        <li><a href="http://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf" rel="nofollow">The Chemical Basis of Morphogenesis</a> (PDF) paper by Alan Turing (1952)</li>
+        <li><a href="https://www.karlsims.com/rd.html" rel="nofollow">Reaction-Diffusion Tutorial</a> by Karl Sims</li>
+        <li><a href="https://mrob.com/pub/comp/xmorphia/" rel="nofollow">Reaction-Diffusion by the Gray-Scott Model: Pearson's Parametrization</a> by Robert Munafo (mrob)</li>
+        <li><a href="https://www.youtube.com/watch?v=LMzYrsfTiEw" rel="nofollow">Reaction Diffusion: A Visual Explanation</a> by Arsiliath</li>
+        <li><a href="https://www.youtube.com/watch?v=BV9ny785UNc" rel="nofollow">Coding Challenge #13: Reaction Diffusion Algorithm in p5.js</a> by Daniel Shiffman (<a href="https://github.com/CodingTrain/website/tree/master/CodingChallenges/CC_013_ReactionDiffusion">Github repo</a> with both p5.js and Processing source code)</li>
+      </ul>
+
+      <h3 id="code">Code</h3>
+      <p>These articles, repos, and project pages helped me figure out how to build my implementation.</p>
+      <ul>
+        <li><a href="https://github.com/pmneila/jsexp">Gray-Scott - JavaScript experiments</a> by @pmneila</li>
+        <li><a href="https://vimeo.com/233530691" rel="nofollow">Processing: Reaction Diffusion Halftone patterns</a> by Ignazio Lucenti</li>
+        <li><a href="https://www.redblobgames.com/x/1905-reaction-diffusion/" rel="nofollow">Reaction Diffusion</a> (JavaScript + WebGL) by Red Blob Games</li>
+        <li><a href="https://kaesve.nl/projects/reaction-diffusion/readme.html" rel="nofollow">Reaction Diffusion</a> by Ken Voskuil (look in the DOM)</li>
+        <li><a href="https://github.com/colejd/Reaction-Diffusion-ThreeJS">Reaction-Diffusion Simulation in Three.js</a> (JavaScript + ThreeJS) by Jonathan Cole</li>
+      </ul>
+
+      <h3 id="creative">Creative</h3>
+      <p>These projects inspired me to explore some of the creative possibilities of reaction-diffusion.</p>
+      <ul>
+        <li><a href="https://www.instructables.com/id/3D-Printed-Reaction-Diffusion-Patterns/" rel="nofollow">3D Printed Reaction Diffusion Patterns</a> Instructable by Reza Ali</li>
+        <li><a href="https://cacheflowe.com/code/installation/silhouect" rel="nofollow">Silhouect</a> by Justin Gitlin (@cacheflowe)</li>
+        <li><a href="https://n-e-r-v-o-u-s.com/blog/?p=8222" rel="nofollow">Coral Cup</a> by Nervous System</li>
+        <li><a href="https://n-e-r-v-o-u-s.com/projects/albums/reaction-products/" rel="nofollow">Reaction Lamps</a> by Nervous System</li>
+        <li><a href="https://n-e-r-v-o-u-s.com/projects/albums/reaction-table/" rel="nofollow">Reaction Table</a> by Nervous System</li>
+        <li><a href="https://n-e-r-v-o-u-s.com/blog/?p=992" rel="nofollow">Reaction shelf</a> by Nervous System</li>
+      </ul>
+
+      <p></p>
+      <a href="https://github.com/jasonwebb/morphogenesis-resources#reaction-diffusion" class="button is-dark is-out" style="font-size: 18px; margin-top: 30px">More references can be found in my morphogenesis-resources repo</a>
     </div>
   </main>
 
   <style>
   main {
     padding-top: 40px;
-    padding-bottom: 100px;
+    padding-bottom: 150px;
     font-size: 18px !important;
   }
 
@@ -294,11 +337,18 @@
     overflow: hidden;
   }
 
-  .tile img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
+    .tile img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+
+      transition: all .4s ease-in-out;
+    }
+
+    .tile:hover img,
+    .tile:focus img {
+      transform: scale(1.1);
+    }
 
   .style-map-thumbnails {
     list-style: none;
@@ -326,6 +376,11 @@
         object-fit: cover;
         width: 100%;
         height: 100%;
+      }
+
+      .style-map-thumbnails li a:hover,
+      .style-map-thumbnails li a:focus {
+        border-color: black;
       }
   </style>
 </body>
