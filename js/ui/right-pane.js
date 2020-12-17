@@ -181,15 +181,15 @@ function setupRenderingFolder() {
   renderingFolder.addInput(parameterValues, 'renderingStyle', {
     label: 'Style',
     options: {
-      'Gradient': 0,
-      'Red Blob Games (original)': 1,
-      'Red Blob Games (alt 1)': 2,
-      'Red Blob Games (alt 2)': 3,
-      'Rainbow': 4,
-      'Black and white (soft)': 5,
-      'Black and white (hard)': 6,
-      'Raw': 7,
-      'HSL mapping': 8
+      'HSL mapping': 0,
+      'Gradient': 1,
+      'Red Blob Games (original)': 2,
+      'Red Blob Games (alt 1)': 3,
+      'Red Blob Games (alt 2)': 4,
+      'Rainbow': 5,
+      'Black and white (soft)': 6,
+      'Black and white (hard)': 7,
+      'Raw': 8
     }
   })
     .on('change', (value) => {
@@ -205,32 +205,11 @@ function setupRenderingFolder() {
   function addRenderingStyleOptions(folder) {
     switch(parseInt(displayUniforms.renderingStyle.value)) {
       case 0:
-        addGradientOptions(folder);
+        addHSLMappingOptions(folder);
         break;
 
       case 1:
-        break;
-
-      case 2:
-        break;
-
-      case 3:
-        break;
-
-      case 4:
-        break;
-
-      case 5:
-        break;
-
-      case 6:
-        break;
-
-      case 7:
-        break;
-
-      case 8:
-        addHSLMappingOptions(folder);
+        addGradientOptions(folder);
         break;
 
       default:

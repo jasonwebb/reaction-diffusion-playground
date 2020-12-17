@@ -64,9 +64,20 @@ void main() {
   float B = pixel[1];
   vec4 outputColor;
 
+  // HSL mapping ==================================================================================
+  if(renderingStyle == 0) {
+    outputColor = vec4(hsb2rgb(vec3(
+      // map(A, .6, 1., 0., .6),
+      // map(B, .6, 1., 0.5, 1.),
+      // map(B-A, 0.2, 1., .3, .8),
+      map(B-A, hslFrom[0], hslFrom[1], hslTo[0], hslTo[1]),
+      hslSaturation,
+      hslLuminosity
+    )), 1.);
+
   // Gradient color stops by @pmneila =============================================================
   // - https://github.com/pmneila/jsexp
-  if(renderingStyle == 0) {
+  } else if(renderingStyle == 1) {
     vec3 color;
 
     if(B <= colorStop1.a) {
@@ -103,7 +114,7 @@ void main() {
 
   // Purple and yellow by Amit Patel (Red Blob Games) =============================================
   // - https://www.redblobgames.com/x/1905-reaction-diffusion/
-  } else if(renderingStyle == 1) {
+  } else if(renderingStyle == 2) {
     outputColor = vec4(
       1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 0.5 * previousPixel.y,
       0.9 * pixel.x - 2.0 * pixel.y,
@@ -112,7 +123,7 @@ void main() {
     );
 
   // Red Blob variant #1 - turquoise background, yellow-orange fire-like leading edges
-  } else if(renderingStyle == 2) {
+  } else if(renderingStyle == 3) {
     outputColor = vec4(
       10000.0 * abs(pixel.y - previousPixel.y),
       1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 0.5 * previousPixel.y,
@@ -121,7 +132,7 @@ void main() {
     );
 
   // Red Blob variant #2 - radioactive green on hot pink background
-  } else if(renderingStyle == 3) {
+  } else if(renderingStyle == 4) {
     outputColor = vec4(
       1000.0 * abs(pixel.x - previousPixel.x) + 1.0 * pixel.x - 50000.0 * previousPixel.y,
       10000.0 * abs(pixel.y - previousPixel.y),
@@ -131,7 +142,7 @@ void main() {
 
   // Rainbow effect by Jonathon Cole ==============================================================
   // - https://github.com/colejd/Reaction-Diffusion-ThreeJS based on http://krazydad.com/tutorials/makecolors.php
-  } else if(renderingStyle == 4) {
+  } else if(renderingStyle == 5) {
     float c = A - B;
     outputColor = vec4(c, c, c, 1.0);
     vec4 rainbow = rainbow(v_uv.xy + time*.5);
@@ -139,13 +150,13 @@ void main() {
     outputColor = mix(outputColor, outputColor - rainbow, gBranch);
 
   // Black and white (soft) =======================================================================
-  } else if(renderingStyle == 5) {
+  } else if(renderingStyle == 6) {
     float grayValue = pixel.r - pixel.g;  // black for B, white for A
     // float grayValue = 1.0 - pixel.r - pixel.g;  // white for B, black for A
     outputColor = vec4(grayValue, grayValue, grayValue, 1.0);
 
   // Black and white (sharp) ======================================================================
-  } else if(renderingStyle == 6) {
+  } else if(renderingStyle == 7) {
     float grayValue = pixel.r - pixel.g;
 
     if(grayValue > .3) {
@@ -155,19 +166,8 @@ void main() {
     }
 
   // No processing - red for chemical A, green for chemical B =====================================
-  } else if(renderingStyle == 7) {
-    outputColor = pixel;
-
-  // HSL mapping ==================================================================================
   } else if(renderingStyle == 8) {
-    outputColor = vec4(hsb2rgb(vec3(
-      // map(A, .6, 1., 0., .6),
-      // map(B, .6, 1., 0.5, 1.),
-      // map(B-A, 0.2, 1., .3, .8),
-      map(B-A, hslFrom[0], hslFrom[1], hslTo[0], hslTo[1]),
-      hslSaturation,
-      hslLuminosity
-    )), 1.);
+    outputColor = pixel;
   }
 
   gl_FragColor = outputColor;
