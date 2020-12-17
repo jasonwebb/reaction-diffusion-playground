@@ -128,7 +128,7 @@ void main() {
     float distToMouse = distance(mousePosition * resolution, v_uvs[0] * resolution);
 
     if(distToMouse < brushRadius) {
-      gl_FragColor = vec4(0.0, mix(0.0, 0.3, distToMouse/brushRadius), 0.0, 1.0);
+      gl_FragColor = vec4(mix(0.0, 0.3, distToMouse/brushRadius), 0.5, 0.0, 1.0);
       return;
     }
   }
