@@ -1,5 +1,5 @@
 {
-  "name": "2d-reaction-diffusion-experiments",
+  "name": "reaction-diffusion-playground",
   "version": "1.0.0",
   "description": "Grid-based process that generates complex and dynamic patterns based the interactions of two chemicals as they _diffuse_ through a medium. At every location on the grid these chemicals (usually referred to as `A` and `B`) have a chance of causing a _reaction_ that converts chemicals of one type to another based on their relative concentrations at that location.",
   "main": "index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jasonwebb/2d-reaction-diffusion-experiments.git"
+    "url": "git+https://github.com/jasonwebb/reaction-diffusion-playground.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments/issues"
+    "url": "https://github.com/jasonwebb/reaction-diffusion-playground/issues"
   },
-  "homepage": "https://github.com/jasonwebb/2d-reaction-diffusion-experiments#readme",
+  "homepage": "https://jasonwebb.github.io/reaction-diffusion-playground",
   "devDependencies": {
     "fps": "0.0.3",
     "glsl-shader-loader": "^0.1.6",

@@ -1,4 +1,4 @@
-<a href="https://jasonwebb.github.io/2d-reaction-diffusion-experiments"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/social-media-preview.jpg" alt="Grid of 12 screenshots, 4 columns and 3 rows, with the text Reaction Diffusion Playground overlaid on top."></a>
+<a href="https://jasonwebb.github.io/reaction-diffusion-playground"><img src="https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/social-media-preview.jpg" alt="Grid of 12 screenshots, 4 columns and 3 rows, with the text Reaction Diffusion Playground overlaid on top."></a>
 
 ## What is reaction-diffusion?
 Reaction-diffusion is a mathematical model describing how two chemicals might _react_ to each other as they _diffuse_ through a medium together. It was [proposed by Alan Turing in 1952](https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf) as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form.
@@ -41,13 +41,13 @@ Just about every option you see in the UI controls one or more [uniforms](https:
 
 ## Using the app
 
-![Annotated screenshot of the UI](https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/ui-guide.jpg)
+![Annotated screenshot of the UI](https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/ui-guide.jpg)
 
 ### Equation parameters
 Each of the four fundamental parameters of the reaction-diffusion equation (`f`, `k`, `dA`, `dB`), along with the timestep increment, can be changed using the sliders found at the top of the right panel. Change them gradually to avoid collapsing the system.
 
 ### Interactive parameter map
-<a href="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png"><img src="https://raw.githubusercontent.com/jasonwebb/2d-reaction-diffusion-experiments/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" align="right" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. `k` values are plotted along the X axis, `f` values along the Y axis.
+<a href="https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/parameter-map-screenshot.png"><img src="https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/parameter-map-screenshot.png" alt="Screenshot of interactive parameter map" align="right" width="200px"></a>Use this map to navigate through the parameter space easily and find areas with interesting patterns and behaviors. `k` values are plotted along the X axis, `f` values along the Y axis.
 
 Use the crosshairs attached to the mouse position to navigate to a region you're interested in, then click to set the main `f` and `k` values to match where you clicked.
 
