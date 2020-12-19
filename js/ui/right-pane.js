@@ -184,6 +184,14 @@ function setupSeedFolder() {
     .on('click', () => {
       drawFirstFrame(currentSeedType);
     });
+
+  // Clear button
+  seedFolder.addButton({
+    title: '🗑️ Clear the screen'
+  })
+    .on('click', () => {
+      drawFirstFrame(InitialTextureTypes.EMPTY);
+    });
 }
 
   function addCircleOptions(folder) {

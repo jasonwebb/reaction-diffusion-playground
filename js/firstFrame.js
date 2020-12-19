@@ -17,6 +17,7 @@ export const InitialTextureTypes = {
   SQUARE: 1,
   TEXT: 2,
   IMAGE: 3,
+  EMPTY: 4
 };
 
 export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
@@ -86,6 +87,11 @@ export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
           renderInitialDataToRenderTargets(initialData);
         })
         .catch(error => console.error(error));
+      break;
+
+    case InitialTextureTypes.EMPTY:
+      bufferCanvasCtx.clearRect(0, 0, parameterValues.canvas.width, parameterValues.canvas.height);
+      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
   }
 }
