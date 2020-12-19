@@ -10,16 +10,24 @@ export default {
   timestep: parameterMetadata.timestep.initial,
 
   seed: {
-    type: 2,
+    type: 0,
     circle: {
       radius: 100
     },
-    rectangle: {
-      width: 100,
-      height: 100
+    square: {
+      width: 200,
+      height: 200,
+      rotation: 0
+    },
+    text: {
+      value: 'Reaction diffusion',
+      size: 85,
+      rotation: 0
     },
     image: {
-      filename: ''
+      filename: '',
+      scale: 1.0,
+      rotation: 0
     }
   },
 

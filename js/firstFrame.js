@@ -13,15 +13,13 @@ import { displayMaterial, passthroughMaterial } from './materials';
 let bufferImage, bufferCanvasCtx;
 
 export const InitialTextureTypes = {
-  SINGLE_POINT: 0,
-  RANDOM_POINTS: 1,
-  CIRCLE: 2,
-  SQUARE: 3,
-  TEXT: 4,
-  IMAGE: 5,
+  CIRCLE: 0,
+  SQUARE: 1,
+  TEXT: 2,
+  IMAGE: 3,
 };
 
-export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
+export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
   // Grab the invisible canvas context that we can draw initial image data into
   global.bufferCanvas = document.querySelector('#buffer-canvas');
   bufferCanvasCtx = bufferCanvas.getContext('2d');
@@ -38,29 +36,9 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
         centerY = parameterValues.canvas.height/2;
 
   switch(type) {
-    case InitialTextureTypes.SINGLE_POINT:
-      bufferCanvasCtx.fillStyle = '#000';
-      bufferCanvasCtx.fillRect(Math.round(centerX), Math.round(centerY), 1, 1);
-      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
-      break;
-
-    case InitialTextureTypes.RANDOM_POINTS:
-      bufferCanvasCtx.fillStyle = '#000';
-
-      for(let i=0; i<randomInt(1,10); i++) {
-        bufferCanvasCtx.fillRect(
-          randomInt(0, parameterValues.canvas.width),
-          randomInt(0, parameterValues.canvas.height),
-          1,1
-        );
-      }
-
-      renderInitialDataToRenderTargets( convertPixelsToTextureData() );
-      break;
-
     case InitialTextureTypes.CIRCLE:
       bufferCanvasCtx.beginPath();
-      bufferCanvasCtx.arc(centerX, centerY, 100, 0, Math.PI*2);
+      bufferCanvasCtx.arc(centerX, centerY, parameterValues.seed.circle.radius, 0, Math.PI*2);
       bufferCanvasCtx.fillStyle = '#000';
       bufferCanvasCtx.fill();
       renderInitialDataToRenderTargets( convertPixelsToTextureData() );
@@ -68,16 +46,37 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
 
     case InitialTextureTypes.SQUARE:
       bufferCanvasCtx.fillStyle = '#000';
-      bufferCanvasCtx.fillRect(centerX - 50, centerY - 50, 100, 100);
+
+      bufferCanvasCtx.translate(parameterValues.canvas.width/2, parameterValues.canvas.height/2);
+      bufferCanvasCtx.rotate(parameterValues.seed.square.rotation * Math.PI / 180);
+      bufferCanvasCtx.translate(-parameterValues.canvas.width/2, -parameterValues.canvas.height/2);
+
+      bufferCanvasCtx.fillRect(
+        centerX - parameterValues.seed.square.width/2,
+        centerY - parameterValues.seed.square.height/2,
+        parameterValues.seed.square.width,
+        parameterValues.seed.square.height
+      );
+
+      bufferCanvasCtx.resetTransform();
       renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
     case InitialTextureTypes.TEXT:
       bufferCanvasCtx.fillStyle = '#000';
-      bufferCanvasCtx.font = '900 120px Arial';
+      bufferCanvasCtx.font = '900 ' + parameterValues.seed.text.size + 'px Arial';
       bufferCanvasCtx.textAlign = 'center';
-      bufferCanvasCtx.fillText('REACTION', centerX - 18, centerY - 50);
-      bufferCanvasCtx.fillText('DIFFUSION', centerX, centerY + 50);
+
+      bufferCanvasCtx.translate(parameterValues.canvas.width/2, parameterValues.canvas.height/2);
+      bufferCanvasCtx.rotate(parameterValues.seed.text.rotation * Math.PI / 180);
+      bufferCanvasCtx.translate(-parameterValues.canvas.width/2, -parameterValues.canvas.height/2);
+
+      bufferCanvasCtx.fillText(
+        parameterValues.seed.text.value,
+        centerX, centerY
+      );
+
+      bufferCanvasCtx.resetTransform();
       renderInitialDataToRenderTargets( convertPixelsToTextureData() );
       break;
 
@@ -125,7 +124,19 @@ export function drawFirstFrame(type = InitialTextureTypes.IMAGE) {
       bufferImage.src = path;
 
       bufferImage.addEventListener('load', () => {
-        bufferCanvasCtx.drawImage(bufferImage, centerX - bufferImage.width/2, centerY - bufferImage.height/2);
+        bufferCanvasCtx.translate(parameterValues.canvas.width/2 * parameterValues.seed.image.scale, parameterValues.canvas.height/2 * parameterValues.seed.image.scale);
+        bufferCanvasCtx.rotate(parameterValues.seed.image.rotation * Math.PI / 180);
+        bufferCanvasCtx.translate(-parameterValues.canvas.width/2 * parameterValues.seed.image.scale, -parameterValues.canvas.height/2 * parameterValues.seed.image.scale);
+
+        bufferCanvasCtx.drawImage(
+          bufferImage,
+          centerX - bufferImage.width/2,
+          centerY - bufferImage.height/2,
+          bufferImage.width * parameterValues.seed.image.scale,
+          bufferImage.height * parameterValues.seed.image.scale
+        );
+
+        bufferCanvasCtx.resetTransform();
         resolve(convertPixelsToTextureData());
       });
     });

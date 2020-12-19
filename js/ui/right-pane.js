@@ -148,8 +148,6 @@ function setupSeedFolder() {
   seedFolder.addInput(parameterValues.seed, 'type', {
     label: 'Type',
     options: {
-      SinglePoint: InitialTextureTypes.SINGLE_POINT,
-      RandomPoints: InitialTextureTypes.RANDOM_POINTS,
       Circle: InitialTextureTypes.CIRCLE,
       Square: InitialTextureTypes.SQUARE,
       Text: InitialTextureTypes.TEXT,
@@ -161,6 +159,24 @@ function setupSeedFolder() {
       rebuildRightPane();
     });
 
+  switch(currentSeedType) {
+    case 0:
+      addCircleOptions(seedFolder);
+      break;
+
+    case 1:
+      addSquareOptions(seedFolder);
+      break;
+
+    case 2:
+      addTextOptions(seedFolder);
+      break;
+
+    case 3:
+      addImageOptions(seedFolder);
+      break;
+  }
+
   // Restart button
   seedFolder.addButton({
     title: '⟳ Restart with this pattern'
@@ -169,6 +185,71 @@ function setupSeedFolder() {
       drawFirstFrame(currentSeedType);
     });
 }
+
+  function addCircleOptions(folder) {
+    folder.addInput(parameterValues.seed.circle, 'radius', {
+      label: 'Radius',
+      min: 1,
+      max: parameterValues.canvas.width > parameterValues.canvas.height ? parameterValues.canvas.height/2 : parameterValues.canvas.width/2
+    });
+  }
+
+  function addSquareOptions(folder) {
+    folder.addInput(parameterValues.seed.square, 'width', {
+      label: 'Width',
+      min: 1,
+      max: parameterValues.canvas.width
+    });
+
+    folder.addInput(parameterValues.seed.square, 'height', {
+      label: 'Height',
+      min: 1,
+      max: parameterValues.canvas.height
+    });
+
+    folder.addInput(parameterValues.seed.square, 'rotation', {
+      label: 'Rotation',
+      min: -180,
+      max: 180
+    })
+      .on('change', (value) => {
+        console.log(typeof(value));
+      })
+  }
+
+  function addTextOptions(folder) {
+    folder.addInput(parameterValues.seed.text, 'value', {
+      label: 'Text'
+    });
+
+    folder.addInput(parameterValues.seed.text, 'size', {
+      label: 'Size',
+      min: 10,
+      max: 200
+    });
+
+    folder.addInput(parameterValues.seed.text, 'rotation', {
+      label: 'Rotation',
+      min: -180,
+      max: 180
+    });
+  }
+
+  function addImageOptions(folder) {
+    // TODO: add file input
+
+    folder.addInput(parameterValues.seed.image, 'scale', {
+      label: 'Scale',
+      min: 0.1,
+      max: 5.0
+    });
+
+    folder.addInput(parameterValues.seed.image, 'rotation', {
+      label: 'Rotation',
+      min: -180,
+      max: 180
+    });
+  }
 
 
 //==============================================================
