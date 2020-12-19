@@ -54,9 +54,9 @@ Use the crosshairs attached to the mouse position to navigate to a region you're
 This map is inspired by the [work of Robert Munafo](http://mrob.com/pub/comp/xmorphia/).
 
 ### Seed pattern
-Choose a pattern to use in the first frame of the simulation to seed the reaction.
+Choose a pattern to use in the first frame of the simulation to seed the reaction. Each pattern has some additional options you can play with for different effects.
 
-Also provides a button to reset the simulation with the selected pattern as the first frame (same exact thing as pressing the `r` key).
+Also provides buttons to reset the simulation with the selected pattern or clear the canvas completely.
 
 ### Rendering style
 Control how the chemical concentration data is translated into visuals.
@@ -89,7 +89,7 @@ Normally diffusion occurs evenly in all directions due to the default radially s
 ### Mouse controls
 Click and drag anywhere on the canvas to increase the concentration of the `B` chemical around the mouse position.
 
-Use your mouse wheel to change the diameter of the area affected by clicking / dragging.
+Use your mouse wheel to change the diameter of the area affected by clicking / dragging. The size of the brush is indicated with a circle that follows the mouse.
 
 ### MIDI controls
 If you have an Akai LPD8 Wireless or a Novation Launch Control XL, mappings are provided for the various pads and knobs. See `./js/midi.js` for details.
