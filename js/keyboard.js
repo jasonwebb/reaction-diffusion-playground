@@ -5,6 +5,7 @@
 import { drawFirstFrame } from './firstFrame';
 import { exportImage } from './export';
 import { toggleUI } from './ui';
+import { currentSeedType } from './ui/right-pane';
 
 export function setupKeyboard() {
   window.addEventListener('keyup', function(e) {
@@ -15,7 +16,7 @@ export function setupKeyboard() {
         break;
 
       case 'r':
-        drawFirstFrame(2);
+        drawFirstFrame(currentSeedType);
         break;
 
       case 's':
