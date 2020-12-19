@@ -26,6 +26,8 @@ export default {
     },
     image: {
       filename: '',
+      image: null,
+      fit: 0,
       scale: 1.0,
       rotation: 0
     }

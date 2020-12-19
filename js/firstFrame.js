@@ -82,11 +82,15 @@ export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
       break;
 
     case InitialTextureTypes.IMAGE:
-      getImagePixels('./images/seeds/test.png', centerX, centerY)
-        .then((initialData) => {
-          renderInitialDataToRenderTargets(initialData);
-        })
-        .catch(error => console.error(error));
+      if(parameterValues.seed.image.image != null) {
+        getImagePixels(parameterValues.seed.image.image, centerX, centerY)
+          .then((initialData) => {
+            renderInitialDataToRenderTargets(initialData);
+          })
+          .catch(error => console.error(error));
+      } else {
+        alert('Upload an image using the button first!');
+      }
       break;
 
     case InitialTextureTypes.EMPTY:
@@ -124,23 +128,45 @@ export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
     renderer.render(scene, camera);
   }
 
-  function getImagePixels(path, centerX, centerY) {
+  function getImagePixels(imageData, centerX, centerY) {
     // Create an asynchronous Promise that can be used to wait for the image to load
-    return new Promise((resolve, reject) => {
-      bufferImage.src = path;
+    return new Promise((resolve) => {
+      bufferImage.src = imageData;
 
       bufferImage.addEventListener('load', () => {
         bufferCanvasCtx.translate(parameterValues.canvas.width/2 * parameterValues.seed.image.scale, parameterValues.canvas.height/2 * parameterValues.seed.image.scale);
         bufferCanvasCtx.rotate(parameterValues.seed.image.rotation * Math.PI / 180);
         bufferCanvasCtx.translate(-parameterValues.canvas.width/2 * parameterValues.seed.image.scale, -parameterValues.canvas.height/2 * parameterValues.seed.image.scale);
 
-        bufferCanvasCtx.drawImage(
-          bufferImage,
-          centerX - bufferImage.width/2,
-          centerY - bufferImage.height/2,
-          bufferImage.width * parameterValues.seed.image.scale,
-          bufferImage.height * parameterValues.seed.image.scale
-        );
+        let startX, startY, width, height;
+
+        switch(parameterValues.seed.image.fit) {
+          // None - use the image's true dimensions
+          case 0:
+            startX = centerX - bufferImage.width/2;
+            startY = centerY - bufferImage.height/2;
+            width = bufferImage.width * parameterValues.seed.image.scale;
+            height = bufferImage.height * parameterValues.seed.image.scale;
+            break;
+
+          // Scale - scale the image up or down to fit the canvas without stretching
+          case 1:
+            startX = bufferImage.width > bufferImage.height ? 0 : centerX - bufferImage.width/2;
+            startY = bufferImage.height > bufferImage.width ? 0 : centerY - bufferImage.height/2;
+            width = bufferImage.width > bufferImage.height ? parameterValues.canvas.width : bufferImage.width;
+            height = bufferImage.height > bufferImage.width ? parameterValues.canvas.height : bufferImage.height;
+            break;
+
+          // Stretch
+          case 2:
+            startX = 0;
+            startY = 0;
+            width = parameterValues.canvas.width;
+            height = parameterValues.canvas.height;
+            break;
+        }
+
+        bufferCanvasCtx.drawImage(bufferImage, startX, startY, width, height);
 
         bufferCanvasCtx.resetTransform();
         resolve(convertPixelsToTextureData());

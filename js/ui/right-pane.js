@@ -20,7 +20,9 @@ import { expandMap } from '../map';
 import { exportImage } from '../export';
 
 let pane;
-let currentSeedType = InitialTextureTypes.CIRCLE;
+export let currentSeedType = InitialTextureTypes.CIRCLE;
+
+let seedImageChooser;
 
 export function setupRightPane() {
   pane = new Tweakpane({ title: 'Parameters' });
@@ -30,6 +32,27 @@ export function setupRightPane() {
   setupRenderingFolder();
   setupCanvasSize();
   setupActions();
+
+  if(seedImageChooser == undefined || seedImageChooser == null) {
+    seedImageChooser = document.getElementById('seed-image-chooser');
+
+    seedImageChooser.addEventListener('change', (e) => {
+      if(e.target.files.length == 0) {
+        return;
+      }
+
+      let reader = new FileReader();
+      reader.onload = function() {
+        parameterValues.seed.image.filename = e.target.files[0].name;
+        parameterValues.seed.image.image = reader.result;
+
+        // draw reader.result to the buffer canvas
+        rebuildRightPane();
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    });
+  }
 }
 
   export function rebuildRightPane() {
@@ -244,7 +267,27 @@ function setupSeedFolder() {
   }
 
   function addImageOptions(folder) {
-    // TODO: add file input
+    folder.addMonitor(parameterValues.seed.image, 'filename', {
+      label: 'Filename'
+    });
+
+    folder.addInput(parameterValues.seed.image, 'fit', {
+      label: 'Fit',
+      options: {
+        None: 0,
+        Scale: 1,
+        Stretch: 2
+      }
+    });
+
+    folder.addButton({
+      title: '🖼️ Upload an image'
+    })
+      .on('click', (e) => {
+        seedImageChooser.click();
+      });
+
+    folder.addSeparator();
 
     folder.addInput(parameterValues.seed.image, 'scale', {
       label: 'Scale',
