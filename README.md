@@ -56,6 +56,11 @@ This map is inspired by the [work of Robert Munafo](http://mrob.com/pub/comp/xmo
 ### Seed pattern
 Choose a pattern to use in the first frame of the simulation to seed the reaction. Each pattern has some additional options you can play with for different effects.
 
+* **Circle** - radius.
+* **Square** - width, height, scale, and rotation.
+* **Text** - string, size, rotation.
+* **Image** - upload an image from your computer, fit, scale, rotation.
+
 Also provides buttons to reset the simulation with the selected pattern or clear the canvas completely.
 
 ### Rendering style
