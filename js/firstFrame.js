@@ -150,11 +150,18 @@ export function drawFirstFrame(type = InitialTextureTypes.CIRCLE) {
             break;
 
           // Scale - scale the image up or down to fit the canvas without stretching
+          // https://stackoverflow.com/a/50165098
           case 1:
-            startX = bufferImage.width > bufferImage.height ? 0 : centerX - bufferImage.width/2;
-            startY = bufferImage.height > bufferImage.width ? 0 : centerY - bufferImage.height/2;
-            width = bufferImage.width > bufferImage.height ? parameterValues.canvas.width : bufferImage.width;
-            height = bufferImage.height > bufferImage.width ? parameterValues.canvas.height : bufferImage.height;
+            const widthRatio = parameterValues.canvas.width / bufferImage.width,
+                  heightRatio = parameterValues.canvas.height / bufferImage.height,
+                  bestFitRatio = Math.min(widthRatio, heightRatio),
+                  scaledWidth = bufferImage.width * bestFitRatio,
+                  scaledHeight = bufferImage.height * bestFitRatio;
+
+            startX = centerX - scaledWidth/2;
+            startY = centerY - scaledHeight/2;
+            width = scaledWidth;
+            height = scaledHeight;
             break;
 
           // Stretch
