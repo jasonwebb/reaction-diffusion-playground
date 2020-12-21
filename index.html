@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Introduction - Reaction-diffusion playground</title>
+  <title>Reaction-Diffusion Playground - Introduction</title>
 
   <meta name="description" content="Interactive simulation with organic patterns and behaviors emerging naturally from two chemicals as they are mixed together.">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,7 +13,7 @@
   <!-- Facebook OG -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://jasonwebb.github.io/reaction-diffusion-playground/">
-  <meta property="og:title" content="Reaction-diffusion playground">
+  <meta property="og:title" content="Reaction-Diffusion Playground">
   <meta property="og:image" content="https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/social-media-preview.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="628">
@@ -23,7 +23,7 @@
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:creator" content="@jasonwebb">
-  <meta name="twitter:title" content="Reaction-diffusion playground">
+  <meta name="twitter:title" content="Reaction-Diffusion Playground">
   <meta name="twitter:description" content="Interactive simulation with organic patterns and behaviors emerging naturally from two chemicals as they are mixed together.">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/jasonwebb/reaction-diffusion-playground/master/images/social-media-preview.jpg">
 
@@ -34,7 +34,7 @@
 <body>
   <main>
     <div class="container">
-      <h1 class="title">Reaction-diffusion playground</h1>
+      <h1 class="title">Reaction-Diffusion Playground</h1>
 
       <p>Reaction-diffusion is a mathematical model describing how two chemicals might <b>react</b> to each other as they <b>diffuse</b> through a medium together. It was <a href="https://www.dna.caltech.edu/courses/cs191/paperscs191/turing.pdf">proposed by Alan Turing in 1952</a> as a possible explanation for how the interesting patterns of stripes and spots that are seen on the skin/fur of animals like giraffes and leopards form. <a href="#what-is-reaction-diffusion">Learn more about reaction-diffusion below</a>.</p>
 
@@ -52,52 +52,60 @@
 
     <div class="screenshots">
       <a href="images/screenshots/screenshot-1.png" class="tile">
-        <img src="images/screenshots/screenshot-1.png" alt="">
+        <img src="images/screenshots/screenshot-1.png" alt="Screenshot 1">
       </a>
 
       <a href="images/screenshots/screenshot-2.png" class="tile">
-        <img src="images/screenshots/screenshot-2.png" alt="">
+        <img src="images/screenshots/screenshot-2.png" alt="Screenshot 2">
       </a>
 
       <a href="images/screenshots/screenshot-3.png" class="tile">
-        <img src="images/screenshots/screenshot-3.png" alt="">
+        <img src="images/screenshots/screenshot-3.png" alt="Screenshot 3">
       </a>
 
       <a href="images/screenshots/screenshot-4.png" class="tile">
-        <img src="images/screenshots/screenshot-4.png" alt="">
+        <img src="images/screenshots/screenshot-4.png" alt="Screenshot 4">
       </a>
 
       <a href="images/screenshots/screenshot-5.png" class="tile">
-        <img src="images/screenshots/screenshot-5.png" alt="">
+        <img src="images/screenshots/screenshot-5.png" alt="Screenshot 5">
       </a>
 
       <a href="images/screenshots/screenshot-6.png" class="tile">
-        <img src="images/screenshots/screenshot-6.png" alt="">
+        <img src="images/screenshots/screenshot-6.png" alt="Screenshot 6">
       </a>
 
       <a href="images/screenshots/screenshot-7.png" class="tile">
-        <img src="images/screenshots/screenshot-7.png" alt="">
+        <img src="images/screenshots/screenshot-7.png" alt="Screenshot 7">
       </a>
 
       <a href="images/screenshots/screenshot-8.png" class="tile">
-        <img src="images/screenshots/screenshot-8.png" alt="">
+        <img src="images/screenshots/screenshot-8.png" alt="Screenshot 8">
       </a>
 
       <a href="images/screenshots/screenshot-9.png" class="tile">
-        <img src="images/screenshots/screenshot-9.png" alt="">
+        <img src="images/screenshots/screenshot-9.png" alt="Screenshot 9">
       </a>
 
       <a href="images/screenshots/screenshot-10.png" class="tile">
-        <img src="images/screenshots/screenshot-10.png" alt="">
+        <img src="images/screenshots/screenshot-10.png" alt="Screenshot 10">
       </a>
 
       <a href="images/screenshots/screenshot-11.png" class="tile">
-        <img src="images/screenshots/screenshot-11.png" alt="">
+        <img src="images/screenshots/screenshot-11.png" alt="Screenshot 11">
       </a>
 
       <a href="images/screenshots/screenshot-12.png" class="tile">
-        <img src="images/screenshots/screenshot-12.png" alt="">
+        <img src="images/screenshots/screenshot-12.png" alt="Screenshot 12">
       </a>
+    </div>
+
+    <div style="background-color: rgba(0,0,0,.9); padding: 60px 0;">
+      <div class="container">
+        <div class="embed-responsive">
+          <iframe width="560" height="315" title="Reaction-Diffusion Playground demo video on YouTube" src="https://www.youtube.com/embed/8Nk0DhAtmgk" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border: 1px solid rgba(255,255,255,.2); box-shadow: 0 0 50px rgba(0,0,0,1)"></iframe>
+        </div>
+      </div>
     </div>
 
     <div class="container">
@@ -333,6 +341,20 @@
       margin-top: 0;
     }
 
+  .embed-responsive {
+    position: relative;
+    padding-bottom: 56.25%;
+    height:  0;
+  }
+
+    .embed-responsive iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
   .main-buttons {
     margin-top: 40px;
   }
@@ -358,12 +380,15 @@
   }
 
   .tile {
-    flex: 0 0 25%;
-    height: 350px;
+    flex: 0 0 calc(25% - 2px);
+    height: 375px;
 
     display: flex;
     overflow: hidden;
     position: relative;
+
+    margin-right: 2px;
+    margin-bottom: 2px;
   }
 
     .tile:before {
