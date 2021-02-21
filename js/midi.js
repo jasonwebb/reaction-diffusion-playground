@@ -3,6 +3,7 @@
 //==============================================================
 
 import WebMIDI from 'webmidi';
+import globals from './globals';
 import parameterMetadata from './parameterMetadata';
 import { InitialTextureTypes, drawFirstFrame } from './firstFrame';
 import { simulationUniforms, displayUniforms } from './uniforms';
@@ -60,7 +61,7 @@ function setupLPD8(lpd8) {
 
       // Bottom row = 36-39 ----------------
       case 36:
-        isPaused = !isPaused;
+        globals.isPaused = !globals.isPaused;
         break;
     }
   });
@@ -149,7 +150,7 @@ function setupLaunchControlXL(launchControlXL) {
 
       // Bottom row (73-76, 89-92)
       case 73:
-        isPaused = !isPaused;
+        globals.isPaused = !globals.isPaused;
         break;
     }
   });

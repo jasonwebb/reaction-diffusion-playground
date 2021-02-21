@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import Tweakpane from 'tweakpane';
 
+import globals from '../globals';
 import parameterValues from '../parameterValues';
 import parameterMetadata from '../parameterMetadata';
 import parameterPresets from '../parameterPresets';
@@ -560,7 +561,7 @@ function setupActions() {
     title: '⏸ Pause/play'
   })
     .on('click', () => {
-      isPaused = !isPaused;
+      globals.isPaused = !globals.isPaused;
     });
 
   // Save as image button

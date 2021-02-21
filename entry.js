@@ -9,18 +9,13 @@ import { setupKeyboard } from './js/keyboard';
 import { setupMouse } from './js/mouse';
 import { setupMIDI } from './js/midi';
 
+import globals from './js/globals';
 import { simulationUniforms, displayUniforms } from './js/uniforms';
 import { simulationMaterial, displayMaterial } from './js/materials';
 import parameterValues from './js/parameterValues';
 
-let currentRenderTargetIndex = 0;  // render targets are invisible meshes that allow shaders to generate textures for computation, not display
-const pingPongSteps = 60;          // number of times per frame that the simulation is run before being displayed
-global.isPaused = false;
-
-let clock = new THREE.Clock();
-
 setupEnvironment();         // set up the camera, scene, and other stuff ThreeJS needs to
-setupStats(pingPongSteps);  // set up the FPS and iteration counters
+setupStats(globals.pingPongSteps);  // set up the FPS and iteration counters
 setupUI();                  // set up the Tweakpane UI
 setupMap();                 // set up the live parameter map picker
 setupKeyboard();            // set up keyboard commands
@@ -91,26 +86,26 @@ function setupEnvironment() {
 //  - Main program loop, runs once per frame no matter what.
 //==============================================================
 function update() {
-  if(!isPaused) {
+  if(!globals.isPaused) {
     // Activate the simulation shaders
     displayMesh.material = simulationMaterial;
 
     // Run the simulation multiple times by feeding the result of one iteration (a render target's texture) into the next render target
-    for(let i=0; i<pingPongSteps; i++) {
-      var nextRenderTargetIndex = currentRenderTargetIndex === 0 ? 1 : 0;
+    for(let i=0; i<globals.pingPongSteps; i++) {
+      var nextRenderTargetIndex = globals.currentRenderTargetIndex === 0 ? 1 : 0;
 
-      simulationUniforms.previousIterationTexture.value = renderTargets[currentRenderTargetIndex].texture;  // grab the result of the last iteration
+      simulationUniforms.previousIterationTexture.value = renderTargets[globals.currentRenderTargetIndex].texture;  // grab the result of the last iteration
       renderer.setRenderTarget(renderTargets[nextRenderTargetIndex]);                                       // prepare to render into the next render target
       renderer.render(scene, camera);                                                                       // run the simulation shader on that texture
       simulationUniforms.previousIterationTexture.value = renderTargets[nextRenderTargetIndex].texture;     // save the result of this simulation step for use in the next step
       displayUniforms.textureToDisplay.value = renderTargets[nextRenderTargetIndex].texture;                // pass this result to the display material too
-      displayUniforms.previousIterationTexture.value = renderTargets[currentRenderTargetIndex].texture;     // pass the previous iteration result too for history-based rendering effects
+      displayUniforms.previousIterationTexture.value = renderTargets[globals.currentRenderTargetIndex].texture;     // pass the previous iteration result too for history-based rendering effects
 
-      currentRenderTargetIndex = nextRenderTargetIndex;
+      globals.currentRenderTargetIndex = nextRenderTargetIndex;
     }
 
     // Activate the display shaders
-    displayUniforms.time.value = clock.getElapsedTime();
+    displayUniforms.time.value = globals.clock.getElapsedTime();
     displayMesh.material = displayMaterial;
 
     // Render the latest iteration to the screen
@@ -119,7 +114,7 @@ function update() {
   }
 
   // Tick the FPS and iteration counters
-  updateStats(isPaused);
+  updateStats(globals.isPaused);
 
   // Kick off next frame
   requestAnimationFrame(update);

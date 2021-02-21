@@ -2,6 +2,7 @@
 //  KEYBOARD CONTROLS
 //==============================================================
 
+import globals from './globals';
 import { drawFirstFrame } from './firstFrame';
 import { exportImage } from './export';
 import { toggleUI } from './ui';
@@ -12,7 +13,7 @@ export function setupKeyboard() {
     switch(e.key) {
       case ' ':
         e.preventDefault();
-        isPaused = !isPaused;
+        globals.isPaused = !globals.isPaused;
         break;
 
       case 'r':
