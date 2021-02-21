@@ -521,6 +521,19 @@ function setupCanvasSize() {
       });
   }
 
+  // Resolution scale slider
+  canvasSizeFolder.addInput(parameterValues.canvas, 'scale', {
+    label: 'Resolution scale',
+    min: parameterMetadata.canvas.scale.min,
+    max: parameterMetadata.canvas.scale.max,
+    step: .1
+  })
+    .on('change', (value) => {
+      parameterValues.canvas.scale = value;
+      setupRenderTargets();
+      resetTextureSizes();
+    });
+
   // Maximized checkbox
   canvasSizeFolder.addInput(parameterValues.canvas, 'isMaximized', { label: 'Maximize' })
     .on('change', (checked) => {

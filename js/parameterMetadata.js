@@ -34,6 +34,11 @@ export default {
       min: 0,
       max: window.innerHeight,
       initial: 900
+    },
+    scale: {
+      min: .01,
+      max: 3,
+      initial: 1
     }
   },
   bias: {

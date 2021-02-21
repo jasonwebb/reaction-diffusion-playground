@@ -71,6 +71,7 @@ export default {
   canvas: {
     width: parameterMetadata.canvas.width.initial,
     height: parameterMetadata.canvas.height.initial,
+    scale: parameterMetadata.canvas.scale.initial,
     isMaximized: false
   },
 

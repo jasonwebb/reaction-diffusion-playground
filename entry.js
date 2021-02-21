@@ -65,8 +65,8 @@ function setupEnvironment() {
 }
 
   export function resetTextureSizes() {
-    parameterValues.canvas.width = canvas.clientWidth;
-    parameterValues.canvas.height = canvas.clientHeight;
+    parameterValues.canvas.width = canvas.clientWidth * parameterValues.canvas.scale;
+    parameterValues.canvas.height = canvas.clientHeight * parameterValues.canvas.scale;
 
     // Resize render targets
     setupRenderTargets();
