@@ -34,6 +34,7 @@ export default {
   },
 
   renderingStyle: '',
+  useSmoothing: false,
 
   gradientColors: {
     color1RGB: {r:0, g:0, b:0},

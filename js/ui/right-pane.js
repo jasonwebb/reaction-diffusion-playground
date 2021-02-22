@@ -330,6 +330,8 @@ function setupRenderingFolder() {
       rebuildRightPane();
     });
 
+  renderingFolder.addInput(parameterValues, 'useSmoothing', { label: 'Use smoothing' });
+
   renderingFolder.addSeparator();
 
   addRenderingStyleOptions(renderingFolder);
